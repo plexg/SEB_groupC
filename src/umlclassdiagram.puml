@@ -1,0 +1,57 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+package classes {
+    class Game {
+        - Player player
+        - List<Room> rooms
+        + Game()
+        + startGame(Scanner sc)
+    }
+
+    class Player {
+        - int progress
+        - int hp
+        - Room currentRoom
+        + Player(int progress, int hp, Room currentRoom)
+        + setRoom(Room room)
+        + getHp(): int
+        + setProgress(int progress)
+    }
+
+    abstract class Room {
+        + playRoom()
+    }
+
+    class DailyScrumRoom extends Room {
+        + playRoom()
+    }
+
+    class SprintRetrospectiveRoom extends Room {
+        + playRoom()
+    }
+
+    class FinalRoom extends Room {
+        + playRoom()
+    }
+
+    class ScrumBoardRoom extends Room {
+        + playRoom()
+    }
+}
+
+package main {
+    class Main {
+        + main(String[] args)
+    }
+}
+
+Game --> Room : uses
+Player --> Room : interacts
+Main --> Game : creates
+Room <|-- DailyScrumRoom
+Room <|-- SprintRetrospectiveRoom
+Room <|-- FinalRoom
+Room <|-- ScrumBoardRoom
+
+@enduml
