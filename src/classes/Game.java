@@ -22,7 +22,6 @@ public class Game {
     }
 
     public void startGame(Scanner sc) {
-        // this is the start screen of the game
         System.out.println("Welcome to the Scrum Escape Building!");
         System.out.println("Start");
         System.out.println("Quit");
