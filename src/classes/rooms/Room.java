@@ -27,7 +27,6 @@ public abstract class Room {
         presentChallenge();
         boolean correct = checkAnswer();
         if (correct) {
-            showResult();
             giveFeedback();
         } else {
             triggerMonster();
@@ -37,7 +36,6 @@ public abstract class Room {
     public abstract void showIntroduction();
     public abstract void presentChallenge();
     public abstract boolean checkAnswer();
-    public abstract void showResult();
     public abstract void giveFeedback();
 
     public void triggerMonster() {

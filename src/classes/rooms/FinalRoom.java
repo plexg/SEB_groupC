@@ -1,6 +1,10 @@
 package classes.rooms;
 
+import java.util.Scanner;
+
 public class FinalRoom extends Room {
+    String enter = "Press Enter to continue...";
+    Scanner input = new Scanner(System.in);
     @Override
     public void showIntroduction() {}
 
@@ -9,11 +13,7 @@ public class FinalRoom extends Room {
 
     @Override
     public boolean checkAnswer() {
-        return false;
-    }
-
-    @Override
-    public void showResult() {}
+        return false;}
 
     @Override
     public void giveFeedback() {}

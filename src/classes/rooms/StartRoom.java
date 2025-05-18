@@ -32,7 +32,7 @@ public class StartRoom extends Room {
         System.out.println("You are in the Start Room.");
         System.out.println("Press Enter to continue...");
         input.nextLine();
-        System.out.println("You can type 'go to DailyScrumRoom' to enter the next room, status to see your hp and progress and quit to save and exit the game.");
+        System.out.println("You can type 'go to SprintPlanningRoom' to enter the next room, 'status' to see your hp and progress and quit to save and exit the game.");
     }
 
     @Override
@@ -42,10 +42,6 @@ public class StartRoom extends Room {
     @Override
     public boolean checkAnswer() {
         return false;
-    }
-
-    @Override
-    public void showResult() {
     }
 
     @Override
