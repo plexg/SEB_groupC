@@ -1,7 +1,26 @@
 package classes.rooms;
 
+import classes.Player;
 
 public abstract class Room {
+    private int id;
+    private String name;
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public final void playRoom() {
         showIntroduction();
@@ -13,17 +32,14 @@ public abstract class Room {
         } else {
             triggerMonster();
         }
-
     }
 
-    protected abstract void showIntroduction();
-    protected abstract void presentChallenge();
-    protected abstract boolean checkAnswer();
-    protected abstract void showResult();
-    protected abstract void giveFeedback();
+    public abstract void showIntroduction();
+    public abstract void presentChallenge();
+    public abstract boolean checkAnswer();
+    public abstract void showResult();
+    public abstract void giveFeedback();
 
-    protected void triggerMonster() {
-        System.out.println("You triggered an obstacle! Solve it before continuing.");
+    public void triggerMonster() {
     }
 }
-

@@ -6,33 +6,33 @@ public class SprintPlanningRoom extends Room {
     private final Scanner scanner = new Scanner(System.in);
 
     @Override
-    protected void showIntroduction() {
+    public void showIntroduction() {
         System.out.println("Welcomee to the Sprint Planning Room!");
     }
 
     @Override
-    protected void presentChallenge() {
+    public void presentChallenge() {
         System.out.println("Which tasks fit in a 2 week sprint?");
     }
 
     @Override
-    protected boolean checkAnswer() {
+    public boolean checkAnswer() {
         String input = scanner.nextLine().toLowerCase();
         return input.contains("task a") && input.contains("task b") && !input.contains("task d");
     }
 
     @Override
-    protected void showResult() {
+    public void showResult() {
         System.out.println("Good! Your sprint planning is realistic.");
     }
 
     @Override
-    protected void giveFeedback() {
+    public void giveFeedback() {
         System.out.println("Remember to size your tasks appropriately!");
     }
 
     @Override
-    protected void triggerMonster() {
+    public void triggerMonster() {
         System.out.println("You triggered the monster!");
         System.out.println("Solve this to defeat it");
         String input = scanner.nextLine().toLowerCase();

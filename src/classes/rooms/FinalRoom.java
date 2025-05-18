@@ -1,4 +1,23 @@
 package classes.rooms;
 
-public class FinalRoom extends Room{
+public class FinalRoom extends Room {
+    @Override
+    public void showIntroduction() {}
+
+    @Override
+    public void presentChallenge() {}
+
+    @Override
+    public boolean checkAnswer() {
+        return false;
+    }
+
+    @Override
+    public void showResult() {}
+
+    @Override
+    public void giveFeedback() {}
+
+    @Override
+    public void triggerMonster() {}
 }

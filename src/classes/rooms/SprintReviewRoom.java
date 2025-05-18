@@ -19,29 +19,29 @@ public class SprintReviewRoom extends Room {
     };
 
     @Override
-    protected void showIntroduction() {
+    public void showIntroduction() {
         System.out.println("Welcome to the Sprint Planning Room!");
     }
 
     @Override
-    protected void presentChallenge() {
+    public void presentChallenge() {
         challenge.present();
     }
 
     @Override
-    protected boolean checkAnswer() {
+    public boolean checkAnswer() {
         Scanner scanner = new Scanner(System.in);
         userInput = scanner.nextLine();
         return challenge.check(userInput);
     }
 
     @Override
-    protected void showResult() {
+    public void showResult() {
         System.out.println("Correct! Your sprint planning is solid.");
     }
 
     @Override
-    protected void giveFeedback() {
+    public void giveFeedback() {
         System.out.println("Great job managing your sprint scope.");
     }
 }

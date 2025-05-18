@@ -2,19 +2,32 @@ package classes;
 
 import classes.rooms.Room;
 
+
 public class Player {
+    private int id;
     private int progress;
     private int hp;
     private Room room;
+    private String name;
 
-    // constructor
-    public Player(int progress, int hp, Room room) {
+    // Constructor
+    public Player(int id, int hp, Room room, String name) {
+        this.id = id;
         this.progress = 0;
-        this.hp = 100;
-        this.room = null;
+        this.hp = hp;
+        this.room = room;
+        this.name = name;
     }
 
-    // getters and setters
+    // Getters and Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getProgress() {
         return progress;
     }
@@ -39,12 +52,19 @@ public class Player {
         this.room = room;
     }
 
-    // methods
-    public void getStatus() {
-        System.out.println("Player Status");
-        System.out.println("Progress: " + progress);
-        System.out.println("HP: " + hp);
-        System.out.println("Room: " + room.getClass().getSimpleName());
+    public String getName() {
+        return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // Methods
+    public String getStatus() {
+        return "Player Status:\n" +
+                "Progress: " + progress + "\n" +
+                "HP: " + hp + "\n" +
+                "Room: " + (room != null ? room.getClass().getSimpleName() : "None");
+    }
 }
