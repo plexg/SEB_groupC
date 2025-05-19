@@ -1,6 +1,4 @@
-package tests;
-
-import classes.Database;
+package classes.database;
 
 import java.util.Scanner;
 

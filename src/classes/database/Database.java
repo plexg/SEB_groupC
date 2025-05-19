@@ -1,6 +1,6 @@
-package classes;
+package classes.database;
 
-import classes.Player;
+import classes.nonrooms.Player;
 import classes.rooms.Room;
 import classes.rooms.RoomFactory;
 

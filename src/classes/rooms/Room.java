@@ -1,7 +1,5 @@
 package classes.rooms;
 
-import classes.Player;
-
 public abstract class Room {
     private int id;
     private String name;

@@ -1,7 +1,7 @@
-package main;
+package classes.main;
 
 import java.util.Scanner;
-import classes.Game;
+import classes.nonrooms.Game;
 
 public class Main {
     public static void main(String[] args) {

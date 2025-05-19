@@ -1,6 +1,9 @@
-package classes;
+package classes.nonrooms;
 
+import classes.database.Database;
 import classes.rooms.*;
+import classes.rooms.rooms.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;

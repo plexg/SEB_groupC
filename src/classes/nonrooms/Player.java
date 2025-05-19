@@ -1,4 +1,4 @@
-package classes;
+package classes.nonrooms;
 
 import classes.rooms.Room;
 
