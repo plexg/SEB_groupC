@@ -1,7 +1,8 @@
-package classes.rooms;
+package classes.rooms.rooms;
 
-import classes.Player;
-import classes.Database;
+import classes.nonrooms.Player;
+import classes.database.Database;
+import classes.rooms.Room;
 
 import java.util.Scanner;
 

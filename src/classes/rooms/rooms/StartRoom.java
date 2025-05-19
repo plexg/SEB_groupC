@@ -1,7 +1,8 @@
-package classes.rooms;
+package classes.rooms.rooms;
 
 import java.util.Scanner;
-import classes.Player;
+import classes.nonrooms.Player;
+import classes.rooms.Room;
 
 public class StartRoom extends Room {
     private Player player;

@@ -1,12 +1,12 @@
-package classes.rooms;
+package classes.rooms.rooms;
 
 import Challenge.ChallengeStrategy;
-import classes.Database;
-import classes.Player;
+import classes.database.Database;
+import classes.nonrooms.Player;
+import classes.rooms.Room;
 
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

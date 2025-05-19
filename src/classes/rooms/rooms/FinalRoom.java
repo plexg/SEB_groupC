@@ -1,4 +1,6 @@
-package classes.rooms;
+package classes.rooms.rooms;
+
+import classes.rooms.Room;
 
 import java.util.Scanner;
 

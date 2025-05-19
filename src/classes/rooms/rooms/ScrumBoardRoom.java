@@ -1,10 +1,11 @@
-package classes.rooms;
+package classes.rooms.rooms;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import classes.Player;
-import classes.Database;
+import classes.nonrooms.Player;
+import classes.database.Database;
+import classes.rooms.Room;
 
 public class ScrumBoardRoom extends Room {
     private Player player;
