@@ -27,10 +27,13 @@ public class Game {
     }
 
     public void startGame(Scanner sc) {
+        System.out.println("============================");
         System.out.println("Welcome to the Scrum Escape Building!");
+        System.out.println("============================");
         System.out.println("1. Continue");
         System.out.println("2. New Game");
         System.out.println("3. Quit");
+        System.out.println("============================");
 
         while (true) {
             System.out.print("Enter your choice: ");

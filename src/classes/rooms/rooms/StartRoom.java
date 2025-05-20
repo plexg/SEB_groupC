@@ -18,22 +18,24 @@ public class StartRoom extends Room {
     @Override
     public void showIntroduction() {
         Scanner input = new Scanner(System.in);
+        System.out.println("============================");
         System.out.println("Welcome to the Scrum Escape Room!");
         System.out.println("Press Enter to continue...");
-        input.nextLine();
+        System.out.println("============================");
         System.out.println("You are a Scrum Master trapped in a building with different rooms and challenges.");
         System.out.println("Press Enter to continue...");
-        input.nextLine();
+        System.out.println("============================");
         System.out.println("Your goal is to escape by solving Scrum-related puzzles.");
         System.out.println("Press Enter to continue...");
-        input.nextLine();
+        System.out.println("============================");
         System.out.println("Good luck!");
         System.out.println("Press Enter to continue...");
-        input.nextLine();
+        System.out.println("============================");
         System.out.println("You are in the Start Room.");
         System.out.println("Press Enter to continue...");
-        input.nextLine();
+        System.out.println("============================");
         System.out.println("You can type 'go to SprintPlanningRoom' to enter the next room, 'status' to see your hp and progress and quit to save and exit the game.");
+        System.out.println("============================");
     }
 
     @Override
