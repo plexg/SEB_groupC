@@ -2,10 +2,14 @@ package classes.rooms.rooms;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 import classes.nonrooms.Player;
 import classes.database.Database;
 import classes.rooms.Room;
+import classes.hints.Hint;
+import classes.hints.HelpHint;
+import classes.hints.FunnyHint;
 
 public class ScrumBoardRoom extends Room {
     private Player player;
@@ -79,10 +83,26 @@ public class ScrumBoardRoom extends Room {
                 .allMatch(entry -> entry.getValue().equalsIgnoreCase(playerAnswers.getOrDefault(entry.getKey(), "")));
     }
 
+    private void offerHint() {
+        System.out.println("Would you like a hint? (yes/no)");
+        String response = input.nextLine().trim().toLowerCase();
+        if (response.equals("yes")) {
+            Random rand = new Random();
+            Hint hint;
+            if (rand.nextBoolean()) {
+                hint = new HelpHint("Epics are big features, User Stories are smaller pieces, and Tasks are the smallest work items.");
+            } else {
+                hint = new FunnyHint("If you put everything as 'Epic', your board will look very impressive!");
+            }
+            System.out.println("Hint: " + hint.getHint());
+        }
+    }
+
     @Override
     public void giveFeedback() {
         while (!checkAnswer()) {
             System.out.println("Incorrect! Let's try the assignment again.");
+            offerHint();
             presentChallenge();
         }
         System.out.println("Correct! You can now proceed to the next room: SprintReviewRoom.");

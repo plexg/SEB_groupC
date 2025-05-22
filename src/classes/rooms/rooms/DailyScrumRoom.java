@@ -3,8 +3,11 @@ package classes.rooms.rooms;
 import classes.nonrooms.Player;
 import classes.database.Database;
 import classes.rooms.Room;
+import classes.hints.Hint;
+import classes.hints.HelpHint;
+import classes.hints.FunnyHint;
 
-
+import java.util.Random;
 import java.util.Scanner;
 
 public class DailyScrumRoom extends Room {
@@ -35,7 +38,6 @@ public class DailyScrumRoom extends Room {
         input.nextLine();
         System.out.println("Do you want to see the assignment, your status, go back to the previous room, or quit?");
         System.out.println("You can type 'assignment', 'status', 'go back', or 'quit'.");
-
     }
 
     @Override
@@ -74,10 +76,26 @@ public class DailyScrumRoom extends Room {
         return true;
     }
 
+    private void offerHint() {
+        System.out.println("Would you like a hint? (yes/no)");
+        String response = input.nextLine().trim().toLowerCase();
+        if (response.equals("yes")) {
+            Random rand = new Random();
+            Hint hint;
+            if (rand.nextBoolean()) {
+                hint = new HelpHint("Think about each team member's role: Scrum Master, Tester, Developer, Designer.");
+            } else {
+                hint = new FunnyHint("Insert Funny Hint Here");
+            }
+            System.out.println("Hint: " + hint.getHint());
+        }
+    }
+
     @Override
     public void giveFeedback() {
         while (!checkAnswer()) {
             System.out.println("Incorrect! Let's try the assignment again.");
+            offerHint();
             presentChallenge();
         }
         System.out.println("Correct! You can now proceed to the next room: ScrumBoardRoom.");

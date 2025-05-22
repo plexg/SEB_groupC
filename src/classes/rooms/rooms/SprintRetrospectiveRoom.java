@@ -1,9 +1,13 @@
 package classes.rooms.rooms;
 
+import java.util.Random;
 import java.util.Scanner;
 import classes.nonrooms.Player;
 import classes.database.Database;
 import classes.rooms.Room;
+import classes.hints.Hint;
+import classes.hints.HelpHint;
+import classes.hints.FunnyHint;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -80,19 +84,35 @@ public class SprintRetrospectiveRoom extends Room {
         return true;
     }
 
-@Override
-public void giveFeedback() {
-    while (!checkAnswer()) {
-        System.out.println("Incorrect! Please try again.");
-        presentChallenge();
+    private void offerHint() {
+        System.out.println("Would you like a hint? (yes/no)");
+        String response = input.nextLine().trim().toLowerCase();
+        if (response.equals("yes")) {
+            Random rand = new Random();
+            Hint hint;
+            if (rand.nextBoolean()) {
+                hint = new HelpHint("Match each situation to the lesson: time, conflict, communication, workload, or quality.");
+            } else {
+                hint = new FunnyHint("If in doubt, just say 'communication'—it solves everything in retros!");
+            }
+            System.out.println("Hint: " + hint.getHint());
+        }
     }
-    System.out.println("Correct! You can now proceed to the final room: FinalRoom.");
-    System.out.println("You can type 'go to FinalRoom' to enter the final room, 'status' to see your status, 'go back' to go to the previous room, or 'quit' to exit the game.");
-    database.updateRoomCompletion(player.getName(), "sprintretrospectiveroom_completed", true);
-    Room finalRoom = new FinalRoom();
-    finalRoom.setName("FinalRoom");
-    player.setRoom(finalRoom);
-}
+
+    @Override
+    public void giveFeedback() {
+        while (!checkAnswer()) {
+            System.out.println("Incorrect! Please try again.");
+            offerHint();
+            presentChallenge();
+        }
+        System.out.println("Correct! You can now proceed to the final room: FinalRoom.");
+        System.out.println("You can type 'go to FinalRoom' to enter the final room, 'status' to see your status, 'go back' to go to the previous room, or 'quit' to exit the game.");
+        database.updateRoomCompletion(player.getName(), "sprintretrospectiveroom_completed", true);
+        Room finalRoom = new FinalRoom();
+        finalRoom.setName("FinalRoom");
+        player.setRoom(finalRoom);
+    }
 
     @Override
     public void triggerMonster() {}
