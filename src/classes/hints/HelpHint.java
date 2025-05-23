@@ -1,4 +1,4 @@
-// src/classes/hints/HelpHint.java
+
 package classes.hints;
 
 public class HelpHint implements Hint {

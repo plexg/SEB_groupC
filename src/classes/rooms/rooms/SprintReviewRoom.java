@@ -5,8 +5,7 @@ import classes.database.Database;
 import classes.nonrooms.Player;
 import classes.rooms.Room;
 import classes.hints.Hint;
-import classes.hints.HelpHint;
-import classes.hints.FunnyHint;
+import classes.hints.HintFactory;
 
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -97,9 +96,9 @@ public class SprintReviewRoom extends Room {
             Random rand = new Random();
             Hint hint;
             if (rand.nextBoolean()) {
-                hint = new HelpHint("Think about which issues block users, which are cosmetic, and which are in between.");
+                hint = HintFactory.createHint("help", "Think about which issues block users, which are cosmetic, and which are in between.");
             } else {
-                hint = new FunnyHint("If users can't log in, that's a big deal. If the font is small, maybe just squint!");
+                hint = HintFactory.createHint("funny", "If users can't log in, that's a big deal. If the font is small, maybe just squint!");
             }
             System.out.println("Hint: " + hint.getHint());
         }

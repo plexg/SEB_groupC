@@ -6,8 +6,7 @@ import classes.nonrooms.Player;
 import classes.database.Database;
 import classes.rooms.Room;
 import classes.hints.Hint;
-import classes.hints.HelpHint;
-import classes.hints.FunnyHint;
+import classes.hints.HintFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -91,9 +90,9 @@ public class SprintRetrospectiveRoom extends Room {
             Random rand = new Random();
             Hint hint;
             if (rand.nextBoolean()) {
-                hint = new HelpHint("Match each situation to the lesson: time, conflict, communication, workload, or quality.");
+                hint = HintFactory.createHint("help", "Match each situation to the lesson: time, conflict, communication, workload, or quality.");
             } else {
-                hint = new FunnyHint("If in doubt, just say 'communication'—it solves everything in retros!");
+                hint = HintFactory.createHint("funny", "If in doubt, just say 'communication'—it solves everything in retros!");
             }
             System.out.println("Hint: " + hint.getHint());
         }

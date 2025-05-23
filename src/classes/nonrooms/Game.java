@@ -32,14 +32,15 @@ public class Game {
         System.out.println("============================");
         System.out.println("1. Continue");
         System.out.println("2. New Game");
-        System.out.println("3. Quit");
+        System.out.println("3. Play as Guest");
+        System.out.println("4. Quit");
         System.out.println("============================");
 
         while (true) {
             System.out.print("Enter your choice: ");
             String choice = sc.nextLine();
 
-            if (choice.equalsIgnoreCase("3") || choice.equalsIgnoreCase("Quit")) {
+            if (choice.equalsIgnoreCase("4") || choice.equalsIgnoreCase("Quit")) {
                 System.out.println("Thank you for playing!");
                 break;
             } else if (choice.equalsIgnoreCase("1") || choice.equalsIgnoreCase("Continue")) {
@@ -57,8 +58,16 @@ public class Game {
             } else if (choice.equalsIgnoreCase("2") || choice.equalsIgnoreCase("New Game")) {
                 newGame(sc);
                 break;
+            } else if (choice.equalsIgnoreCase("3") || choice.equalsIgnoreCase("Play as Guest")) {
+                player = new Player(0, 100, null, "Guest");
+                Room startRoom = new StartRoom(player);
+                startRoom.setName("StartRoom");
+                player.setRoom(startRoom);
+                System.out.println("Playing as Guest! Progress will not be saved.");
+                handleStartRoom(sc);
+                break;
             } else {
-                System.out.println("Invalid choice. Please type '1', '2', or '3'.");
+                System.out.println("Invalid choice. Please type '1', '2', '3', or '4'.");
             }
         }
     }
@@ -127,7 +136,7 @@ public class Game {
         }
     }
 
-   private void handleStartRoom(Scanner sc) {
+    private void handleStartRoom(Scanner sc) {
         ((StartRoom) player.getRoom()).showIntroduction();
         while (true) {
             System.out.print("Enter your choice: ");
@@ -302,9 +311,14 @@ public class Game {
     }
 
     private void saveAndQuit() {
+        if (player.getName().equals("Guest")) {
+            System.out.println("Progress for guest players is not saved. Goodbye!");
+            return;
+        }
         System.out.println("Saving player with name: " + player.getName());
         database.updatePlayerRoom(player.getName(), player.getRoom().getName());
         database.updatePlayer(player);
         System.out.println("Game saved. Goodbye!");
     }
 }
+

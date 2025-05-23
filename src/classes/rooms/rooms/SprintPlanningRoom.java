@@ -4,8 +4,7 @@ import classes.database.Database;
 import classes.nonrooms.Player;
 import classes.rooms.Room;
 import classes.hints.Hint;
-import classes.hints.HelpHint;
-import classes.hints.FunnyHint;
+import classes.hints.HintFactory;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -69,9 +68,9 @@ public class SprintPlanningRoom extends Room {
             Random rand = new Random();
             Hint hint;
             if (rand.nextBoolean()) {
-                hint = new HelpHint("Focus on tasks that are small and essential for a first sprint.");
+                hint = HintFactory.createHint("help", "Focus on tasks that are small and essential for a first sprint.");
             } else {
-                hint = new FunnyHint("Even the best developers need coffee breaks. Maybe your answer does too!");
+                hint = HintFactory.createHint("funny", "Even the best developers need coffee breaks. Maybe your answer does too!");
             }
             System.out.println("Hint: " + hint.getHint());
         }

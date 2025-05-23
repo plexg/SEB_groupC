@@ -4,8 +4,7 @@ import classes.nonrooms.Player;
 import classes.database.Database;
 import classes.rooms.Room;
 import classes.hints.Hint;
-import classes.hints.HelpHint;
-import classes.hints.FunnyHint;
+import classes.hints.HintFactory;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -83,9 +82,9 @@ public class DailyScrumRoom extends Room {
             Random rand = new Random();
             Hint hint;
             if (rand.nextBoolean()) {
-                hint = new HelpHint("Think about each team member's role: Scrum Master, Tester, Developer, Designer.");
+                hint = HintFactory.createHint("help", "Think about each team member's role: Scrum Master, Tester, Developer, Designer.");
             } else {
-                hint = new FunnyHint("Insert Funny Hint Here");
+                hint = HintFactory.createHint("funny", "If you mix up the Scrum Master and the Developer, maybe you need a stand-up!");
             }
             System.out.println("Hint: " + hint.getHint());
         }
