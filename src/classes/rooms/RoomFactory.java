@@ -4,7 +4,7 @@ package classes.rooms;
     import classes.database.Database;
     import classes.rooms.rooms.*;
 
-public class RoomFactory {
+public class  RoomFactory {
 
         public static Room createRoom(String roomName, Player player, Database database) {
             if (roomName == null || roomName.isEmpty()) {

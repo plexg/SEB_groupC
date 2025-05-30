@@ -6,6 +6,8 @@ import classes.nonrooms.Player;
 import classes.rooms.Room;
 import classes.hints.Hint;
 import classes.hints.HintFactory;
+import classes.impediments.Monster;
+import classes.impediments.ImpedimentFactory;
 
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -121,5 +123,15 @@ public class SprintReviewRoom extends Room {
 
     @Override
     public void triggerMonster() {
+        System.out.println("Your incorrect answer has summoned a monster!");
+        Monster monster = ImpedimentFactory.createRandomMonster();
+        monster.encounter();
+        monster.attack(player);
+        System.out.println("Player HP after monster attack: " + player.getHp());
+
+        if (player.getHp() <= 0) {
+            System.out.println("Game Over! The monster defeated you.");
+            System.exit(0);
+        }
     }
 }

@@ -59,6 +59,9 @@ public class Game {
                 newGame(sc);
                 break;
             } else if (choice.equalsIgnoreCase("3") || choice.equalsIgnoreCase("Play as Guest")) {
+                playAsGuest(sc);
+                break;
+            } else if (choice.equalsIgnoreCase("3") || choice.equalsIgnoreCase("Play as Guest")) {
                 player = new Player(0, 100, null, "Guest");
                 Room startRoom = new StartRoom(player);
                 startRoom.setName("StartRoom");
@@ -310,15 +313,35 @@ public class Game {
         }
     }
 
+    private void playAsGuest(Scanner sc) {
+        // Create a guest player with a random name
+        String guestName = "Guest_" + (int)(Math.random() * 10000);
+        player = new Player(0, 100, null, guestName);
+        System.out.println("Playing as guest: " + guestName);
+        System.out.println("Note: Your progress will not be saved.");
+
+        // Start the game with the StartRoom
+        Room startRoom = new StartRoom(player);
+        startRoom.setName("StartRoom");
+        player.setRoom(startRoom);
+        handleStartRoom(sc);
+    }
+
     private void saveAndQuit() {
         if (player.getName().equals("Guest")) {
             System.out.println("Progress for guest players is not saved. Goodbye!");
             return;
         }
-        System.out.println("Saving player with name: " + player.getName());
-        database.updatePlayerRoom(player.getName(), player.getRoom().getName());
-        database.updatePlayer(player);
-        System.out.println("Game saved. Goodbye!");
+        // Check if the player is a guest
+        if (player.getName().startsWith("Guest_")) {
+            System.out.println("Guest session ended. Progress not saved.");
+            System.out.println("Goodbye!");
+        } else {
+            System.out.println("Saving player with name: " + player.getName());
+            database.updatePlayerRoom(player.getName(), player.getRoom().getName());
+            database.updatePlayer(player);
+            System.out.println("Game saved. Goodbye!");
+        }
     }
 }
 
