@@ -21,5 +21,8 @@ public class FinalRoom extends Room {
     public void giveFeedback() {}
 
     @Override
+    public void searchRoom() {}
+
+    @Override
     public void triggerMonster() {}
 }

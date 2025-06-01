@@ -1,15 +1,19 @@
 package classes.database;
 
+import classes.items.Item;
 import classes.nonrooms.Player;
 import classes.rooms.Room;
 import classes.rooms.RoomFactory;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
     private static final String URL = "jdbc:mysql://localhost:3306/seb";
     private static final String USER = "root";
-    private static final String PASSWORD = "Koe!90!KJ!80";
+    private static final String PASSWORD = "Hamster89!";
+    List<Item> items = new ArrayList<Item>();
 
     public Connection connect() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
@@ -25,7 +29,7 @@ public class Database {
                 int id = rs.getInt("id");
                 int hp = rs.getInt("hp");
                 String currentRoom = rs.getString("current_room");
-                Room room = currentRoom != null ? RoomFactory.createRoom(currentRoom, new Player(id, hp, null, name), this) : null;                return new Player(id, hp, room, name);
+                Room room = currentRoom != null ? RoomFactory.createRoom(currentRoom, new Player(id, hp, null, name, items), this) : null;                return new Player(id, hp, room, name, items);
             }
         } catch (SQLException e) {
             e.printStackTrace();

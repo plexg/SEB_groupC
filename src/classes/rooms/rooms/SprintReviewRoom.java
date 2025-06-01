@@ -2,6 +2,8 @@ package classes.rooms.rooms;
 
 import Challenge.ChallengeStrategy;
 import classes.database.Database;
+import classes.items.Item;
+import classes.items.StanleyKnife;
 import classes.nonrooms.Player;
 import classes.rooms.Room;
 import classes.hints.Hint;
@@ -20,6 +22,8 @@ public class SprintReviewRoom extends Room {
     private final List<String> feedbackItems = new ArrayList<>();
     private Player player;
     private final Database database;
+    List<Item> items = new ArrayList<>();
+    StanleyKnife stanleyKnife = new StanleyKnife();
 
     public SprintReviewRoom(Player player, Database database) {
         if (player == null) {
@@ -31,6 +35,9 @@ public class SprintReviewRoom extends Room {
         this.player = player;
         this.database = database;
         this.player.setRoom(this);
+
+        // initialize items
+        items.add(stanleyKnife);
     }
 
     String enter = "Press Enter to continue...";
@@ -119,6 +126,13 @@ public class SprintReviewRoom extends Room {
         Room sprintRetrospectiveRoom = new SprintRetrospectiveRoom(player, database);
         sprintRetrospectiveRoom.setName("SprintRetrospectiveRoom");
         player.setRoom(sprintRetrospectiveRoom);
+    }
+
+    @Override
+    public void searchRoom() {
+        System.out.println("Searching the room...");
+        System.out.println("You found a Stanley Knife! Use this for offense.");
+        player.addItem(stanleyKnife);
     }
 
     @Override

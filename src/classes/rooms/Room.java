@@ -35,6 +35,7 @@ public abstract class Room {
     public abstract void presentChallenge();
     public abstract boolean checkAnswer();
     public abstract void giveFeedback();
+    public abstract void searchRoom();
 
     public void triggerMonster() {
     }

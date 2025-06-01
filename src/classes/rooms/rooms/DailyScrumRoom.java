@@ -1,19 +1,27 @@
 package classes.rooms.rooms;
 
+import classes.items.GreenKey;
+import classes.items.Item;
+import classes.items.Staplergun;
 import classes.nonrooms.Player;
 import classes.database.Database;
 import classes.rooms.Room;
 import classes.hints.Hint;
 import classes.hints.HintFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
 public class DailyScrumRoom extends Room {
-    private Player player;
+    private final Player player;
     private final Database database;
     String enter = "Press Enter to continue...";
     Scanner input = new Scanner(System.in);
+    List<Item> items = new ArrayList<>();
+    Staplergun staplergun = new Staplergun();
+    GreenKey greenKey = new GreenKey(3);
 
     public DailyScrumRoom(Player player, Database database) {
         if (player == null) {
@@ -25,6 +33,10 @@ public class DailyScrumRoom extends Room {
         this.player = player;
         this.database = database;
         this.player.setRoom(this);
+
+        // initialize items
+        items.add(staplergun);
+        items.add(greenKey);
     }
 
     @Override
@@ -106,6 +118,15 @@ public class DailyScrumRoom extends Room {
     }
 
     @Override
+    public void searchRoom() {
+        System.out.println("Searching the room...");
+        System.out.println("You found a Green key and a stapler gun! Use the stapler gun for offense and the green key for the green lock.");
+        player.addItem(greenKey);
+        player.addItem(staplergun);
+    }
+
+    @Override
     public void triggerMonster() {
+
     }
 }

@@ -1,21 +1,22 @@
 package classes.rooms.rooms;
 
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
+
+import classes.items.Donut;
+import classes.items.Item;
 import classes.nonrooms.Player;
 import classes.database.Database;
 import classes.rooms.Room;
 import classes.hints.Hint;
 import classes.hints.HintFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class SprintRetrospectiveRoom extends Room {
     String enter = "Press Enter to continue...";
     Scanner input = new Scanner(System.in);
     private final Database database;
     private final Player player;
+    List<Item> items = new ArrayList<>();
+    Donut donut = new Donut();
 
     public SprintRetrospectiveRoom(Player player, Database database) {
         if (player == null) {
@@ -27,6 +28,9 @@ public class SprintRetrospectiveRoom extends Room {
         this.player = player;
         this.database = database;
         this.player.setRoom(this);
+
+        // initialize items
+        items.add(donut);
     }
 
     @Override
@@ -111,6 +115,13 @@ public class SprintRetrospectiveRoom extends Room {
         Room finalRoom = new FinalRoom();
         finalRoom.setName("FinalRoom");
         player.setRoom(finalRoom);
+    }
+
+    @Override
+    public void searchRoom() {
+        System.out.println("Searching the room...");
+        System.out.println("You found a Donut! Use this to restore 20 HP.");
+        player.addItem(donut);
     }
 
     @Override

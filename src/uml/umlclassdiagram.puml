@@ -23,6 +23,16 @@ package classes {
         + playRoom()
     }
 
+    class StartRoom extends Room {
+        - Player player
+        + StartRoom(Player player)
+        + showIntroduction()
+        + presentChallenge()
+        + checkAnswer(): boolean
+        + giveFeedback()
+        + triggerMonster()
+    }
+
     class DailyScrumRoom extends Room {
         + playRoom()
     }
@@ -46,12 +56,28 @@ package main {
     }
 }
 
+package Challenge {
+    interface ChallengeStrategy {
+        + present()
+        + check(String input): boolean
+    }
+
+    class MultipleChoiceChallenge implements ChallengeStrategy {
+        + present()
+        + check(String input): boolean
+    }
+}
+
 Game --> Room : uses
 Player --> Room : interacts
 Main --> Game : creates
+Room <|-- StartRoom
 Room <|-- DailyScrumRoom
 Room <|-- SprintRetrospectiveRoom
 Room <|-- FinalRoom
 Room <|-- ScrumBoardRoom
+DailyScrumRoom --> ChallengeStrategy : uses
+ChallengeStrategy <|.. MultipleChoiceChallenge
+StartRoom --> Player : depends on
 
 @enduml

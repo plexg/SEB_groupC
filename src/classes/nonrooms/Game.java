@@ -1,6 +1,7 @@
 package classes.nonrooms;
 
 import classes.database.Database;
+import classes.items.Item;
 import classes.rooms.*;
 import classes.rooms.rooms.*;
 
@@ -12,11 +13,12 @@ public class Game {
     private Player player;
     private List<Room> rooms;
     private Database database;
+    private List<Item> items = new ArrayList<>();
 
     public Game() {
         this.rooms = new ArrayList<>();
         this.database = new Database();
-        Player tempPlayer = new Player(0, 100, null, "temp");
+        Player tempPlayer = new Player(0, 100, null, "temp", items);
         this.rooms.add(new DailyScrumRoom(tempPlayer, this.database));
         this.rooms.add(new SprintRetrospectiveRoom(tempPlayer, this.database));
         this.rooms.add(new FinalRoom());
@@ -32,15 +34,14 @@ public class Game {
         System.out.println("============================");
         System.out.println("1. Continue");
         System.out.println("2. New Game");
-        System.out.println("3. Play as Guest");
-        System.out.println("4. Quit");
+        System.out.println("3. Quit");
         System.out.println("============================");
 
         while (true) {
             System.out.print("Enter your choice: ");
             String choice = sc.nextLine();
 
-            if (choice.equalsIgnoreCase("4") || choice.equalsIgnoreCase("Quit")) {
+            if (choice.equalsIgnoreCase("3") || choice.equalsIgnoreCase("Quit")) {
                 System.out.println("Thank you for playing!");
                 break;
             } else if (choice.equalsIgnoreCase("1") || choice.equalsIgnoreCase("Continue")) {
@@ -51,26 +52,15 @@ public class Game {
                     this.player = loadedPlayer;
                     continueGame(sc);
                 } else {
-                    System.out.println("No saved game found for this name. Starting a new game.");
-                    newGame(sc);
+                    System.out.println("No saved game found for this name. Try again or start a new game.");
+                    continue;
                 }
                 break;
             } else if (choice.equalsIgnoreCase("2") || choice.equalsIgnoreCase("New Game")) {
                 newGame(sc);
                 break;
-            } else if (choice.equalsIgnoreCase("3") || choice.equalsIgnoreCase("Play as Guest")) {
-                playAsGuest(sc);
-                break;
-            } else if (choice.equalsIgnoreCase("3") || choice.equalsIgnoreCase("Play as Guest")) {
-                player = new Player(0, 100, null, "Guest");
-                Room startRoom = new StartRoom(player);
-                startRoom.setName("StartRoom");
-                player.setRoom(startRoom);
-                System.out.println("Playing as Guest! Progress will not be saved.");
-                handleStartRoom(sc);
-                break;
             } else {
-                System.out.println("Invalid choice. Please type '1', '2', '3', or '4'.");
+                System.out.println("Invalid choice. Please type '1', '2', or '3'");
             }
         }
     }
@@ -123,7 +113,7 @@ public class Game {
                 continue;
             }
 
-            player = new Player(0, 100, null, name);
+            player = new Player(0, 100, null, name, items);
             Room startRoom = new StartRoom(player);
             startRoom.setName("StartRoom");
             player.setRoom(startRoom);
@@ -150,6 +140,8 @@ public class Game {
                 player.setRoom(sprintPlanningRoom);
                 handleSprintPlanningRoom(sc);
                 break;
+            } else if (choice.equalsIgnoreCase("search room")) {
+                player.getRoom().searchRoom();
             } else if (choice.equalsIgnoreCase("status")) {
                 System.out.println(player.getStatus());
             } else if (choice.equalsIgnoreCase("quit")) {
@@ -313,35 +305,11 @@ public class Game {
         }
     }
 
-    private void playAsGuest(Scanner sc) {
-        // Create a guest player with a random name
-        String guestName = "Guest_" + (int)(Math.random() * 10000);
-        player = new Player(0, 100, null, guestName);
-        System.out.println("Playing as guest: " + guestName);
-        System.out.println("Note: Your progress will not be saved.");
-
-        // Start the game with the StartRoom
-        Room startRoom = new StartRoom(player);
-        startRoom.setName("StartRoom");
-        player.setRoom(startRoom);
-        handleStartRoom(sc);
-    }
-
     private void saveAndQuit() {
-        if (player.getName().equals("Guest")) {
-            System.out.println("Progress for guest players is not saved. Goodbye!");
-            return;
-        }
-        // Check if the player is a guest
-        if (player.getName().startsWith("Guest_")) {
-            System.out.println("Guest session ended. Progress not saved.");
-            System.out.println("Goodbye!");
-        } else {
-            System.out.println("Saving player with name: " + player.getName());
-            database.updatePlayerRoom(player.getName(), player.getRoom().getName());
-            database.updatePlayer(player);
-            System.out.println("Game saved. Goodbye!");
-        }
+        System.out.println("Saving player with name: " + player.getName());
+        database.updatePlayerRoom(player.getName(), player.getRoom().getName());
+        database.updatePlayer(player);
+        System.out.println("Game saved. Goodbye!");
     }
 }
 

@@ -1,10 +1,15 @@
 package classes.rooms.rooms;
 
 import classes.database.Database;
+import classes.items.GoldKey;
+import classes.items.Item;
 import classes.nonrooms.Player;
 import classes.rooms.Room;
 import classes.hints.Hint;
 import classes.hints.HintFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -12,6 +17,8 @@ public class ScrumBoardRoom extends Room {
     private Player player;
     private final Database database;
     private final Scanner input = new Scanner(System.in);
+    List<Item> items = new ArrayList<>();
+    GoldKey goldKey = new GoldKey(6);
 
     public ScrumBoardRoom(Player player, Database database) {
         if (player == null) {
@@ -23,6 +30,9 @@ public class ScrumBoardRoom extends Room {
         this.player = player;
         this.database = database;
         this.player.setRoom(this);
+
+        // initialize items
+        items.add(goldKey);
     }
 
     @Override
@@ -84,6 +94,13 @@ public class ScrumBoardRoom extends Room {
         Room sprintReviewRoom = new SprintReviewRoom(player, database);
         sprintReviewRoom.setName("SprintReviewRoom");
         player.setRoom(sprintReviewRoom);
+    }
+
+    @Override
+    public void searchRoom() {
+        System.out.println("Searching the room...");
+        System.out.println("You found a Golden Key! Use this to unlock the golden lock.");
+        player.addItem(goldKey);
     }
 
     @Override

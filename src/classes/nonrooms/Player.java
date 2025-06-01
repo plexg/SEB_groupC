@@ -1,6 +1,10 @@
 package classes.nonrooms;
 
+import classes.items.Item;
 import classes.rooms.Room;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Player {
@@ -9,14 +13,16 @@ public class Player {
     private int hp;
     private Room room;
     private String name;
+    List<Item> items = new ArrayList<>();
 
     // Constructor
-    public Player(int id, int hp, Room room, String name) {
+    public Player(int id, int hp, Room room, String name, List<Item> items) {
         this.id = id;
         this.progress = 0;
         this.hp = hp;
         this.room = room;
         this.name = name;
+        this.items = items;
     }
 
     // Getters and Setters
@@ -65,6 +71,27 @@ public class Player {
         return "Player Status:\n" +
                 "Progress: " + progress + "\n" +
                 "HP: " + hp + "\n" +
-                "Room: " + (room != null ? room.getClass().getSimpleName() : "None");
+                "Room: " + (room != null ? room.getClass().getSimpleName() : "None") + '\n' +
+                getItems();
+
+    }
+
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    public String getItems() {
+        if (items.isEmpty()) {
+            return "No items in the inventory.";
+        } else {
+            StringBuilder res = new StringBuilder("Items in inventory: ");
+            for (int i = 0; i < items.size(); i++) {
+                res.append(items.get(i).getClass().getSimpleName());
+                if (i < items.size() - 1) {
+                    res.append(", ");
+                }
+            }
+            return res.toString();
+        }
     }
 }

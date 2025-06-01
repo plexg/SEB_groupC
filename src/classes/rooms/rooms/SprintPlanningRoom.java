@@ -1,10 +1,19 @@
 package classes.rooms.rooms;
 
 import classes.database.Database;
+import classes.impediments.Monster;
+import classes.impediments.monsters.ClockMonster;
+import classes.impediments.monsters.CoffeeMonster;
+import classes.items.CupOfCoffee;
+import classes.items.Item;
+import classes.items.PurpleKey;
 import classes.nonrooms.Player;
 import classes.rooms.Room;
 import classes.hints.Hint;
 import classes.hints.HintFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -13,6 +22,10 @@ public class SprintPlanningRoom extends Room {
     private final Database database;
     String enter = "Press Enter to continue...";
     private final Scanner input = new Scanner(System.in);
+    private List<Item> items = new ArrayList<>();
+    PurpleKey purpleKey = new PurpleKey(5);
+    CupOfCoffee cupOfCoffee = new CupOfCoffee();
+    CoffeeMonster coffeeMonster = new CoffeeMonster();
 
     public SprintPlanningRoom(Player player, Database database) {
         if (player == null) {
@@ -24,6 +37,10 @@ public class SprintPlanningRoom extends Room {
         this.player = player;
         this.database = database;
         this.player.setRoom(this);
+
+        //initialize items
+        items.add(purpleKey);
+        items.add(cupOfCoffee);
     }
 
     @Override
@@ -89,6 +106,13 @@ public class SprintPlanningRoom extends Room {
         Room dailyScrumRoom = new DailyScrumRoom(player, database);
         dailyScrumRoom.setName("DailyScrumRoom");
         player.setRoom(dailyScrumRoom);
+    }
+
+    @Override
+    public void searchRoom() {
+        System.out.println("Searching the room...");
+        System.out.println("You found a Purple key! Use this to unlock the purple lock.");
+        player.addItem(purpleKey);
     }
 
     @Override
