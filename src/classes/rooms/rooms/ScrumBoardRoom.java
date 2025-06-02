@@ -70,13 +70,7 @@ public class ScrumBoardRoom extends Room {
         System.out.println("Would you like a hint? (yes/no)");
         String response = input.nextLine().trim().toLowerCase();
         if (response.equals("yes")) {
-            Random rand = new Random();
-            Hint hint;
-            if (rand.nextBoolean()) {
-                hint = HintFactory.createHint("help", "Epics are large features, user stories describe user needs, and tasks are small actionable items.");
-            } else {
-                hint = HintFactory.createHint("funny", "If you can't tell a task from an epic, maybe it's time for a coffee break!");
-            }
+            Hint hint = HintFactory.getRandomHint("ScrumBoardRoom");
             System.out.println("Hint: " + hint.getHint());
         }
     }

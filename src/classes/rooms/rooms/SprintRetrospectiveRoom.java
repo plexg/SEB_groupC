@@ -91,13 +91,7 @@ public class SprintRetrospectiveRoom extends Room {
         System.out.println("Would you like a hint? (yes/no)");
         String response = input.nextLine().trim().toLowerCase();
         if (response.equals("yes")) {
-            Random rand = new Random();
-            Hint hint;
-            if (rand.nextBoolean()) {
-                hint = HintFactory.createHint("help", "Match each situation to the lesson: time, conflict, communication, workload, or quality.");
-            } else {
-                hint = HintFactory.createHint("funny", "If in doubt, just say 'communication'—it solves everything in retros!");
-            }
+            Hint hint = HintFactory.getRandomHint("SprintRetrospectiveRoom");
             System.out.println("Hint: " + hint.getHint());
         }
     }
