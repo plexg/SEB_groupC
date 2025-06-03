@@ -7,7 +7,7 @@ public class Monster extends Impediment {
     private int healthPoints;
 
     public Monster(String name, String description, int attackPower, int healthPoints) {
-        super(name, description, -attackPower); // Pass negative attackPower as hpImpact to Impediment constructor
+        super(name, description, -attackPower);
         this.attackPower = attackPower;
         this.healthPoints = healthPoints;
     }
