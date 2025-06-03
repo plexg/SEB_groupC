@@ -2,14 +2,22 @@ package classes.items;
 
 import classes.impediments.Monster;
 
-public class Staplergun extends DamageDealer {
+public class Staplergun implements DamageDealer {
+    private String name;
+    private int damage;
+
     public Staplergun() {
-        super("Staplergun", 20);
+        this.name = "Staplergun";
+        this.damage = 20;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void attack(Monster monster) {
-        if (monster.getHealthPoints() >= 20) {
-            monster.setHealthPoints(monster.getHealthPoints() - 20);
+        if (monster.getHealthPoints() >= damage) {
+            monster.setHealthPoints(monster.getHealthPoints() - damage);
         } else {
             monster.setHealthPoints(0);
         }

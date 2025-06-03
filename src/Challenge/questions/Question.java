@@ -11,6 +11,14 @@ public class Question implements ChallengeStrategy {
         this.answer = answer;
     }
 
+    public String getQuestion() {
+        return question;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
     @Override
     public void present() {
         System.out.println("Question: " + question);

@@ -2,14 +2,21 @@ package classes.items;
 
 import classes.nonrooms.Player;
 
-public class CupOfCoffee extends Healer {
+public class CupOfCoffee implements Healer {
+    private String name;
+    private int healAmount;
     public CupOfCoffee() {
-        super("Cup of Coffee", 50);
+        this.name = "Cup of Coffee";
+        this.healAmount = 50;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void heal(Player player) {
-        if (player.getHp() <= 50) {
-            player.setHp(player.getHp() + 50);
+        if (player.getHp() <= healAmount) {
+            player.setHp(player.getHp() + healAmount);
         } else {
             player.setHp(100);
         }

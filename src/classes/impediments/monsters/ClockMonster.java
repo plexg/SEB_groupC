@@ -1,6 +1,7 @@
 package classes.impediments.monsters;
 
 import classes.impediments.Monster;
+import classes.items.DamageDealer;
 import classes.nonrooms.Player;
 
 public class ClockMonster extends Monster {

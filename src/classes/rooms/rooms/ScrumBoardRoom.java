@@ -1,6 +1,7 @@
 package classes.rooms.rooms;
 
 import classes.database.Database;
+import classes.impediments.monsters.ClockMonster;
 import classes.items.GoldKey;
 import classes.items.Item;
 import classes.nonrooms.Player;
@@ -19,6 +20,7 @@ public class ScrumBoardRoom extends Room {
     private final Scanner input = new Scanner(System.in);
     List<Item> items = new ArrayList<>();
     GoldKey goldKey = new GoldKey(6);
+    ClockMonster clockMonster = new ClockMonster();
 
     public ScrumBoardRoom(Player player, Database database) {
         if (player == null) {
