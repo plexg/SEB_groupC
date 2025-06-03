@@ -1,83 +1,89 @@
 @startuml
-'https://plantuml.com/class-diagram
-
-package classes {
-    class Game {
-        - Player player
-        - List<Room> rooms
-        + Game()
-        + startGame(Scanner sc)
-    }
-
-    class Player {
-        - int progress
-        - int hp
-        - Room currentRoom
-        + Player(int progress, int hp, Room currentRoom)
-        + setRoom(Room room)
-        + getHp(): int
-        + setProgress(int progress)
-    }
-
-    abstract class Room {
-        + playRoom()
-    }
-
-    class StartRoom extends Room {
-        - Player player
-        + StartRoom(Player player)
-        + showIntroduction()
-        + presentChallenge()
-        + checkAnswer(): boolean
-        + giveFeedback()
-        + triggerMonster()
-    }
-
-    class DailyScrumRoom extends Room {
-        + playRoom()
-    }
-
-    class SprintRetrospectiveRoom extends Room {
-        + playRoom()
-    }
-
-    class FinalRoom extends Room {
-        + playRoom()
-    }
-
-    class ScrumBoardRoom extends Room {
-        + playRoom()
-    }
+abstract class Room {
+    +showIntroduction() : void
+    +presentChallenge() : void
+    +checkAnswer() : boolean
+    +giveFeedback() : void
+    +triggerMonster() : void
 }
 
-package main {
-    class Main {
-        + main(String[] args)
-    }
+class StartRoom {
+    -player : Player
+    +showIntroduction() : void
+    +presentChallenge() : void
+    +checkAnswer() : boolean
+    +giveFeedback() : void
+    +triggerMonster() : void
 }
 
-package Challenge {
-    interface ChallengeStrategy {
-        + present()
-        + check(String input): boolean
-    }
-
-    class MultipleChoiceChallenge implements ChallengeStrategy {
-        + present()
-        + check(String input): boolean
-    }
+class DailyScrumRoom {
+    -player : Player
+    -database : Database
+    -enter : String
+    -input : Scanner
+    +showIntroduction() : void
+    +presentChallenge() : void
+    +checkAnswer() : boolean
+    +giveFeedback() : void
+    +triggerMonster() : void
 }
 
-Game --> Room : uses
-Player --> Room : interacts
-Main --> Game : creates
+class SprintReviewRoom {
+    -feedbackItems : List<String>
+    -userInput : String
+    -player : Player
+    -database : Database
+    -challenge : ChallengeStrategy
+    -enter : String
+    -input : Scanner
+    +showIntroduction() : void
+    +presentChallenge() : void
+    +checkAnswer() : boolean
+    +giveFeedback() : void
+    +triggerMonster() : void
+}
+
+class SprintRetrospectiveRoom {
+    -enter : String
+    -input : Scanner
+    -database : Database
+    -player : Player
+    +showIntroduction() : void
+    +presentChallenge() : void
+    +checkAnswer() : boolean
+    +giveFeedback() : void
+    +triggerMonster() : void
+}
+
+class Player {
+    -name : String
+    -room : Room
+    +getName() : String
+    +setRoom(room : Room) : void
+    +getRoom() : Room
+    +getStatus() : String
+}
+
+class Database {
+    +updateRoomCompletion(playerName : String, roomKey : String, completed : boolean) : void
+    +isRoomCompleted(playerName : String, roomKey : String) : boolean
+}
+
+interface ChallengeStrategy {
+    +present() : void
+    +check(input : String) : boolean
+}
+
 Room <|-- StartRoom
 Room <|-- DailyScrumRoom
+Room <|-- SprintReviewRoom
 Room <|-- SprintRetrospectiveRoom
-Room <|-- FinalRoom
-Room <|-- ScrumBoardRoom
-DailyScrumRoom --> ChallengeStrategy : uses
-ChallengeStrategy <|.. MultipleChoiceChallenge
-StartRoom --> Player : depends on
-
+SprintReviewRoom o-- ChallengeStrategy
+DailyScrumRoom o-- Database
+SprintReviewRoom o-- Database
+SprintRetrospectiveRoom o-- Database
+DailyScrumRoom o-- Player
+SprintReviewRoom o-- Player
+SprintRetrospectiveRoom o-- Player
+StartRoom o-- Player
 @enduml

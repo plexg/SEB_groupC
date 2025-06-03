@@ -8,15 +8,16 @@ import classes.database.Database;
 import classes.rooms.Room;
 import classes.hints.Hint;
 import classes.hints.HintFactory;
+import Challenge.ChallengeStrategy;
+import Challenge.PuzzleQuestionChallenge;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class DailyScrumRoom extends Room {
     private final Player player;
     private final Database database;
+    private final ChallengeStrategy challenge;
+    private final List<String> playerAnswers = new ArrayList<>();
     String enter = "Press Enter to continue...";
     Scanner input = new Scanner(System.in);
     List<Item> items = new ArrayList<>();
@@ -24,17 +25,11 @@ public class DailyScrumRoom extends Room {
     GreenKey greenKey = new GreenKey(3);
 
     public DailyScrumRoom(Player player, Database database) {
-        if (player == null) {
-            throw new IllegalArgumentException("Player cannot be null");
-        }
-        if (database == null) {
-            throw new IllegalArgumentException("Database cannot be null");
-        }
         this.player = player;
         this.database = database;
+        this.challenge = new PuzzleQuestionChallenge();
         this.player.setRoom(this);
 
-        // initialize items
         items.add(staplergun);
         items.add(greenKey);
     }
@@ -53,38 +48,31 @@ public class DailyScrumRoom extends Room {
 
     @Override
     public void presentChallenge() {
-        System.out.println("Your team consists of:");
-        System.out.println("Kaj (Developer)");
-        System.out.println("Jorge (Tester)");
-        System.out.println("Szymon (Designer)");
-        System.out.println("Lex (Scrum Master)");
-        System.out.println();
-        System.out.println("Match the following status updates to the correct team member:");
-        System.out.println("1. 'I conducted the sprint planning meeting.'");
-        System.out.println("2. 'I have completed writing two test cases.'");
-        System.out.println("3. 'I am still working on the API and fixing a bug.'");
-        System.out.println("4. 'I have finalized the new dashboard design.'");
-        System.out.println();
-        System.out.println("Enter the name of the team member for each status update.");
+        challenge.showQuestion("Room2Question1");
     }
 
     @Override
     public boolean checkAnswer() {
-        String[] correctAnswers = {"Lex", "Jorge", "Kaj", "Szymon"};
-        String[] playerAnswers = new String[4];
+        playerAnswers.clear();
 
-        for (int i = 0; i < 4; i++) {
-            System.out.print((i + 1) + ": ");
-            playerAnswers[i] = input.nextLine().trim();
-        }
+        Map<String, String> nameToLetterMap = new HashMap<>();
+        nameToLetterMap.put("Kaj", "A");
+        nameToLetterMap.put("Jorge", "B");
+        nameToLetterMap.put("Szymon", "C");
+        nameToLetterMap.put("Lex", "D");
 
-        for (int i = 0; i < 4; i++) {
-            if (!playerAnswers[i].equalsIgnoreCase(correctAnswers[i])) {
-                return false;
+        for (int i = 1; i <= 4; i++) {
+            System.out.print(i + ": ");
+            String answer = input.nextLine().trim();
+
+            if (nameToLetterMap.containsKey(answer)) {
+                answer = nameToLetterMap.get(answer);
             }
+
+            playerAnswers.add(answer);
         }
 
-        return true;
+        return challenge.checkAnswer("Room2Question1", playerAnswers);
     }
 
     private void offerHint() {
@@ -93,6 +81,8 @@ public class DailyScrumRoom extends Room {
         if (response.equals("yes")) {
             Hint hint = HintFactory.getRandomHint("DailyScrumRoom");
             System.out.println("Hint: " + hint.getHint());
+        } else if (!response.equals("no")) {
+            System.out.println("Invalid input. Please type 'yes' or 'no'.");
         }
     }
 
@@ -121,6 +111,5 @@ public class DailyScrumRoom extends Room {
 
     @Override
     public void triggerMonster() {
-
     }
 }

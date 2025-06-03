@@ -8,19 +8,20 @@ import classes.nonrooms.Player;
 import classes.rooms.Room;
 import classes.hints.Hint;
 import classes.hints.HintFactory;
+import Challenge.CategorizationChallenge;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 
 public class ScrumBoardRoom extends Room {
-    private Player player;
+    private final Player player;
     private final Database database;
+    private final CategorizationChallenge challenge;
     private final Scanner input = new Scanner(System.in);
-    List<Item> items = new ArrayList<>();
-    GoldKey goldKey = new GoldKey(6);
-    ClockMonster clockMonster = new ClockMonster();
+    private final List<Item> items = new ArrayList<>();
+    private final GoldKey goldKey = new GoldKey(6);
+    private final ClockMonster clockMonster = new ClockMonster();
 
     public ScrumBoardRoom(Player player, Database database) {
         if (player == null) {
@@ -31,9 +32,9 @@ public class ScrumBoardRoom extends Room {
         }
         this.player = player;
         this.database = database;
+        this.challenge = new CategorizationChallenge();
         this.player.setRoom(this);
 
-        // initialize items
         items.add(goldKey);
     }
 
@@ -53,19 +54,20 @@ public class ScrumBoardRoom extends Room {
 
     @Override
     public void presentChallenge() {
-        System.out.println("Categorize the following backlog items:");
-        System.out.println("1. Implement user authentication and authorization.");
-        System.out.println("2. As a user, I want to reset my password so that I can regain access.");
-        System.out.println("3. As an admin, I want to view all registered users.");
-        System.out.println("4. Create a login page UI.");
-        System.out.println("5. Write unit tests for the authentication module.");
+        challenge.showQuestion("Room3Question1");
     }
 
     @Override
     public boolean checkAnswer() {
-        String answer = input.nextLine().toLowerCase();
-        return answer.contains("1:epic") && answer.contains("2:user story") && answer.contains("3:user story")
-                && answer.contains("4:task") && answer.contains("5:task");
+        List<String> playerAnswers = new ArrayList<>();
+
+        for (int i = 1; i <= 5; i++) {
+            System.out.print(i + ": ");
+            String answer = input.nextLine().trim();
+            playerAnswers.add(answer);
+        }
+
+        return challenge.checkAnswer("Room3Question1", playerAnswers);
     }
 
     private void offerHint() {
@@ -74,6 +76,8 @@ public class ScrumBoardRoom extends Room {
         if (response.equals("yes")) {
             Hint hint = HintFactory.getRandomHint("ScrumBoardRoom");
             System.out.println("Hint: " + hint.getHint());
+        } else if (!response.equals("no")) {
+            System.out.println("Invalid input. Please type 'yes' or 'no'.");
         }
     }
 
@@ -87,7 +91,7 @@ public class ScrumBoardRoom extends Room {
         System.out.println("Correct! You can now proceed to the next room: SprintReviewRoom.");
         System.out.println("You can type 'go to SprintReviewRoom' to enter the next room, status to see your status, go back to go to the previous room or quit to exit the game.");
         database.updateRoomCompletion(player.getName(), "scrumboardroom_completed", true);
-        Room sprintReviewRoom = new SprintReviewRoom(player, database);
+        Room sprintReviewRoom = new SprintReviewRoom(player, database, challenge);
         sprintReviewRoom.setName("SprintReviewRoom");
         player.setRoom(sprintReviewRoom);
     }

@@ -1,0 +1,86 @@
+1. SprintPlanningRoom Questions:
+
+    Question 1: Which tasks fit in a 2 week sprint?
+                task 1: Add a main-class where you can start your project.
+                task 2: Make every class that corresponds with the User.
+                task 3: Add an admin GUI that shows different graphs and information about your project.
+                task 4: Sort your project in several named packages so it’s uncluttered.
+                task 5: Make a Database with the column user, containing userID & username
+
+                Enter the numbers of the tasks that fit in a 2 week sprint, separated by commas:
+
+                Answer:
+                1, 4, 5
+
+2. DailyScrumRoom Questions:
+
+    Question 1: Your team consists of:
+                A. Kaj (Developer)
+                B. Jorge (Tester)
+                c. Szymon (Designer)
+                D. Lex (Scrum Master)
+
+                Match the following status updates to the correct team members:
+                1. 'I conducted the sprint planning meeting.'
+                2. 'I have completed writing two test cases.'
+                3. 'I am still working on the API and fixing a bug.'
+                4. 'I have finalized the new dashboard design.'
+
+                Enter the name of the team member next to the corresponding status update:
+
+                Answer:
+                1. Lex
+                2. Jorge
+                3. Kaj
+                4. Szymon
+
+3. ScrumBoardRoom Questions:
+
+    Question 1: Categorize the following backlog items:
+                1. Implement user authentication and authorization.
+                2. As a user, I want to reset my password so that I can regain access.
+                3. As an admin, I want to view all registered users.
+                4. Create a login page UI.
+                5. Write unit tests for the authentication module.
+
+                Enter epic, user story or task next to each backlog item:
+
+                answer:
+                1. Epic
+                2. User Story
+                3. User Story
+                4. Task
+                5. Task
+
+4. SprintReviewRoom Questions:
+
+    Question 1: Determine the impact level of the following feedback from stakeholders:
+                1. The layout of the dashboard is confusing and complicated.
+                2. The font size is slightly smaller than expected.
+                3. The login functionality is not working for a majority of users.
+
+                Assign the correct impact level (High, Medium, Low) to each feedback:
+
+                Answer:
+                1. Medium
+                2. Low
+                3. High
+
+5. SprintRetrospectiveRoom Questions:
+
+    Question 1: Below are some situations that occurred in a team. Indicate what the team can learn from each situation:
+                1. A team member consistently delivered their tasks late.
+                2. The team had a heated argument during a meeting, which negatively affected morale.
+                3. The team completed the sprint successfully but realized they forgot to update the stakeholder on the progress.
+                4. A team member took on too many tasks, leading to burnout and incomplete work.
+                5. The team failed to identify a critical bug, which caused issues in production.
+
+                What lesson do you learn from each situation: A: 'Time Management', B: 'Conflict Resolution', C: 'Workload Management', D: 'Quality Assurance', E: 'Stakeholder Communication'
+                Enter the letter corresponding to the lesson learned next to each situation:
+
+                Answer:
+                1. A
+                2. B
+                3. E
+                4. C
+                5. D

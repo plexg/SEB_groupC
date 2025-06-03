@@ -1,6 +1,8 @@
 package Challenge;
 
+import java.util.List;
+
 public interface ChallengeStrategy {
-    void present();
-    boolean check(String input);
+    boolean checkAnswer(String questionId, List<String> playerAnswers);
+    void showQuestion(String questionId);
 }

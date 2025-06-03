@@ -4,6 +4,7 @@ import classes.database.Database;
 import classes.items.Item;
 import classes.rooms.*;
 import classes.rooms.rooms.*;
+import Challenge.MultipleChoiceChallenge;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,9 @@ public class Game {
         this.rooms.add(new SprintRetrospectiveRoom(tempPlayer, this.database));
         this.rooms.add(new FinalRoom());
         this.rooms.add(new SprintPlanningRoom(tempPlayer, this.database));
-        this.rooms.add(new SprintReviewRoom(tempPlayer, this.database));
+        this.rooms.add(new SprintReviewRoom(tempPlayer, this.database, new MultipleChoiceChallenge()));
         this.rooms.add(new ScrumBoardRoom(tempPlayer, this.database));
+
         this.player = tempPlayer;
     }
 
@@ -160,7 +162,6 @@ public class Game {
             String choice = sc.nextLine();
             if (choice.equalsIgnoreCase("assignment")) {
                 ((SprintPlanningRoom) player.getRoom()).presentChallenge();
-                System.out.println("Please write your answer below: (e.g. task 1, task 4)");
                 ((SprintPlanningRoom) player.getRoom()).giveFeedback();
             } else if (choice.equalsIgnoreCase("status")) {
                 System.out.println(player.getStatus());
@@ -190,7 +191,6 @@ public class Game {
             String choice = sc.nextLine();
             if (choice.equalsIgnoreCase("assignment")) {
                 ((DailyScrumRoom) player.getRoom()).presentChallenge();
-                System.out.println("Please write your answer below: (e.g. 1. Lex, 2. ...)");
                 ((DailyScrumRoom) player.getRoom()).giveFeedback();
             } else if (choice.equalsIgnoreCase("status")) {
                 System.out.println(player.getStatus());
@@ -220,13 +220,12 @@ public class Game {
             String choice = sc.nextLine();
             if (choice.equalsIgnoreCase("assignment")) {
                 ((ScrumBoardRoom) player.getRoom()).presentChallenge();
-                System.out.println("Enter your answers in the format '1:Epic, 2:User Story, 3:User Story, 4:Task, 5:Task' Below:");
                 ((ScrumBoardRoom) player.getRoom()).giveFeedback();
             } else if (choice.equalsIgnoreCase("status")) {
                 System.out.println(player.getStatus());
             } else if (choice.equalsIgnoreCase("go to SprintReviewRoom")) {
                 if (database.isRoomCompleted(player.getName(), "scrumboardroom_completed")) {
-                    Room sprintReviewRoom = new SprintReviewRoom(player, database);
+                    Room sprintReviewRoom = new SprintReviewRoom(player, database, new MultipleChoiceChallenge());
                     sprintReviewRoom.setName("SprintReviewRoom");
                     player.setRoom(sprintReviewRoom);
                     handleSprintReviewRoom(sc);
@@ -251,7 +250,6 @@ public class Game {
             String choice = sc.nextLine();
             if (choice.equalsIgnoreCase("assignment")) {
                 sprintRetrospectiveRoom.presentChallenge();
-                System.out.println("Enter your answers in the format '1:A, 2:B, 3:C, 4:D, 5:E' Below:");
                 sprintRetrospectiveRoom.giveFeedback();
             } else if (choice.equalsIgnoreCase("status")) {
                 System.out.println(player.getStatus());
@@ -282,7 +280,6 @@ public class Game {
             String choice = sc.nextLine();
             if (choice.equalsIgnoreCase("assignment")) {
                 sprintReviewRoom.presentChallenge();
-                System.out.println("Enter your answers in the format '1:Very Impactful, 2:Medium Impactful, 3:Little Impactful' Below:");
                 sprintReviewRoom.giveFeedback();
             } else if (choice.equalsIgnoreCase("status")) {
                 System.out.println(player.getStatus());
