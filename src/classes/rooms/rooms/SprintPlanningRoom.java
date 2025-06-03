@@ -82,13 +82,7 @@ public class SprintPlanningRoom extends Room {
         System.out.println("Would you like a hint? (yes/no)");
         String response = input.nextLine().trim().toLowerCase();
         if (response.equals("yes")) {
-            Random rand = new Random();
-            Hint hint;
-            if (rand.nextBoolean()) {
-                hint = HintFactory.createHint("help", "Focus on tasks that are small and essential for a first sprint.");
-            } else {
-                hint = HintFactory.createHint("funny", "Even the best developers need coffee breaks. Maybe your answer does too!");
-            }
+            Hint hint = HintFactory.getRandomHint("SprintPlanningRoom");
             System.out.println("Hint: " + hint.getHint());
         }
     }

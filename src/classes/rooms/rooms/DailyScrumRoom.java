@@ -91,13 +91,7 @@ public class DailyScrumRoom extends Room {
         System.out.println("Would you like a hint? (yes/no)");
         String response = input.nextLine().trim().toLowerCase();
         if (response.equals("yes")) {
-            Random rand = new Random();
-            Hint hint;
-            if (rand.nextBoolean()) {
-                hint = HintFactory.createHint("help", "Think about each team member's role: Scrum Master, Tester, Developer, Designer.");
-            } else {
-                hint = HintFactory.createHint("funny", "If you mix up the Scrum Master and the Developer, maybe you need a stand-up!");
-            }
+            Hint hint = HintFactory.getRandomHint("DailyScrumRoom");
             System.out.println("Hint: " + hint.getHint());
         }
     }

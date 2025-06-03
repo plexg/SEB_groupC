@@ -102,13 +102,7 @@ public class SprintReviewRoom extends Room {
         System.out.println("Would you like a hint? (yes/no)");
         String response = input.nextLine().trim().toLowerCase();
         if (response.equals("yes")) {
-            Random rand = new Random();
-            Hint hint;
-            if (rand.nextBoolean()) {
-                hint = HintFactory.createHint("help", "Think about which issues block users, which are cosmetic, and which are in between.");
-            } else {
-                hint = HintFactory.createHint("funny", "If users can't log in, that's a big deal. If the font is small, maybe just squint!");
-            }
+            Hint hint = HintFactory.getRandomHint("SprintReviewRoom");
             System.out.println("Hint: " + hint.getHint());
         }
     }
