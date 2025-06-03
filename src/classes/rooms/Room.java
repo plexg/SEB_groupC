@@ -1,8 +1,11 @@
 package classes.rooms;
 
-public abstract class Room {
+import classes.hints.Hint;
+
+public abstract class Room implements Hint {
     private int id;
     private String name;
+    private String hint;
 
     public int getId() {
         return this.id;
@@ -18,6 +21,15 @@ public abstract class Room {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setHint(String hint) {
+        this.hint = hint;
+    }
+
+    @Override
+    public String getHint() {
+        return this.hint;
     }
 
     public final void playRoom() {
