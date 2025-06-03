@@ -27,7 +27,7 @@ public class  RoomFactory {
                 case "SprintRetrospectiveRoom":
                     return new SprintRetrospectiveRoom(player, database);
                 case "SprintReviewRoom":
-                    return new SprintReviewRoom(player, database);
+                    return new SprintReviewRoom(player, database, new Challenge.MultipleChoiceChallenge());
                 case "ScrumBoardRoom":
                     return new ScrumBoardRoom(player, database);
                 case "FinalRoom":

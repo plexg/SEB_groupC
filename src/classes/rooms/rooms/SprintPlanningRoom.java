@@ -1,9 +1,6 @@
 package classes.rooms.rooms;
 
 import classes.database.Database;
-import classes.impediments.Monster;
-import classes.impediments.monsters.ClockMonster;
-import classes.impediments.monsters.CoffeeMonster;
 import classes.items.CupOfCoffee;
 import classes.items.Item;
 import classes.items.PurpleKey;
@@ -11,34 +8,30 @@ import classes.nonrooms.Player;
 import classes.rooms.Room;
 import classes.hints.Hint;
 import classes.hints.HintFactory;
+import Challenge.ChallengeStrategy;
+import Challenge.MultipleChoiceChallenge;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 
 public class SprintPlanningRoom extends Room {
-    private Player player;
+    private final Player player;
     private final Database database;
+    private final ChallengeStrategy challenge;
+    private final List<String> playerAnswers = new ArrayList<>();
     String enter = "Press Enter to continue...";
     private final Scanner input = new Scanner(System.in);
-    private List<Item> items = new ArrayList<>();
-    PurpleKey purpleKey = new PurpleKey(5);
-    CupOfCoffee cupOfCoffee = new CupOfCoffee();
-    CoffeeMonster coffeeMonster = new CoffeeMonster();
+    private final List<Item> items = new ArrayList<>();
+    private final PurpleKey purpleKey = new PurpleKey(5);
+    private final CupOfCoffee cupOfCoffee = new CupOfCoffee();
 
     public SprintPlanningRoom(Player player, Database database) {
-        if (player == null) {
-            throw new IllegalArgumentException("Player cannot be null");
-        }
-        if (database == null) {
-            throw new IllegalArgumentException("Database cannot be null");
-        }
         this.player = player;
         this.database = database;
+        this.challenge = new MultipleChoiceChallenge();
         this.player.setRoom(this);
 
-        //initialize items
         items.add(purpleKey);
         items.add(cupOfCoffee);
     }
@@ -63,19 +56,17 @@ public class SprintPlanningRoom extends Room {
 
     @Override
     public void presentChallenge() {
-        System.out.println("Which tasks fit in a 2 week sprint?");
-        System.out.println("task 1: Add a main-class where you can start your project.");
-        System.out.println("task 2: Make every class that corresponds with the User.");
-        System.out.println("task 3: Add an admin GUI that shows different graphs and information about your project.");
-        System.out.println("task 4: Sort your project in several named packages so it’s uncluttered.");
-        System.out.println("task 5: Make a Database with the column user, containing userID & username");
+        challenge.showQuestion("Room1Question1");
     }
 
     @Override
     public boolean checkAnswer() {
-        String input = this.input.nextLine().toLowerCase();
-        return input.contains("task 1") && input.contains("task 4") && input.contains("task 5")
-                && !input.contains("task 2") && !input.contains("task 3");
+        playerAnswers.clear();
+
+        String answer = input.nextLine().trim();
+        playerAnswers.add(answer);
+
+        return challenge.checkAnswer("Room1Question1", playerAnswers);
     }
 
     private void offerHint() {
@@ -84,6 +75,8 @@ public class SprintPlanningRoom extends Room {
         if (response.equals("yes")) {
             Hint hint = HintFactory.getRandomHint("SprintPlanningRoom");
             System.out.println("Hint: " + hint.getHint());
+        } else if (!response.equals("no")) {
+            System.out.println("Invalid input. Please type 'yes' or 'no'.");
         }
     }
 
@@ -95,7 +88,7 @@ public class SprintPlanningRoom extends Room {
             presentChallenge();
         }
         System.out.println("Correct! You can now proceed to the next room: DailyScrumRoom.");
-        System.out.println("You can type 'go to DailyScrumRoom' to enter the next room, status to see your status, go back to go to the previous room or quit to exit the game.");
+        System.out.println("You can type 'go to DailyScrumRoom' to enter the next room, status to see your status, go back to the previous room or quit to exit the game.");
         database.updateRoomCompletion(player.getName(), "sprintplanningroom_completed", true);
         Room dailyScrumRoom = new DailyScrumRoom(player, database);
         dailyScrumRoom.setName("DailyScrumRoom");
@@ -111,5 +104,7 @@ public class SprintPlanningRoom extends Room {
 
     @Override
     public void triggerMonster() {
+        System.out.println("A Coffee Monster appears! It looks angry.");
+        // Add logic for monster interaction if needed
     }
 }

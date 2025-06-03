@@ -13,30 +13,21 @@ import classes.impediments.ImpedimentFactory;
 
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 public class SprintReviewRoom extends Room {
-    private final List<String> feedbackItems = new ArrayList<>();
+    private final ChallengeStrategy challenge;
     private Player player;
     private final Database database;
-    List<Item> items = new ArrayList<>();
-    StanleyKnife stanleyKnife = new StanleyKnife();
+    private final List<Item> items = new ArrayList<>();
+    private final StanleyKnife stanleyKnife = new StanleyKnife();
 
-    public SprintReviewRoom(Player player, Database database) {
-        if (player == null) {
-            throw new IllegalArgumentException("Player cannot be null");
-        }
-        if (database == null) {
-            throw new IllegalArgumentException("Database cannot be null");
-        }
+    public SprintReviewRoom(Player player, Database database, ChallengeStrategy challenge) {
         this.player = player;
         this.database = database;
+        this.challenge = challenge;
         this.player.setRoom(this);
 
-        // initialize items
         items.add(stanleyKnife);
     }
 
@@ -57,45 +48,20 @@ public class SprintReviewRoom extends Room {
 
     @Override
     public void presentChallenge() {
-        feedbackItems.clear();
-        feedbackItems.add("1. The color scheme of the dashboard is not aligned with the company's branding guidelines.");
-        feedbackItems.add("2. The font size of the footer text is slightly smaller than expected.");
-        feedbackItems.add("3. The login functionality is not working for a significant portion of users, preventing them from accessing the application.");
-
-        System.out.println("Determine the impact level of the following feedback from stakeholders:");
-        feedbackItems.forEach(System.out::println);
-        System.out.println();
-        System.out.println("Assign the correct impact level (Very Impactful, Medium Impactful, Little Impactful) to each feedback item.");
-        System.out.println("Format: 1:Very Impactful, 2:Medium Impactful, 3:Little Impactful");
+        challenge.showQuestion("Room4Question1");
     }
 
     @Override
     public boolean checkAnswer() {
-        Map<String, String> correctAnswers = new HashMap<>();
-        correctAnswers.put("The login functionality is not working for a significant portion of users, preventing them from accessing the application.", "Very Impactful");
-        correctAnswers.put("The color scheme of the dashboard is not aligned with the company's branding guidelines.", "Medium Impactful");
-        correctAnswers.put("The font size of the footer text is slightly smaller than expected.", "Little Impactful");
+        List<String> playerAnswers = new ArrayList<>();
 
-        Map<String, String> playerAnswers = new HashMap<>();
-        String answer = input.nextLine();
-
-        try {
-            String[] entries = answer.split(",");
-            for (String entry : entries) {
-                String[] parts = entry.trim().split(":");
-                int itemNumber = Integer.parseInt(parts[0].trim());
-                String impactLevel = parts[1].trim();
-
-                String question = feedbackItems.get(itemNumber - 1).substring(3).trim();
-                playerAnswers.put(question, impactLevel);
-            }
-        } catch (Exception e) {
-            System.out.println("Invalid input format. Please try again.");
-            return false;
+        for (int i = 1; i <= 5; i++) {
+            System.out.print(i + ": ");
+            String answer = input.nextLine().trim();
+            playerAnswers.add(answer);
         }
 
-        return correctAnswers.entrySet().stream()
-                .allMatch(entry -> entry.getValue().equalsIgnoreCase(playerAnswers.getOrDefault(entry.getKey(), "")));
+        return challenge.checkAnswer("Room4Question1", playerAnswers);
     }
 
     private void offerHint() {

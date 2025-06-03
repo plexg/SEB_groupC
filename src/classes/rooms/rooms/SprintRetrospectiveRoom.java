@@ -9,27 +9,23 @@ import classes.database.Database;
 import classes.rooms.Room;
 import classes.hints.Hint;
 import classes.hints.HintFactory;
+import Challenge.MultipleChoiceChallenge;
 
 public class SprintRetrospectiveRoom extends Room {
     String enter = "Press Enter to continue...";
     Scanner input = new Scanner(System.in);
     private final Database database;
     private final Player player;
+    private final MultipleChoiceChallenge challenge;
     List<Item> items = new ArrayList<>();
     Donut donut = new Donut();
 
     public SprintRetrospectiveRoom(Player player, Database database) {
-        if (player == null) {
-            throw new IllegalArgumentException("Player cannot be null");
-        }
-        if (database == null) {
-            throw new IllegalArgumentException("Database cannot be null");
-        }
         this.player = player;
         this.database = database;
+        this.challenge = new MultipleChoiceChallenge();
         this.player.setRoom(this);
 
-        // initialize items
         items.add(donut);
     }
 
@@ -38,7 +34,7 @@ public class SprintRetrospectiveRoom extends Room {
         System.out.println("Welcome to the Sprint Retrospective Room!");
         System.out.println(enter);
         input.nextLine();
-        System.out.println("In this room, you will get some situations that occur in a team and must indicate what the team can learn from them");
+        System.out.println("In this room, you will get some situations that occur in a team and must indicate what the team can learn from them.");
         System.out.println(enter);
         input.nextLine();
         System.out.println("Do you want to see the assignment, your status, go back to the previous room, or quit?");
@@ -47,44 +43,20 @@ public class SprintRetrospectiveRoom extends Room {
 
     @Override
     public void presentChallenge() {
-        System.out.println("Below are some situations that occurred in a team. Indicate what the team can learn from each situation:");
-        System.out.println("1. A team member consistently delivered their tasks late, causing delays in the sprint.");
-        System.out.println("2. The team had a heated argument during a meeting, which disrupted the workflow.");
-        System.out.println("3. The team completed the sprint successfully but realized they could have communicated better with stakeholders.");
-        System.out.println("4. A team member took on too many tasks, leading to burnout and incomplete work.");
-        System.out.println("5. The team failed to identify a critical bug, which caused issues in production.");
-        System.out.println();
-        System.out.println("What lesson do you learn from each situation: A: 'Time management', B: 'Conflict resolution', C: 'Workload management', D: 'Quality assurance', E: 'Stakeholder communication'");
+        challenge.showQuestion("Room5Question1");
     }
 
     @Override
     public boolean checkAnswer() {
-        String input = this.input.nextLine().toLowerCase();
+        List<String> playerAnswers = new ArrayList<>();
 
-        Map<Integer, String> correctAnswers = new HashMap<>();
-        correctAnswers.put(1, "a");
-        correctAnswers.put(2, "b");
-        correctAnswers.put(3, "e");
-        correctAnswers.put(4, "c");
-        correctAnswers.put(5, "d");
-
-        try {
-            String[] entries = input.split(",");
-            for (String entry : entries) {
-                String[] parts = entry.trim().split(":");
-                int situationNumber = Integer.parseInt(parts[0].trim());
-                String lesson = parts[1].trim();
-
-                if (!correctAnswers.get(situationNumber).equals(lesson)) {
-                    return false;
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Invalid input format. Please try again.");
-            return false;
+        for (int i = 1; i <= 5; i++) {
+            System.out.print(i + ": ");
+            String answer = input.nextLine().trim();
+            playerAnswers.add(answer);
         }
 
-        return true;
+        return challenge.checkAnswer("Room5Question1", playerAnswers);
     }
 
     private void offerHint() {

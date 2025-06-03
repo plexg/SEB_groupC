@@ -12,7 +12,7 @@ import java.util.List;
 public class Database {
     private static final String URL = "jdbc:mysql://localhost:3306/seb";
     private static final String USER = "root";
-    private static final String PASSWORD = "Hamster89!";
+    private static final String PASSWORD = "Koe!90!KJ!80";
     List<Item> items = new ArrayList<Item>();
 
     public Connection connect() throws SQLException {
