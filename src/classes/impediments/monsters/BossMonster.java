@@ -3,10 +3,10 @@ package classes.impediments.monsters;
 import classes.impediments.Monster;
 import classes.nonrooms.Player;
 
-public class CoffeeMonster extends Monster {
-    public CoffeeMonster() {
-        super("Coffee Monster", "It's a coffee machine gone rogue! It shoots coffee bolts!",
-                10,  60);
+public class BossMonster extends Monster {
+    public BossMonster() {
+        super("The BOSS", "It's the Boss! He is the final challenge of this maze. Defeat him to escape!",
+                15,  200);
     }
 
     @Override

@@ -1,4 +1,4 @@
-1. SprintPlanningRoom Questions:
+1. SprintPlanningRoom Questions: (MONSTER ROOM)
 
     Question 1: Which tasks fit in a 2 week sprint?
                 task 1: Add a main-class where you can start your project.
@@ -11,6 +11,13 @@
 
                 Answer:
                 1, 4, 5
+
+    Question 2:
+
+
+-----------------------------------------------------------------------------------------------------------
+
+
 
 2. DailyScrumRoom Questions:
 
@@ -34,7 +41,11 @@
                 3. Kaj
                 4. Szymon
 
-3. ScrumBoardRoom Questions:
+
+------------------------------------------------------------------------------------------------------------
+
+
+3. ScrumBoardRoom Questions: (MONSTER ROOM)
 
     Question 1: Categorize the following backlog items:
                 1. Implement user authentication and authorization.
@@ -52,6 +63,10 @@
                 4. Task
                 5. Task
 
+
+------------------------------------------------------------------------------------------------------------
+
+
 4. SprintReviewRoom Questions:
 
     Question 1: Determine the impact level of the following feedback from stakeholders:
@@ -65,6 +80,10 @@
                 1. Medium
                 2. Low
                 3. High
+
+
+------------------------------------------------------------------------------------------------------------
+
 
 5. SprintRetrospectiveRoom Questions:
 
@@ -84,3 +103,28 @@
                 3. E
                 4. C
                 5. D
+
+
+-------------------------------------------------------------------------------------------------------------
+
+
+6. BOSS ROOM
+
+    Question 1: What is the primary role of a Scrum Master in a Scrum team?
+                A. To manage the team and assign tasks
+                B. To facilitate Scrum ceremonies and remove impediments
+                C. To write code and develop features
+                D. To test the software and report bugs
+
+                Answer:
+                B
+
+    Question 2: What is the purpose of a Sprint Review?
+                A. To plan the next sprint
+                B. To demonstrate the work completed during the sprint to stakeholders
+                C. To review team performance and identify areas for improvement
+                D. To assign tasks for the next sprint
+
+                Answer:
+                B
+

@@ -8,7 +8,7 @@ public class Staplergun implements DamageDealer {
 
     public Staplergun() {
         this.name = "Staplergun";
-        this.damage = 20;
+        this.damage = 30;
     }
 
     public String getName() {

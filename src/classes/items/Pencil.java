@@ -8,7 +8,7 @@ public class Pencil implements DamageDealer {
 
     public Pencil() {
         this.name = "Pencil";
-        this.damage = 10;
+        this.damage = 20;
     }
 
     public String getName() {

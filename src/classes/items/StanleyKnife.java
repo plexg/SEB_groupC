@@ -8,7 +8,7 @@ public class StanleyKnife implements DamageDealer {
 
     public StanleyKnife() {
         this.name = "Stanley Knife";
-        this.damage = 30;
+        this.damage = 40;
     }
 
     public String getName() {
