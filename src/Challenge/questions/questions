@@ -12,11 +12,67 @@
                 Answer:
                 1, 4, 5
 
-    Question 2:
+    Question 2: What is the output of a Sprint Planning meeting?
+    A. Sprint Goal and selected backlog items
+    B. Project budget
+    C. Team report card
+    D. Retrospective summary
+
+    Answer:
+
+    A
+
+    Question 3: The Product Owner is responsible for defining what the team will work on during Sprint Planning.
+    (True/False)
+    Answer:
+
+    True
+
+    Question 4: The __________ helps the team break down and estimate the selected backlog items during Sprint Planning.
+    Answer:
+
+    Scrum Master
+
+
+    Question 5: Match the concept to its purpose:
+
+    1. Sprint Goal
+    2. Task Breakdown
+    3. Estimation
+
+    A. Helps divide work into smaller, doable parts
+    B. Helps the team understand the purpose of the sprint
+    C. Helps the team decide what fits in the sprint
+
+    Answer:
+
+    1. A
+    2. B
+    3. C
+
+    Question 6: Why avoid adding too many tasks in a sprint?
+    A. Team gets bored
+    B. More tasks = faster
+    C. Prevent overload
+    D. It’s required by Scrum
+
+    Answer:
+
+    C
+
+
+    Question 7: How long is a typical sprint in Scrum?
+    A. 1 day
+    B. 3 months
+    C. 2–4 weeks
+    D. 6 weeks
+
+    Answer:
+
+    C
 
 
 -----------------------------------------------------------------------------------------------------------
-
 
 
 2. DailyScrumRoom Questions:
@@ -62,6 +118,65 @@
                 3. User Story
                 4. Task
                 5. Task
+
+    Question 2: What does a Scrum Board help the team with?
+    A. Planning company finances
+    B. Tracking task progress
+    C. Writing code
+    D. Setting salaries
+
+    Answer:
+
+    B
+
+    Question 3: A user story can go directly from "To Do" to "Done".
+    (True/False)
+
+    Answer:
+
+    False
+
+
+    Question 4: Match the board column to its meaning:
+    1. To Do
+    2. In Progress
+    3. Done
+
+    A. Task started
+    B. Task ready
+    C. Task finished
+
+    Answer:
+
+    1. B
+    2. A
+    3. C
+
+    Question 5: Who updates the Scrum Board?
+    A. Scrum Master
+    B. Developer
+    C. Product Owner
+    D. Team
+
+    Answer:
+
+    D
+
+    Question 6: A good Scrum Board improves project __________.
+
+    Answer:
+
+    transparency
+
+    Question 7: Which item does not belong on a Scrum Board?
+    A. Task
+    B. Bug
+    C. User Story
+    D. Invoice
+
+    Answer:
+
+    D
 
 
 ------------------------------------------------------------------------------------------------------------
