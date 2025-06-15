@@ -8,8 +8,8 @@ import classes.database.Database;
 import classes.rooms.Room;
 import classes.hints.Hint;
 import classes.hints.HintFactory;
+import Challenge.CategorizationChallenge;
 import Challenge.ChallengeStrategy;
-import Challenge.PuzzleQuestionChallenge;
 
 import java.util.*;
 
@@ -18,18 +18,17 @@ public class DailyScrumRoom extends Room {
     private final Database database;
     private final ChallengeStrategy challenge;
     private final List<String> playerAnswers = new ArrayList<>();
-    String enter = "Press Enter to continue...";
-    Scanner input = new Scanner(System.in);
-    List<Item> items = new ArrayList<>();
-    Staplergun staplergun = new Staplergun();
-    GreenKey greenKey = new GreenKey(3);
+    private final Scanner input = new Scanner(System.in);
+    private final List<Item> items = new ArrayList<>();
+    private final Staplergun staplergun = new Staplergun();
+    private final GreenKey greenKey = new GreenKey(3);
+    private final String enter = "Press Enter to continue...";
 
     public DailyScrumRoom(Player player, Database database) {
         this.player = player;
         this.database = database;
-        this.challenge = new PuzzleQuestionChallenge();
+        this.challenge = new CategorizationChallenge();
         this.player.setRoom(this);
-
         items.add(staplergun);
         items.add(greenKey);
     }
@@ -48,7 +47,7 @@ public class DailyScrumRoom extends Room {
 
     @Override
     public void presentChallenge() {
-        challenge.showQuestion("Room2Question1");
+        challenge.showQuestion("DailyScrumQ1");
     }
 
     @Override
@@ -61,28 +60,35 @@ public class DailyScrumRoom extends Room {
         nameToLetterMap.put("Szymon", "C");
         nameToLetterMap.put("Lex", "D");
 
+        System.out.println("Please enter the name or letter corresponding to the status update for each number:");
+
         for (int i = 1; i <= 4; i++) {
             System.out.print(i + ": ");
             String answer = input.nextLine().trim();
-
             if (nameToLetterMap.containsKey(answer)) {
                 answer = nameToLetterMap.get(answer);
+            } else {
+                answer = answer.toUpperCase();
             }
-
             playerAnswers.add(answer);
         }
 
-        return challenge.checkAnswer("Room2Question1", playerAnswers);
+        return challenge.checkAnswer("DailyScrumQ1", playerAnswers);
     }
 
     private void offerHint() {
-        System.out.println("Would you like a hint? (yes/no)");
-        String response = input.nextLine().trim().toLowerCase();
-        if (response.equals("yes")) {
-            Hint hint = HintFactory.getRandomHint("DailyScrumRoom");
-            System.out.println("Hint: " + hint.getHint());
-        } else if (!response.equals("no")) {
-            System.out.println("Invalid input. Please type 'yes' or 'no'.");
+        while (true) {
+            System.out.println("Would you like a hint? (yes/no)");
+            String response = input.nextLine().trim().toLowerCase();
+            if (response.equals("yes")) {
+                Hint hint = HintFactory.getRandomHint("DailyScrumRoom");
+                System.out.println("Hint: " + hint.getHint());
+                break;
+            } else if (response.equals("no")) {
+                break;
+            } else {
+                System.out.println("Invalid input. Please type 'yes' or 'no'.");
+            }
         }
     }
 
@@ -94,7 +100,7 @@ public class DailyScrumRoom extends Room {
             presentChallenge();
         }
         System.out.println("Correct! You can now proceed to the next room: ScrumBoardRoom.");
-        System.out.println("You can type 'go to ScrumBoardRoom' to enter the next room, status to see your status, go back to go to the previous room or quit to exit the game.");
+        System.out.println("You can type 'go to ScrumBoardRoom' to enter the next room, 'status' to see your status, 'go back' to go to the previous room or 'quit' to exit the game.");
         database.updateRoomCompletion(player.getName(), "dailyscrumroom_completed", true);
         Room scrumBoardRoom = new ScrumBoardRoom(player, database);
         scrumBoardRoom.setName("ScrumBoardRoom");
@@ -111,5 +117,6 @@ public class DailyScrumRoom extends Room {
 
     @Override
     public void triggerMonster() {
+        // No monster in this room
     }
 }

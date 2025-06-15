@@ -43,7 +43,7 @@ public class SprintRetrospectiveRoom extends Room {
 
     @Override
     public void presentChallenge() {
-        challenge.showQuestion("Room5Question1");
+        challenge.showQuestion("SprintRetrospectiveQ1");
     }
 
     @Override
@@ -56,7 +56,7 @@ public class SprintRetrospectiveRoom extends Room {
             playerAnswers.add(answer);
         }
 
-        return challenge.checkAnswer("Room5Question1", playerAnswers);
+        return challenge.checkAnswer("SprintRetrospectiveQ1", playerAnswers);
     }
 
     private void offerHint() {

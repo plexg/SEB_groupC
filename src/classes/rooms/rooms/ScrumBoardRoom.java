@@ -54,7 +54,7 @@ public class ScrumBoardRoom extends Room {
 
     @Override
     public void presentChallenge() {
-        challenge.showQuestion("Room3Question1");
+        challenge.showQuestion("ScrumBoardQ1");
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ScrumBoardRoom extends Room {
             playerAnswers.add(answer);
         }
 
-        return challenge.checkAnswer("Room3Question1", playerAnswers);
+        return challenge.checkAnswer("ScrumBoardQ1", playerAnswers);
     }
 
     private void offerHint() {

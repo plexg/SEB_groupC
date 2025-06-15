@@ -56,7 +56,7 @@ public class SprintPlanningRoom extends Room {
 
     @Override
     public void presentChallenge() {
-        challenge.showQuestion("Room1Question1");
+        challenge.showQuestion("SprintPlanningQ1");
     }
 
     @Override
@@ -66,7 +66,7 @@ public class SprintPlanningRoom extends Room {
         String answer = input.nextLine().trim();
         playerAnswers.add(answer);
 
-        return challenge.checkAnswer("Room1Question1", playerAnswers);
+        return challenge.checkAnswer("SprintPlanningQ1", playerAnswers);
     }
 
     private void offerHint() {

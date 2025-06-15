@@ -1,306 +1,280 @@
 1. SprintPlanningRoom Questions: (MONSTER ROOM)
 
-    Question 1: Which tasks fit in a 2 week sprint?
-                task 1: Add a main-class where you can start your project.
-                task 2: Make every class that corresponds with the User.
-                task 3: Add an admin GUI that shows different graphs and information about your project.
-                task 4: Sort your project in several named packages so it’s uncluttered.
-                task 5: Make a Database with the column user, containing userID & username
+Question 1: Which tasks fit in a 2 week sprint?
+            task 1: Add a main-class where you can start your project.
+            task 2: Make every class that corresponds with the User.
+            task 3: Add an admin GUI that shows different graphs and information about your project.
+            task 4: Sort your project in several named packages so it’s uncluttered.
+            task 5: Make a Database with the column user, containing userID & username
 
-                Enter the numbers of the tasks that fit in a 2 week sprint, separated by commas:
+            Enter the numbers of the tasks that fit in a 2 week sprint, separated by commas:
 
-                Answer:
-                1, 4, 5
+            Answer:
+            1, 4, 5
 
-    Question 2: What is the output of a Sprint Planning meeting?
-    A. Sprint Goal and selected backlog items
-    B. Project budget
-    C. Team report card
-    D. Retrospective summary
+Question 2: What is the output of a Sprint Planning meeting?
+A. Project budget
+B. Sprint Goal and selected backlog items
+C. Retrospective summary
+D. Team report card
 
-    Answer:
+Answer:
+B
 
-    A
+Question 3: The Product Owner is responsible for defining what the team will work on during Sprint Planning.
+(True/False)
 
-    Question 3: The Product Owner is responsible for defining what the team will work on during Sprint Planning.
-    (True/False)
-    Answer:
+Answer:
+True
 
-    True
+Question 4: The __________ helps the team break down and estimate the selected backlog items during Sprint Planning.
 
-    Question 4: The __________ helps the team break down and estimate the selected backlog items during Sprint Planning.
-    Answer:
+Answer:
+Scrum Master
 
-    Scrum Master
+Question 5: Match the concept to its purpose:
 
+1. Sprint Goal
+2. Task Breakdown
+3. Estimation
 
-    Question 5: Match the concept to its purpose:
+A. Helps divide work into smaller, doable parts
+B. Helps the team decide what fits in the sprint
+C. Helps the team understand the purpose of the sprint
 
-    1. Sprint Goal
-    2. Task Breakdown
-    3. Estimation
+Answer:
+1. C
+2. A
+3. B
 
-    A. Helps divide work into smaller, doable parts
-    B. Helps the team understand the purpose of the sprint
-    C. Helps the team decide what fits in the sprint
+Question 6: Why avoid adding too many tasks in a sprint?
+A. Team gets bored
+B. It’s required by Scrum
+C. Prevent overload
+D. More tasks = faster
 
-    Answer:
+Answer:
+C
 
-    1. A
-    2. B
-    3. C
+Question 7: How long is a typical sprint in Scrum?
+A. 3 months
+B. 6 weeks
+C. 2–4 weeks
+D. 1 day
 
-    Question 6: Why avoid adding too many tasks in a sprint?
-    A. Team gets bored
-    B. More tasks = faster
-    C. Prevent overload
-    D. It’s required by Scrum
-
-    Answer:
-
-    C
-
-
-    Question 7: How long is a typical sprint in Scrum?
-    A. 1 day
-    B. 3 months
-    C. 2–4 weeks
-    D. 6 weeks
-
-    Answer:
-
-    C
-
-
------------------------------------------------------------------------------------------------------------
+Answer:
+C
 
 
 2. DailyScrumRoom Questions:
 
-    Question 1: Your team consists of:
-                A. Kaj (Developer)
-                B. Jorge (Tester)
-                c. Szymon (Designer)
-                D. Lex (Scrum Master)
+Question 1: Your team consists of:
+A. Kaj (Developer)
+B. Jorge (Tester)
+C. Szymon (Designer)
+D. Lex (Scrum Master)
 
-                Match the following status updates to the correct team members:
-                1. 'I conducted the sprint planning meeting.'
-                2. 'I have completed writing two test cases.'
-                3. 'I am still working on the API and fixing a bug.'
-                4. 'I have finalized the new dashboard design.'
+Match the following status updates to the correct team members:
+1. 'I conducted the sprint planning meeting.'
+2. 'I have completed writing two test cases.'
+3. 'I am still working on the API and fixing a bug.'
+4. 'I have finalized the new dashboard design.'
 
-                Enter the name of the team member next to the corresponding status update:
+Enter the name of the team member next to the corresponding status update:
 
-                Answer:
-                1. Lex
-                2. Jorge
-                3. Kaj
-                4. Szymon
-
-
-------------------------------------------------------------------------------------------------------------
+Answer:
+1. Lex
+2. Jorge
+3. Kaj
+4. Szymon
 
 
 3. ScrumBoardRoom Questions: (MONSTER ROOM)
 
-    Question 1: Categorize the following backlog items:
-                1. Implement user authentication and authorization.
-                2. As a user, I want to reset my password so that I can regain access.
-                3. As an admin, I want to view all registered users.
-                4. Create a login page UI.
-                5. Write unit tests for the authentication module.
+Question 1: Categorize the following backlog items:
+1. Implement user authentication and authorization.
+2. As a user, I want to reset my password so that I can regain access.
+3. As an admin, I want to view all registered users.
+4. Create a login page UI.
+5. Write unit tests for the authentication module.
 
-                Enter epic, user story or task next to each backlog item:
+Enter epic, user story or task next to each backlog item:
 
-                answer:
-                1. Epic
-                2. User Story
-                3. User Story
-                4. Task
-                5. Task
+Answer:
+1. Epic
+2. User Story
+3. User Story
+4. Task
+5. Task
 
-    Question 2: What does a Scrum Board help the team with?
-    A. Planning company finances
-    B. Tracking task progress
-    C. Writing code
-    D. Setting salaries
+Question 2: What does a Scrum Board help the team with?
+A. Setting salaries
+B. Tracking task progress
+C. Planning company finances
+D. Writing code
 
-    Answer:
+Answer:
+B
 
-    B
+Question 3: A user story can go directly from "To Do" to "Done".
+(True/False)
 
-    Question 3: A user story can go directly from "To Do" to "Done".
-    (True/False)
+Answer:
+False
 
-    Answer:
+Question 4: Match the board column to its meaning:
+1. To Do
+2. In Progress
+3. Done
 
-    False
+A. Task finished
+B. Task started
+C. Task ready
 
+Answer:
+1. C
+2. B
+3. A
 
-    Question 4: Match the board column to its meaning:
-    1. To Do
-    2. In Progress
-    3. Done
+Question 5: Who updates the Scrum Board?
+A. Developer
+B. Product Owner
+C. Team
+D. Scrum Master
 
-    A. Task started
-    B. Task ready
-    C. Task finished
+Answer:
+C
 
-    Answer:
+Question 6: A good Scrum Board improves project __________.
 
-    1. B
-    2. A
-    3. C
+Answer:
+transparency
 
-    Question 5: Who updates the Scrum Board?
-    A. Scrum Master
-    B. Developer
-    C. Product Owner
-    D. Team
+Question 7: Which item does not belong on a Scrum Board?
+A. User Story
+B. Invoice
+C. Bug
+D. Task
 
-    Answer:
-
-    D
-
-    Question 6: A good Scrum Board improves project __________.
-
-    Answer:
-
-    transparency
-
-    Question 7: Which item does not belong on a Scrum Board?
-    A. Task
-    B. Bug
-    C. User Story
-    D. Invoice
-
-    Answer:
-
-    D
-
-
-------------------------------------------------------------------------------------------------------------
+Answer:
+B
 
 
 4. SprintReviewRoom Questions:
 
-    Question 1: Determine the impact level of the following feedback from stakeholders:
-                1. The layout of the dashboard is confusing and complicated.
-                2. The font size is slightly smaller than expected.
-                3. The login functionality is not working for a majority of users.
+Question 1: Determine the impact level of the following feedback from stakeholders:
+1. The layout of the dashboard is confusing and complicated.
+2. The font size is slightly smaller than expected.
+3. The login functionality is not working for a majority of users.
 
-                Assign the correct impact level (High, Medium, Low) to each feedback:
+Assign the correct impact level (High, Medium, Low) to each feedback:
 
-                Answer:
-                1. Medium
-                2. Low
-                3. High
-
-
-------------------------------------------------------------------------------------------------------------
+Answer:
+1. Medium
+2. Low
+3. High
 
 
 5. SprintRetrospectiveRoom Questions:
 
-    Question 1: Below are some situations that occurred in a team. Indicate what the team can learn from each situation:
-                1. A team member consistently delivered their tasks late.
-                2. The team had a heated argument during a meeting, which negatively affected morale.
-                3. The team completed the sprint successfully but realized they forgot to update the stakeholder on the progress.
-                4. A team member took on too many tasks, leading to burnout and incomplete work.
-                5. The team failed to identify a critical bug, which caused issues in production.
+Question 1: Below are some situations that occurred in a team. Indicate what the team can learn from each situation:
+1. A team member consistently delivered their tasks late.
+2. The team had a heated argument during a meeting, which negatively affected morale.
+3. The team completed the sprint successfully but realized they forgot to update the stakeholder on the progress.
+4. A team member took on too many tasks, leading to burnout and incomplete work.
+5. The team failed to identify a critical bug, which caused issues in production.
 
-                What lesson do you learn from each situation: A: 'Time Management', B: 'Conflict Resolution', C: 'Workload Management', D: 'Quality Assurance', E: 'Stakeholder Communication'
-                Enter the letter corresponding to the lesson learned next to each situation:
+What lesson do you learn from each situation:
+A: 'Time Management'
+B: 'Conflict Resolution'
+C: 'Workload Management'
+D: 'Quality Assurance'
+E: 'Stakeholder Communication'
 
-                Answer:
-                1. A
-                2. B
-                3. E
-                4. C
-                5. D
+Enter the letter corresponding to the lesson learned next to each situation:
 
-
--------------------------------------------------------------------------------------------------------------
+Answer:
+1. A
+2. B
+3. E
+4. C
+5. D
 
 
 6. BOSS ROOM
 
-    Question 1: What is the primary role of a Scrum Master in a Scrum team?
-                A. To manage the team and assign tasks
-                B. To facilitate Scrum ceremonies and remove impediments
-                C. To write code and develop features
-                D. To test the software and report bugs
+Question 1: What is the primary role of a Scrum Master in a Scrum team?
+A. To manage the team and assign tasks
+B. To facilitate Scrum ceremonies and remove impediments
+C. To write code and develop features
+D. To test the software and report bugs
 
-                Answer:
-                B
+Answer:
+B
 
-    Question 2: What is the purpose of a Sprint Review?
-                A. To plan the next sprint
-                B. To demonstrate the work completed during the sprint to stakeholders
-                C. To review team performance and identify areas for improvement
-                D. To assign tasks for the next sprint
+Question 2: What is the purpose of a Sprint Review?
+A. To plan the next sprint
+B. To demonstrate the work completed during the sprint to stakeholders
+C. To review team performance and identify areas for improvement
+D. To assign tasks for the next sprint
 
-                Answer:
-                B
+Answer:
+B
 
-    Question 3: Who is responsible for creating and prioritizing the Product Backlog?
+Question 3: Who is responsible for creating and prioritizing the Product Backlog?
 
-    Answer:
-    Product Owner
+Answer:
+Product Owner
 
-    Question 4: True or False: The Development Team estimates how much work they can complete during a sprint.
+Question 4: True or False: The Development Team estimates how much work they can complete during a sprint.
 
-    Answer:
-    True
+Answer:
+True
 
-    Question 5: Match the Scrum event with its main goal:
+Question 5: Match the Scrum event with its main goal:
 
-    1. Sprint Planning
-    2. Daily Scrum
-    3. Sprint Retrospective
+1. Sprint Planning
+2. Daily Scrum
+3. Sprint Retrospective
 
-    A. Plan sprint work
-    B. Inspect and adapt process
-    C. Synchronize daily work
+A. Plan sprint work
+B. Inspect and adapt process
+C. Synchronize daily work
 
-    Answer:
+Answer:
+1. A
+2. C
+3. B
 
-    1. A
-    2. C
-    3. B
+Question 6: Fill in the blank: The Sprint Backlog consists of the selected Product Backlog items plus the ____________.
 
-    Question 6: Fill in the blank: The Sprint Backlog consists of the selected Product Backlog items plus the ____________.
-    Answer:
-    tasks
+Answer:
+tasks
 
-    Question 7: Which Scrum artifact shows the completed work at the end of a sprint?
-    A. Sprint Backlog
-    B. Product Backlog
-    C. Increment
-    D. Burn-down chart
+Question 7: Which Scrum artifact shows the completed work at the end of a sprint?
+A. Sprint Backlog
+B. Product Backlog
+C. Increment
+D. Burn-down chart
 
-    Answer:
-    C
+Answer:
+C
 
-    Question 8: Why should sprints have a fixed length?
-    A. To allow predictable planning
-    B. To speed up development
-    C. To increase team workload
-    D. To reduce meetings
+Question 8: Why should sprints have a fixed length?
+A. To allow predictable planning
+B. To speed up development
+C. To increase team workload
+D. To reduce meetings
 
-    Answer:
-    A
+Answer:
+A
 
-    Question 9: Fill in the blank: The main output of Sprint Planning is the Sprint ____________.
+Question 9: Fill in the blank: The main output of Sprint Planning is the Sprint ____________.
 
-    Answer:
+Answer:
+Goal
 
-    Goal
+Question 10: True or False: The Scrum Master should remove any obstacles that block the Development Team’s progress.
 
-
-    Question 10: True or False: The Scrum Master should remove any obstacles that block the Development Team’s progress.
-
-    Answer:
-
-    True
-
+Answer:
+True

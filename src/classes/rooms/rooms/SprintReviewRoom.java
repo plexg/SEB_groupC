@@ -48,7 +48,7 @@ public class SprintReviewRoom extends Room {
 
     @Override
     public void presentChallenge() {
-        challenge.showQuestion("Room4Question1");
+        challenge.showQuestion("SprintReviewQ1");
     }
 
     @Override
@@ -61,7 +61,7 @@ public class SprintReviewRoom extends Room {
             playerAnswers.add(answer);
         }
 
-        return challenge.checkAnswer("Room4Question1", playerAnswers);
+        return challenge.checkAnswer("SprintReviewQ1", playerAnswers);
     }
 
     private void offerHint() {
