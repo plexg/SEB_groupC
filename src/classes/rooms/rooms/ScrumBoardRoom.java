@@ -106,4 +106,8 @@ public class ScrumBoardRoom extends Room {
     @Override
     public void triggerMonster() {
     }
+
+    @Override
+    public void giveExtraKey() {
+    }
 }

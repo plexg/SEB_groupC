@@ -80,4 +80,8 @@ public class StartRoom extends Room {
     @Override
     public void triggerMonster() {
     }
+
+    @Override
+    public void giveExtraKey() {
+    }
 }

@@ -14,7 +14,7 @@ public class Player {
     private int hp;
     private Room room;
     private String name;
-    private Inventory inventory;
+    public Inventory inventory;
 
     // Constructor
     public Player(int id, int hp, Room room, String name, List<Item> items) {

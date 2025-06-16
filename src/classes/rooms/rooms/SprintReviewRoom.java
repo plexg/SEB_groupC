@@ -108,4 +108,8 @@ public class SprintReviewRoom extends Room {
             System.exit(0);
         }
     }
+
+    @Override
+    public void giveExtraKey() {
+    }
 }

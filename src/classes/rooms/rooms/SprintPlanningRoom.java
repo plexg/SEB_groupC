@@ -1,17 +1,23 @@
 package classes.rooms.rooms;
 
+import Challenge.CategorizationChallenge;
 import classes.database.Database;
+import classes.impediments.monsters.CoffeeMonster;
 import classes.items.CupOfCoffee;
 import classes.items.Item;
+import classes.items.Pencil;
 import classes.items.PurpleKey;
 import classes.nonrooms.Player;
 import classes.rooms.Room;
 import classes.hints.Hint;
 import classes.hints.HintFactory;
+import classes.items.inventory.Inventory;
 import Challenge.ChallengeStrategy;
 import Challenge.MultipleChoiceChallenge;
+import classes.nonrooms.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,12 +31,14 @@ public class SprintPlanningRoom extends Room {
     private final List<Item> items = new ArrayList<>();
     private final PurpleKey purpleKey = new PurpleKey(5);
     private final CupOfCoffee cupOfCoffee = new CupOfCoffee();
+    private final Game game;
 
-    public SprintPlanningRoom(Player player, Database database) {
+    public SprintPlanningRoom(Player player, Database database, Game game) {
         this.player = player;
         this.database = database;
         this.challenge = new MultipleChoiceChallenge();
         this.player.setRoom(this);
+        this.game = game;
 
         items.add(purpleKey);
         items.add(cupOfCoffee);
@@ -88,7 +96,8 @@ public class SprintPlanningRoom extends Room {
             presentChallenge();
         }
         System.out.println("Correct! You can now proceed to the next room: DailyScrumRoom.");
-        System.out.println("You can type 'go to DailyScrumRoom' to enter the next room, status to see your status, go back to the previous room or quit to exit the game.");
+        triggerMonster();
+        System.out.println("You can type 'go to DailyScrumRoom' to enter the next room, 'status' to see your status, go back to the previous room or quit to exit the game.");
         database.updateRoomCompletion(player.getName(), "sprintplanningroom_completed", true);
         Room dailyScrumRoom = new DailyScrumRoom(player, database);
         dailyScrumRoom.setName("DailyScrumRoom");
@@ -104,7 +113,87 @@ public class SprintPlanningRoom extends Room {
 
     @Override
     public void triggerMonster() {
-        System.out.println("A Coffee Monster appears! It looks angry.");
-        // Add logic for monster interaction if needed
+        System.out.println("Oh no! What's that noise?...");
+        System.out.println(enter);
+        input.nextLine();
+        System.out.println("A Coffee Monster appears in front of the door! It looks angry...");
+        System.out.println(enter);
+        input.nextLine();
+
+        if (!player.inventory.hasItem("Pencil")) {
+            System.out.println("You need a weapon to defeat the Coffee Monster!");
+            System.out.println("Go back to the previous room and find a Pencil to defeat it.");
+            System.out.println(enter);
+            input.nextLine();
+            Room startRoom = new StartRoom(player);
+            startRoom.setName("StartRoom");
+            player.setRoom(startRoom);
+            game.handleStartRoom(input);
+            return;
+        }
+
+        CoffeeMonster coffeeMonster = new CoffeeMonster();
+        Pencil pencil = new Pencil();
+
+        MultipleChoiceChallenge multipleChoiceChallenge = new MultipleChoiceChallenge();
+        CategorizationChallenge categorizationChallenge = new CategorizationChallenge();
+
+        List<String> sprintPlanningQuestions = new ArrayList<>();
+        multipleChoiceChallenge.Questions.keySet().stream()
+                .filter(key -> key.startsWith("SprintPlanningQ") && key.matches("SprintPlanningQ[2-7]"))
+                .forEach(sprintPlanningQuestions::add);
+
+        categorizationChallenge.Questions.keySet().stream()
+                .filter(key -> key.startsWith("SprintPlanningQ") && key.matches("SprintPlanningQ[2-7]"))
+                .forEach(sprintPlanningQuestions::add);
+
+        Collections.shuffle(sprintPlanningQuestions);
+
+        while (!sprintPlanningQuestions.isEmpty() && player.getHp() > 0 && coffeeMonster.getHealthPoints() > 0) {
+            String selectedQuestion = sprintPlanningQuestions.remove(0);
+
+            if (multipleChoiceChallenge.Questions.containsKey(selectedQuestion)) {
+                multipleChoiceChallenge.showQuestion(selectedQuestion);
+            } else if (categorizationChallenge.Questions.containsKey(selectedQuestion)) {
+                categorizationChallenge.showQuestion(selectedQuestion);
+            }
+
+            System.out.println("Enter your answer:");
+            String answer = input.nextLine().trim();
+            List<String> playerAnswers = new ArrayList<>();
+            playerAnswers.add(answer);
+
+            boolean isCorrect = false;
+            if (multipleChoiceChallenge.Questions.containsKey(selectedQuestion)) {
+                isCorrect = multipleChoiceChallenge.checkAnswer(selectedQuestion, playerAnswers);
+            } else if (categorizationChallenge.Questions.containsKey(selectedQuestion)) {
+                isCorrect = categorizationChallenge.checkAnswer(selectedQuestion, playerAnswers);
+            }
+
+            if (isCorrect) {
+                System.out.println("Correct! You damage the Coffee Monster.");
+                pencil.attack(coffeeMonster);
+            } else {
+                System.out.println("Wrong! The Coffee Monster attacks you.");
+                coffeeMonster.attack(player);
+            }
+
+            System.out.println("Player HP: " + player.getHp());
+            System.out.println("Monster HP: " + coffeeMonster.getHealthPoints());
+        }
+
+        if (player.getHp() <= 0) {
+            System.out.println("Game Over! You have been defeated by the Coffee Monster.");
+            database.deletePlayer(player.getName());
+            game.startGame(input);
+        } else if (coffeeMonster.getHealthPoints() <= 0) {
+            System.out.println("You defeated the Coffee Monster!");
+            System.out.println("Resetting questions for the next encounter...");
+            triggerMonster();
+        }
+    }
+
+    @Override
+    public void giveExtraKey() {
     }
 }

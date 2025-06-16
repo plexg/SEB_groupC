@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.List;
 
 public class MultipleChoiceChallenge implements ChallengeStrategy {
-    Map<String, Question> Questions = new HashMap<>();
+    public Map<String, Question> Questions = new HashMap<>();
 
     public MultipleChoiceChallenge() {
         Questions.put("SprintPlanningQ1", new Question(

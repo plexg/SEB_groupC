@@ -38,7 +38,7 @@ public class DailyScrumRoom extends Room {
         System.out.println("Welcome to the Daily Scrum Room!");
         System.out.println(enter);
         input.nextLine();
-        System.out.println("In this room, you will need to answer an assignment about which team member should give what status-update.");
+        System.out.println("Answer questions to proceed to the next room");
         System.out.println(enter);
         input.nextLine();
         System.out.println("Do you want to see the assignment, your status, go back to the previous room, or quit?");
@@ -118,5 +118,9 @@ public class DailyScrumRoom extends Room {
     @Override
     public void triggerMonster() {
         // No monster in this room
+    }
+
+    @Override
+    public void giveExtraKey() {
     }
 }

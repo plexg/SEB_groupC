@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class CategorizationChallenge implements ChallengeStrategy {
-    Map<String, Question> Questions = new HashMap<>();
+    public Map<String, Question> Questions = new HashMap<>();
 
     public CategorizationChallenge() {
         Questions.put("SprintPlanningQ5", new Question(

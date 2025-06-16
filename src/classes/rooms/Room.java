@@ -51,4 +51,7 @@ public abstract class Room implements Hint {
 
     public void triggerMonster() {
     }
+
+    public void giveExtraKey() {
+    }
 }

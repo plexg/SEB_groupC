@@ -23,7 +23,7 @@ public class  RoomFactory {
                 case "DailyScrumRoom":
                     return new DailyScrumRoom(player, database);
                 case "SprintPlanningRoom":
-                    return new SprintPlanningRoom(player, database);
+                    return new SprintPlanningRoom(player, database, new );
                 case "SprintRetrospectiveRoom":
                     return new SprintRetrospectiveRoom(player, database);
                 case "SprintReviewRoom":

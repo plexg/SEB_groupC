@@ -131,7 +131,7 @@ public class Game {
         }
     }
 
-    private void handleStartRoom(Scanner sc) {
+    public void handleStartRoom(Scanner sc) {
         ((StartRoom) player.getRoom()).showIntroduction();
         while (true) {
             System.out.print("Enter your choice: ");

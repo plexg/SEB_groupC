@@ -1,10 +1,10 @@
-package classes.jokers;
+package classes.joker;
 
 import classes.rooms.Room;
 
 import java.util.List;
 
-public class KeyJoker extends Joker {
+public class KeyJoker extends classes.jokers.Joker {
     private final List<String> validRooms = List.of("Daily Scrum", "Review");
 
     @Override

@@ -24,10 +24,6 @@ package Challenge.questions;
             System.out.println("Question: " + question);
         }
 
-        public boolean check(String userAnswer) {
-            return userAnswer.equalsIgnoreCase(answer);
-        }
-
         @Override
         public boolean checkAnswer(String name, List<String> userAnswers) {
             if (userAnswers.size() != 1) {
