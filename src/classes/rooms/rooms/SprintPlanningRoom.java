@@ -14,6 +14,7 @@ import classes.hints.HintFactory;
 import classes.items.inventory.Inventory;
 import Challenge.ChallengeStrategy;
 import Challenge.MultipleChoiceChallenge;
+import Challenge.questions.Question;
 import classes.nonrooms.*;
 
 import java.util.ArrayList;
@@ -147,35 +148,52 @@ public class SprintPlanningRoom extends Room {
                 .filter(key -> key.startsWith("SprintPlanningQ") && key.matches("SprintPlanningQ[2-7]"))
                 .forEach(sprintPlanningQuestions::add);
 
-        Collections.shuffle(sprintPlanningQuestions);
+        while (player.getHp() > 0 && coffeeMonster.getHealthPoints() > 0) {
+            if (sprintPlanningQuestions.isEmpty()) {
+                multipleChoiceChallenge.Questions.keySet().stream()
+                        .filter(key -> key.startsWith("SprintPlanningQ") && key.matches("SprintPlanningQ[2-7]"))
+                        .forEach(sprintPlanningQuestions::add);
 
-        while (!sprintPlanningQuestions.isEmpty() && player.getHp() > 0 && coffeeMonster.getHealthPoints() > 0) {
+                categorizationChallenge.Questions.keySet().stream()
+                        .filter(key -> key.startsWith("SprintPlanningQ") && key.matches("SprintPlanningQ[2-7]"))
+                        .forEach(sprintPlanningQuestions::add);
+
+                Collections.shuffle(sprintPlanningQuestions);
+            }
+
             String selectedQuestion = sprintPlanningQuestions.remove(0);
 
             if (multipleChoiceChallenge.Questions.containsKey(selectedQuestion)) {
                 multipleChoiceChallenge.showQuestion(selectedQuestion);
+                System.out.println("Enter your answer:");
+                String answer = input.nextLine().trim();
+                List<String> playerAnswers = Collections.singletonList(answer);
+                if (multipleChoiceChallenge.checkAnswer(selectedQuestion, playerAnswers)) {
+                    System.out.println("Correct! You damage the Coffee Monster.");
+                    pencil.attack(coffeeMonster);
+                } else {
+                    System.out.println("Wrong! The Coffee Monster attacks you.");
+                    coffeeMonster.attack(player);
+                }
             } else if (categorizationChallenge.Questions.containsKey(selectedQuestion)) {
-                categorizationChallenge.showQuestion(selectedQuestion);
-            }
+                Question question = categorizationChallenge.Questions.get(selectedQuestion);
+                System.out.println(question.getQuestion());
 
-            System.out.println("Enter your answer:");
-            String answer = input.nextLine().trim();
-            List<String> playerAnswers = new ArrayList<>();
-            playerAnswers.add(answer);
+                System.out.println("Enter your answers one by one:");
+                List<String> playerAnswers = new ArrayList<>();
+                for (int i = 0; i < 3; i++) { // Assuming 3 answers are required
+                    System.out.print((i + 1) + ": ");
+                    String answer = input.nextLine().trim();
+                    playerAnswers.add(answer);
+                }
 
-            boolean isCorrect = false;
-            if (multipleChoiceChallenge.Questions.containsKey(selectedQuestion)) {
-                isCorrect = multipleChoiceChallenge.checkAnswer(selectedQuestion, playerAnswers);
-            } else if (categorizationChallenge.Questions.containsKey(selectedQuestion)) {
-                isCorrect = categorizationChallenge.checkAnswer(selectedQuestion, playerAnswers);
-            }
-
-            if (isCorrect) {
-                System.out.println("Correct! You damage the Coffee Monster.");
-                pencil.attack(coffeeMonster);
-            } else {
-                System.out.println("Wrong! The Coffee Monster attacks you.");
-                coffeeMonster.attack(player);
+                if (categorizationChallenge.checkAnswer(selectedQuestion, playerAnswers)) {
+                    System.out.println("Correct! You damage the Coffee Monster.");
+                    pencil.attack(coffeeMonster);
+                } else {
+                    System.out.println("Wrong! The Coffee Monster attacks you.");
+                    coffeeMonster.attack(player);
+                }
             }
 
             System.out.println("Player HP: " + player.getHp());
@@ -188,8 +206,6 @@ public class SprintPlanningRoom extends Room {
             game.startGame(input);
         } else if (coffeeMonster.getHealthPoints() <= 0) {
             System.out.println("You defeated the Coffee Monster!");
-            System.out.println("Resetting questions for the next encounter...");
-            triggerMonster();
         }
     }
 

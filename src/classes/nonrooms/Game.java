@@ -23,7 +23,7 @@ public class Game {
         this.rooms.add(new DailyScrumRoom(tempPlayer, this.database));
         this.rooms.add(new SprintRetrospectiveRoom(tempPlayer, this.database));
         this.rooms.add(new FinalRoom());
-        this.rooms.add(new SprintPlanningRoom(tempPlayer, this.database));
+        this.rooms.add(new SprintPlanningRoom(tempPlayer, this.database, this));
         this.rooms.add(new SprintReviewRoom(tempPlayer, this.database, new MultipleChoiceChallenge()));
         this.rooms.add(new ScrumBoardRoom(tempPlayer, this.database));
 
@@ -78,7 +78,7 @@ public class Game {
                     handleStartRoom(sc);
                     break;
                 case "sprintplanningroom":
-                    player.setRoom(new SprintPlanningRoom(player, database));
+                    player.setRoom(new SprintPlanningRoom(player, database, this));
                     handleSprintPlanningRoom(sc);
                     break;
                 case "dailyscrumroom":
@@ -137,7 +137,7 @@ public class Game {
             System.out.print("Enter your choice: ");
             String choice = sc.nextLine();
             if (choice.equalsIgnoreCase("go to SprintPlanningRoom")) {
-                Room sprintPlanningRoom = new SprintPlanningRoom(player, database);
+                Room sprintPlanningRoom = new SprintPlanningRoom(player, database, this);
                 sprintPlanningRoom.setName("SprintPlanningRoom");
                 player.setRoom(sprintPlanningRoom);
                 handleSprintPlanningRoom(sc);
@@ -146,6 +146,9 @@ public class Game {
                 player.getRoom().searchRoom();
             } else if (choice.equalsIgnoreCase("status")) {
                 System.out.println(player.getStatus());
+            } else if (choice.equalsIgnoreCase("go back")) {
+                goBack(sc);
+                break;
             } else if (choice.equalsIgnoreCase("quit")) {
                 saveAndQuit();
                 break;
@@ -175,6 +178,9 @@ public class Game {
                 } else {
                     System.out.println("You must complete the assignment in this room before proceeding.");
                 }
+            } else if (choice.equalsIgnoreCase("go back")) {
+                goBack(sc);
+                break;
             } else if (choice.equalsIgnoreCase("quit")) {
                 saveAndQuit();
                 break;
@@ -204,6 +210,9 @@ public class Game {
                 } else {
                     System.out.println("You must complete the assignment in this room before proceeding.");
                 }
+            } else if (choice.equalsIgnoreCase("go back")) {
+                goBack(sc);
+                break;
             } else if (choice.equalsIgnoreCase("quit")) {
                 saveAndQuit();
                 break;
@@ -233,6 +242,9 @@ public class Game {
                 } else {
                     System.out.println("You must complete the assignment in this room before proceeding.");
                 }
+            } else if (choice.equalsIgnoreCase("go back")) {
+                goBack(sc);
+                break;
             } else if (choice.equalsIgnoreCase("quit")) {
                 saveAndQuit();
                 break;
@@ -263,6 +275,9 @@ public class Game {
                 } else {
                     System.out.println("You must complete the assignment in this room before proceeding.");
                 }
+            } else if (choice.equalsIgnoreCase("go back")) {
+                goBack(sc);
+                break;
             } else if (choice.equalsIgnoreCase("quit")) {
                 saveAndQuit();
                 break;
@@ -293,6 +308,9 @@ public class Game {
                 } else {
                     System.out.println("You must complete the assignment in this room before proceeding.");
                 }
+            } else if (choice.equalsIgnoreCase("go back")) {
+                goBack(sc);
+                break;
             } else if (choice.equalsIgnoreCase("quit")) {
                 saveAndQuit();
                 break;
@@ -308,5 +326,26 @@ public class Game {
         database.updatePlayer(player);
         System.out.println("Game saved. Goodbye!");
     }
-}
 
+    private void goBack(Scanner sc) {
+        if (player.getPreviousRoom() != null) {
+            player.setRoom(player.getPreviousRoom());
+            System.out.println("Going back to: " + player.getRoom().getName());
+            if (player.getRoom() instanceof StartRoom) {
+                handleStartRoom(sc);
+            } else if (player.getRoom() instanceof SprintPlanningRoom) {
+                handleSprintPlanningRoom(sc);
+            } else if (player.getRoom() instanceof DailyScrumRoom) {
+                handleDailyScrumRoom(sc);
+            } else if (player.getRoom() instanceof ScrumBoardRoom) {
+                handleScrumBoardRoom(sc);
+            } else if (player.getRoom() instanceof SprintReviewRoom) {
+                handleSprintReviewRoom(sc);
+            } else if (player.getRoom() instanceof SprintRetrospectiveRoom) {
+                handleSprintRetrospectiveRoom(sc);
+            }
+        } else {
+            System.out.println("You cannot go back from here.");
+        }
+    }
+}

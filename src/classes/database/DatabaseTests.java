@@ -25,5 +25,12 @@ public class DatabaseTests {
                 System.out.println("Deletion failed: " + e.getMessage());
             }
         }
+        if (input.equalsIgnoreCase("DeleteAll")) {
+            try {
+                database.deleteAll();
+            } catch (Exception e) {
+                System.out.println("Full deletion failed: " + e.getMessage());
+            }
+        }
     }
 }

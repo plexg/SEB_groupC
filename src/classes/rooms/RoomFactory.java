@@ -1,5 +1,6 @@
 package classes.rooms;
 
+    import classes.nonrooms.Game;
     import classes.nonrooms.Player;
     import classes.database.Database;
     import classes.rooms.rooms.*;
@@ -23,7 +24,7 @@ public class  RoomFactory {
                 case "DailyScrumRoom":
                     return new DailyScrumRoom(player, database);
                 case "SprintPlanningRoom":
-                    return new SprintPlanningRoom(player, database, new );
+                    return new SprintPlanningRoom(player, database, new Game());
                 case "SprintRetrospectiveRoom":
                     return new SprintRetrospectiveRoom(player, database);
                 case "SprintReviewRoom":

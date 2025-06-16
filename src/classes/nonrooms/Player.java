@@ -15,6 +15,7 @@ public class Player {
     private Room room;
     private String name;
     public Inventory inventory;
+    private Room previousRoom;
 
     // Constructor
     public Player(int id, int hp, Room room, String name, List<Item> items) {
@@ -24,6 +25,7 @@ public class Player {
         this.room = room;
         this.name = name;
         this.inventory = new Inventory();
+        this.previousRoom = this.room;
     }
 
     // Getters and Setters
@@ -65,6 +67,14 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public Room getPreviousRoom() {
+        return previousRoom;
     }
 
     // Methods

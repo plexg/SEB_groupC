@@ -17,7 +17,7 @@ public class CategorizationChallenge implements ChallengeStrategy {
                         "A. Helps divide work into smaller, doable parts\n" +
                         "B. Helps the team decide what fits in the sprint\n" +
                         "C. Helps the team understand the purpose of the sprint",
-                "1: C, 2: A, 3: B"
+                "-+"
         ));
 
         Questions.put("DailyScrumQ1", new Question(

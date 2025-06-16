@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import classes.database.Database;
 import classes.items.Item;
 import classes.items.Pencil;
 import classes.items.WhiteKey;
 import classes.nonrooms.Player;
 import classes.rooms.Room;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class StartRoom extends Room {
     private Player player;
@@ -75,6 +78,11 @@ public class StartRoom extends Room {
         System.out.println("You found a Pencil and a White Key! Use the pencil for offense and the white key to unlock the white lock.");
         player.addItem(pencil);
         player.addItem(whiteKey);
+        try (Connection connection = Database.getConnection()) {
+            player.getInventory().saveToDatabase(player.getId(), connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

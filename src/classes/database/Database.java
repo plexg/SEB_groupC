@@ -14,9 +14,17 @@ public class Database {
     private static final String USER = "root";
     private static final String PASSWORD = "Koe!90!KJ!80";
     List<Item> items = new ArrayList<Item>();
+    private Connection connection;
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
 
     public Connection connect() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        if (connection == null || connection.isClosed()) {
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        }
+        return connection;
     }
 
     public Player loadPlayer(String name) {
@@ -139,6 +147,30 @@ public class Database {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void deleteAll() throws Exception {
+        connect();
+        try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
+
+            // Query to get all table names
+            ResultSet rs = stmt.executeQuery("SHOW TABLES");
+            List<String> tableNames = new ArrayList<>();
+            while (rs.next()) {
+                tableNames.add(rs.getString(1));
+            }
+
+            // Truncate each table
+            for (String tableName : tableNames) {
+                try (Statement truncateStmt = connection.createStatement()) {
+                    truncateStmt.executeUpdate("TRUNCATE TABLE " + tableName);
+                }
+            }
+
+            stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
+            System.out.println("All data in the database has been deleted.");
         }
     }
 }

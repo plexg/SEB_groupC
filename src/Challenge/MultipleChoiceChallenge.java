@@ -34,7 +34,7 @@ public class MultipleChoiceChallenge implements ChallengeStrategy {
         ));
 
         Questions.put("SprintPlanningQ4", new Question(
-                "The __________ helps the team break down and estimate the selected backlog items during Sprint Planning.\n",
+                "The _____ _____ helps the team break down and estimate the selected backlog items during Sprint Planning.\n",
                 "Scrum Master"
         ));
 

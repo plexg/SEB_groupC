@@ -1,6 +1,9 @@
 package classes.items.inventory;
 
 import classes.items.Item;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,20 +63,44 @@ public class Inventory {
     }
 
     public String listItems() {
-        if (items.isEmpty()) {
-            return "No items in the inventory.";
-        }
-        StringBuilder itemList = new StringBuilder("Items in inventory: ");
-        for (int i = 0; i < items.size(); i++) {
-            itemList.append(items.get(i).getName());
-            if (i < items.size() - 1) {
-                itemList.append(", ");
+        StringBuilder itemsList = new StringBuilder();
+        for (String key : items.keySet()) {
+            Item item = items.get(key);
+            if (item != null) {
+                itemsList.append(item.getName()).append("\n");
+            } else {
+                itemsList.append("Item with key '").append(key).append("' not found.\n");
             }
         }
-        return itemList.toString();
+        return itemsList.toString();
     }
 
     public Map<String, Item> getItems() {
         return new HashMap<>(items);
+    }
+
+    public void saveToDatabase(int playerId, Connection connection) {
+        String query = "INSERT INTO PlayerInventory (player_id, BoxCutter, Staplergun, Pencil, Cup_of_Coffee, Donut, White_Key, Green_Key, Purple_Key, Gold_Key) " +
+                       "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                       "ON DUPLICATE KEY UPDATE BoxCutter = VALUES(BoxCutter), Staplergun = VALUES(Staplergun), Pencil = VALUES(Pencil), " +
+                       "Cup_of_Coffee = VALUES(Cup_of_Coffee), Donut = VALUES(Donut), White_Key = VALUES(White_Key), " +
+                       "Green_Key = VALUES(Green_Key), Purple_Key = VALUES(Purple_Key), Gold_Key = VALUES(Gold_Key)";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, playerId);
+            stmt.setBoolean(2, items.containsKey("BoxCutter"));
+            stmt.setBoolean(3, items.containsKey("Staplergun"));
+            stmt.setBoolean(4, items.containsKey("Pencil"));
+            stmt.setBoolean(5, items.containsKey("Cup_of_Coffee"));
+            stmt.setBoolean(6, items.containsKey("Donut"));
+            stmt.setBoolean(7, items.containsKey("White_Key"));
+            stmt.setBoolean(8, items.containsKey("Green_Key"));
+            stmt.setBoolean(9, items.containsKey("Purple_Key"));
+            stmt.setBoolean(10, items.containsKey("Gold_Key"));
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
