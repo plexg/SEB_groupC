@@ -2,12 +2,12 @@ package classes.items;
 
 import classes.impediments.Monster;
 
-public class StanleyKnife implements DamageDealer {
+public class BoxCutter implements DamageDealer {
     private String name;
     private int damage;
 
-    public StanleyKnife() {
-        this.name = "Stanley Knife";
+    public BoxCutter() {
+        this.name = "Box Cutter";
         this.damage = 40;
     }
 

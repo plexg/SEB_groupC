@@ -1,11 +1,16 @@
 package classes.nonrooms;
 
 import classes.database.Database;
+import classes.items.CupOfCoffee;
+import classes.items.Donut;
+import classes.items.Healer;
 import classes.items.Item;
 import classes.rooms.*;
 import classes.rooms.rooms.*;
 import Challenge.MultipleChoiceChallenge;
+import org.w3c.dom.ls.LSOutput;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -16,16 +21,19 @@ public class Game {
     private Database database;
     private List<Item> items = new ArrayList<>();
 
+    CupOfCoffee cupOfCoffee = new CupOfCoffee();
+    Donut donut = new Donut();
+
     public Game() {
         this.rooms = new ArrayList<>();
         this.database = new Database();
         Player tempPlayer = new Player(0, 100, null, "temp", items);
-        this.rooms.add(new DailyScrumRoom(tempPlayer, this.database));
-        this.rooms.add(new SprintRetrospectiveRoom(tempPlayer, this.database));
-        this.rooms.add(new FinalRoom());
+        this.rooms.add(new DailyScrumRoom(tempPlayer, this.database, this));
+        this.rooms.add(new SprintRetrospectiveRoom(tempPlayer, this.database, this));
+        this.rooms.add(new FinalRoom(tempPlayer, this.database, this));
         this.rooms.add(new SprintPlanningRoom(tempPlayer, this.database, this));
-        this.rooms.add(new SprintReviewRoom(tempPlayer, this.database, new MultipleChoiceChallenge()));
-        this.rooms.add(new ScrumBoardRoom(tempPlayer, this.database));
+        this.rooms.add(new SprintReviewRoom(tempPlayer, this.database, new MultipleChoiceChallenge(), this));
+        this.rooms.add(new ScrumBoardRoom(tempPlayer, this.database, this));
 
         this.player = tempPlayer;
     }
@@ -55,7 +63,6 @@ public class Game {
                     continueGame(sc);
                 } else {
                     System.out.println("No saved game found for this name. Try again or start a new game.");
-                    continue;
                 }
                 break;
             } else if (choice.equalsIgnoreCase("2") || choice.equalsIgnoreCase("New Game")) {
@@ -67,7 +74,7 @@ public class Game {
         }
     }
 
-    private void continueGame(Scanner sc) {
+    public void continueGame(Scanner sc) {
         String savedRoom = database.getPlayerRoom(player.getName());
         System.out.println("Loaded room from database: " + savedRoom);
 
@@ -82,11 +89,11 @@ public class Game {
                     handleSprintPlanningRoom(sc);
                     break;
                 case "dailyscrumroom":
-                    player.setRoom(new DailyScrumRoom(player, database));
+                    player.setRoom(new DailyScrumRoom(player, database, this));
                     handleDailyScrumRoom(sc);
                     break;
                 case "scrumboardroom":
-                    player.setRoom(new ScrumBoardRoom(player, database));
+                    player.setRoom(new ScrumBoardRoom(player, database, this));
                     handleScrumBoardRoom(sc);
                     break;
                 default:
@@ -101,7 +108,7 @@ public class Game {
         }
     }
 
-    private void newGame(Scanner sc) {
+    public void newGame(Scanner sc) {
         while (true) {
             System.out.print("What is your name? ");
             String name = sc.nextLine().trim();
@@ -115,18 +122,46 @@ public class Game {
                 continue;
             }
 
-            player = new Player(0, 100, null, name, items);
+            Player newPlayer = new Player(0, 100, null, name, items);
+
+            boolean isSaved = database.savePlayer(newPlayer);
+            if (!isSaved) {
+                System.out.println("Failed to save the player. Please try again.");
+                continue;
+            }
+
+            Player savedPlayer = database.loadPlayer(name);
+            if (savedPlayer == null) {
+                System.out.println("Failed to load the saved player. Please try again.");
+                continue;
+            }
+
+            System.out.println("Choose your Joker:");
+            System.out.println("1. Hint Joker (You are able to get 1 hint in a room that will help you with the assignment)");
+            System.out.println("2. Key Joker (You are able to skip the room Daily Scrum Room and Sprint Review Room and go to the next one)");
+            int choice = sc.nextInt();
+
+            classes.joker.Joker joker;
+            if (choice == 1) {
+                joker = new classes.joker.HintJoker();
+            } else if (choice == 2) {
+                joker = new classes.joker.KeyJoker();
+            } else {
+                System.out.println("Invalid choice. Defaulting to Hint Joker.");
+                joker = new classes.joker.HintJoker();
+            }
+
+            player.getInventory().addItem((Item) joker);
+
+            System.out.println("You have chosen the " + joker.getName() + ".");
+
+            player = savedPlayer;
             Room startRoom = new StartRoom(player);
             startRoom.setName("StartRoom");
             player.setRoom(startRoom);
 
-            boolean isSaved = database.savePlayer(player);
-            if (isSaved) {
-                System.out.println("Game is starting...");
-                handleStartRoom(sc);
-            } else {
-                System.out.println("Failed to save the player. Please try again.");
-            }
+            System.out.println("Game is starting...");
+            handleStartRoom(sc);
             break;
         }
     }
@@ -144,6 +179,10 @@ public class Game {
                 break;
             } else if (choice.equalsIgnoreCase("search room")) {
                 player.getRoom().searchRoom();
+            } else if (choice.equalsIgnoreCase("use cup of coffee")) {
+                useItem(cupOfCoffee, "Cup of Coffee", sc);
+            } else if (choice.equalsIgnoreCase("use donut")) {
+                useItem(donut, "Donut", sc);
             } else if (choice.equalsIgnoreCase("status")) {
                 System.out.println(player.getStatus());
             } else if (choice.equalsIgnoreCase("go back")) {
@@ -158,7 +197,7 @@ public class Game {
         }
     }
 
-    private void handleSprintPlanningRoom(Scanner sc) {
+    public void handleSprintPlanningRoom(Scanner sc) {
         ((SprintPlanningRoom) player.getRoom()).showIntroduction();
         while (true) {
             System.out.print("Enter your choice: ");
@@ -168,9 +207,15 @@ public class Game {
                 ((SprintPlanningRoom) player.getRoom()).giveFeedback();
             } else if (choice.equalsIgnoreCase("status")) {
                 System.out.println(player.getStatus());
+            } else if (choice.equalsIgnoreCase("search room")) {
+                player.getRoom().searchRoom();
+            } else if (choice.equalsIgnoreCase("use cup of coffee")) {
+                useItem(cupOfCoffee, "Cup of Coffee", sc);
+            } else if (choice.equalsIgnoreCase("use donut")) {
+                useItem(donut, "Donut", sc);
             } else if (choice.equalsIgnoreCase("go to DailyScrumRoom")) {
                 if (database.isRoomCompleted(player.getName(), "sprintplanningroom_completed")) {
-                    Room dailyScrumRoom = new DailyScrumRoom(player, database);
+                    Room dailyScrumRoom = new DailyScrumRoom(player, database, this);
                     dailyScrumRoom.setName("DailyScrumRoom");
                     player.setRoom(dailyScrumRoom);
                     handleDailyScrumRoom(sc);
@@ -190,7 +235,7 @@ public class Game {
         }
     }
 
-    private void handleDailyScrumRoom(Scanner sc) {
+    public void handleDailyScrumRoom(Scanner sc) {
         ((DailyScrumRoom) player.getRoom()).showIntroduction();
         while (true) {
             System.out.print("Enter your choice: ");
@@ -200,9 +245,15 @@ public class Game {
                 ((DailyScrumRoom) player.getRoom()).giveFeedback();
             } else if (choice.equalsIgnoreCase("status")) {
                 System.out.println(player.getStatus());
+            } else if (choice.equalsIgnoreCase("search room")) {
+                player.getRoom().searchRoom();
+            } else if (choice.equalsIgnoreCase("use cup of coffee")) {
+                useItem(cupOfCoffee, "Cup of Coffee", sc);
+            } else if (choice.equalsIgnoreCase("use donut")) {
+                useItem(donut, "Donut", sc);
             } else if (choice.equalsIgnoreCase("go to ScrumBoardRoom")) {
                 if (database.isRoomCompleted(player.getName(), "dailyscrumroom_completed")) {
-                    Room scrumBoardRoom = new ScrumBoardRoom(player, database);
+                    Room scrumBoardRoom = new ScrumBoardRoom(player, database, this);
                     scrumBoardRoom.setName("ScrumBoardRoom");
                     player.setRoom(scrumBoardRoom);
                     handleScrumBoardRoom(sc);
@@ -222,7 +273,7 @@ public class Game {
         }
     }
 
-    private void handleScrumBoardRoom(Scanner sc) {
+    public void handleScrumBoardRoom(Scanner sc) {
         ((ScrumBoardRoom) player.getRoom()).showIntroduction();
         while (true) {
             System.out.print("Enter your choice: ");
@@ -230,11 +281,17 @@ public class Game {
             if (choice.equalsIgnoreCase("assignment")) {
                 ((ScrumBoardRoom) player.getRoom()).presentChallenge();
                 ((ScrumBoardRoom) player.getRoom()).giveFeedback();
+            } else if (choice.equalsIgnoreCase("use cup of coffee")) {
+                useItem(cupOfCoffee, "Cup of Coffee", sc);
+            } else if (choice.equalsIgnoreCase("use donut")) {
+                useItem(donut, "Donut", sc);
+            } else if (choice.equalsIgnoreCase("search room")) {
+                player.getRoom().searchRoom();
             } else if (choice.equalsIgnoreCase("status")) {
                 System.out.println(player.getStatus());
             } else if (choice.equalsIgnoreCase("go to SprintReviewRoom")) {
                 if (database.isRoomCompleted(player.getName(), "scrumboardroom_completed")) {
-                    Room sprintReviewRoom = new SprintReviewRoom(player, database, new MultipleChoiceChallenge());
+                    Room sprintReviewRoom = new SprintReviewRoom(player, database, new MultipleChoiceChallenge(), this);
                     sprintReviewRoom.setName("SprintReviewRoom");
                     player.setRoom(sprintReviewRoom);
                     handleSprintReviewRoom(sc);
@@ -254,40 +311,7 @@ public class Game {
         }
     }
 
-    private void handleSprintRetrospectiveRoom(Scanner sc) {
-        SprintRetrospectiveRoom sprintRetrospectiveRoom = (SprintRetrospectiveRoom) player.getRoom();
-        sprintRetrospectiveRoom.showIntroduction();
-        while (true) {
-            System.out.print("Enter your choice: ");
-            String choice = sc.nextLine();
-            if (choice.equalsIgnoreCase("assignment")) {
-                sprintRetrospectiveRoom.presentChallenge();
-                sprintRetrospectiveRoom.giveFeedback();
-            } else if (choice.equalsIgnoreCase("status")) {
-                System.out.println(player.getStatus());
-            } else if (choice.equalsIgnoreCase("go to FinalRoom")) {
-                if (database.isRoomCompleted(player.getName(), "sprintretrospectiveroom_completed")) {
-                    Room finalRoom = new FinalRoom();
-                    finalRoom.setName("FinalRoom");
-                    player.setRoom(finalRoom);
-                    System.out.println("You have entered the Final Room!");
-                    break;
-                } else {
-                    System.out.println("You must complete the assignment in this room before proceeding.");
-                }
-            } else if (choice.equalsIgnoreCase("go back")) {
-                goBack(sc);
-                break;
-            } else if (choice.equalsIgnoreCase("quit")) {
-                saveAndQuit();
-                break;
-            } else {
-                System.out.println("Invalid choice. Please try again.");
-            }
-        }
-    }
-
-    private void handleSprintReviewRoom(Scanner sc) {
+    public void handleSprintReviewRoom(Scanner sc) {
         SprintReviewRoom sprintReviewRoom = (SprintReviewRoom) player.getRoom();
         sprintReviewRoom.showIntroduction();
         while (true) {
@@ -296,11 +320,17 @@ public class Game {
             if (choice.equalsIgnoreCase("assignment")) {
                 sprintReviewRoom.presentChallenge();
                 sprintReviewRoom.giveFeedback();
+            } else if (choice.equalsIgnoreCase("use cup of coffee")) {
+                useItem(cupOfCoffee, "Cup of Coffee", sc);
+            } else if (choice.equalsIgnoreCase("use donut")) {
+                useItem(donut, "Donut", sc);
+            } else if (choice.equalsIgnoreCase("search room")) {
+                player.getRoom().searchRoom();
             } else if (choice.equalsIgnoreCase("status")) {
                 System.out.println(player.getStatus());
             } else if (choice.equalsIgnoreCase("go to SprintRetrospectiveRoom")) {
                 if (database.isRoomCompleted(player.getName(), "sprintreviewroom_completed")) {
-                    Room sprintRetrospectiveRoom = new SprintRetrospectiveRoom(player, database);
+                    Room sprintRetrospectiveRoom = new SprintRetrospectiveRoom(player, database, this);
                     sprintRetrospectiveRoom.setName("SprintRetrospectiveRoom");
                     player.setRoom(sprintRetrospectiveRoom);
                     handleSprintRetrospectiveRoom(sc);
@@ -320,7 +350,46 @@ public class Game {
         }
     }
 
-    private void saveAndQuit() {
+    public void handleSprintRetrospectiveRoom(Scanner sc) {
+        SprintRetrospectiveRoom sprintRetrospectiveRoom = (SprintRetrospectiveRoom) player.getRoom();
+        sprintRetrospectiveRoom.showIntroduction();
+        while (true) {
+            System.out.print("Enter your choice: ");
+            String choice = sc.nextLine();
+            if (choice.equalsIgnoreCase("assignment")) {
+                sprintRetrospectiveRoom.presentChallenge();
+                sprintRetrospectiveRoom.giveFeedback();
+            } else if (choice.equalsIgnoreCase("use cup of coffee")) {
+                useItem(cupOfCoffee, "Cup of Coffee", sc);
+            } else if (choice.equalsIgnoreCase("use donut")) {
+                useItem(donut, "Donut", sc);
+            } else if (choice.equalsIgnoreCase("search room")) {
+                player.getRoom().searchRoom();
+            } else if (choice.equalsIgnoreCase("status")) {
+                System.out.println(player.getStatus());
+            } else if (choice.equalsIgnoreCase("go to FinalRoom")) {
+                if (database.isRoomCompleted(player.getName(), "sprintretrospectiveroom_completed")) {
+                    Room finalRoom = new FinalRoom(player, database, this);
+                    finalRoom.setName("FinalRoom");
+                    player.setRoom(finalRoom);
+                    System.out.println("You have entered the Final Room!");
+                    break;
+                } else {
+                    System.out.println("You must complete the assignment in this room before proceeding.");
+                }
+            } else if (choice.equalsIgnoreCase("go back")) {
+                goBack(sc);
+                break;
+            } else if (choice.equalsIgnoreCase("quit")) {
+                saveAndQuit();
+                break;
+            } else {
+                System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+
+    public void saveAndQuit() {
         System.out.println("Saving player with name: " + player.getName());
         database.updatePlayerRoom(player.getName(), player.getRoom().getName());
         database.updatePlayer(player);
@@ -334,18 +403,36 @@ public class Game {
             if (player.getRoom() instanceof StartRoom) {
                 handleStartRoom(sc);
             } else if (player.getRoom() instanceof SprintPlanningRoom) {
-                handleSprintPlanningRoom(sc);
+                handleStartRoom(sc);
             } else if (player.getRoom() instanceof DailyScrumRoom) {
-                handleDailyScrumRoom(sc);
+                handleSprintPlanningRoom(sc);
             } else if (player.getRoom() instanceof ScrumBoardRoom) {
-                handleScrumBoardRoom(sc);
+                handleDailyScrumRoom(sc);
             } else if (player.getRoom() instanceof SprintReviewRoom) {
-                handleSprintReviewRoom(sc);
+                handleScrumBoardRoom(sc);
             } else if (player.getRoom() instanceof SprintRetrospectiveRoom) {
-                handleSprintRetrospectiveRoom(sc);
+                handleSprintReviewRoom(sc);
+            } else {
+                System.out.println("Unknown room type. Cannot go back.");
             }
         } else {
             System.out.println("You cannot go back from here.");
+        }
+    }
+
+    public void useItem(Healer item, String itemName, Scanner sc) {
+        try {
+            if (player.inventory.hasItem(itemName, player.getId(), database.getConnection())) {
+                item.heal(player);
+                System.out.println("You used a " + itemName + ". Your HP is now " + player.getHp());
+                System.out.println("Press Enter to continue...");
+                player.inventory.removeItem(itemName, player.getId(), database.getConnection());
+                sc.nextLine();
+            } else {
+                System.out.println("You don't have a " + itemName + " in your inventory.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

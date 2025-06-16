@@ -3,6 +3,7 @@ package classes.rooms.rooms;
 import classes.items.GreenKey;
 import classes.items.Item;
 import classes.items.Staplergun;
+import classes.nonrooms.Game;
 import classes.nonrooms.Player;
 import classes.database.Database;
 import classes.rooms.Room;
@@ -11,6 +12,8 @@ import classes.hints.HintFactory;
 import Challenge.CategorizationChallenge;
 import Challenge.ChallengeStrategy;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 
 public class DailyScrumRoom extends Room {
@@ -23,10 +26,12 @@ public class DailyScrumRoom extends Room {
     private final Staplergun staplergun = new Staplergun();
     private final GreenKey greenKey = new GreenKey(3);
     private final String enter = "Press Enter to continue...";
+    private final Game game;
 
-    public DailyScrumRoom(Player player, Database database) {
+    public DailyScrumRoom(Player player, Database database, Game game) {
         this.player = player;
         this.database = database;
+        this.game = game;
         this.challenge = new CategorizationChallenge();
         this.player.setRoom(this);
         items.add(staplergun);
@@ -41,8 +46,8 @@ public class DailyScrumRoom extends Room {
         System.out.println("Answer questions to proceed to the next room");
         System.out.println(enter);
         input.nextLine();
-        System.out.println("Do you want to see the assignment, your status, go back to the previous room, or quit?");
-        System.out.println("You can type 'assignment', 'status', 'go back', or 'quit'.");
+        System.out.println("Do you want to see the assignment, your status, search the room, go back to the previous room, or quit?");
+        System.out.println("You can type 'assignment', 'status', 'search room', 'go back', or 'quit'.");
     }
 
     @Override
@@ -100,9 +105,9 @@ public class DailyScrumRoom extends Room {
             presentChallenge();
         }
         System.out.println("Correct! You can now proceed to the next room: ScrumBoardRoom.");
-        System.out.println("You can type 'go to ScrumBoardRoom' to enter the next room, 'status' to see your status, 'go back' to go to the previous room or 'quit' to exit the game.");
+        System.out.println("You can type 'go to ScrumBoardRoom' to enter the next room, 'search room' to search the room for valuable items, 'status' to see your hp, inventory and progress and 'quit' to save and exit the game.");
         database.updateRoomCompletion(player.getName(), "dailyscrumroom_completed", true);
-        Room scrumBoardRoom = new ScrumBoardRoom(player, database);
+        Room scrumBoardRoom = new ScrumBoardRoom(player, database, game);
         scrumBoardRoom.setName("ScrumBoardRoom");
         player.setRoom(scrumBoardRoom);
     }
@@ -113,6 +118,11 @@ public class DailyScrumRoom extends Room {
         System.out.println("You found a Green key and a stapler gun! Use the stapler gun for offense and the green key for the green lock.");
         player.addItem(greenKey);
         player.addItem(staplergun);
+        try (Connection connection = Database.getConnection()) {
+            player.getInventory().saveToDatabase(player.getId(), connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -121,6 +131,13 @@ public class DailyScrumRoom extends Room {
     }
 
     @Override
-    public void giveExtraKey() {
+    public void skipAssignment() {
+        System.out.println("You have chosen to skip the assignment.");
+        System.out.println("You can now proceed to the next room: ScrumBoardRoom.");
+        System.out.println("You can type 'go to ScrumBoardRoom' to enter the next room, 'search room' to search the room for valuable items, 'status' to see your hp, inventory and progress and 'quit' to save and exit the game.");
+        database.updateRoomCompletion(player.getName(), "dailyscrumroom_completed", true);
+        Room scrumBoardRoom = new ScrumBoardRoom(player, database, game);
+        scrumBoardRoom.setName("ScrumBoardRoom");
+        player.setRoom(scrumBoardRoom);
     }
 }

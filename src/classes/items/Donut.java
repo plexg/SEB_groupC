@@ -8,7 +8,7 @@ public class Donut implements Healer {
 
     public Donut() {
         this.name = "Donut";
-        this.healAmount = 20;
+        this.healAmount = 100;
     }
 
     public String getName() {

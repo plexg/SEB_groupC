@@ -6,7 +6,7 @@ import classes.nonrooms.Player;
 public class BossMonster extends Monster {
     public BossMonster() {
         super("The BOSS", "It's the Boss! He is the final challenge of this maze. Defeat him to escape!",
-                15,  200);
+                20,  240);
     }
 
     @Override

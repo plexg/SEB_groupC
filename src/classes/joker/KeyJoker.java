@@ -1,18 +1,28 @@
 package classes.joker;
 
 import classes.rooms.Room;
+import classes.rooms.rooms.*;
 
-import java.util.List;
-
-public class KeyJoker extends classes.jokers.Joker {
-    private final List<String> validRooms = List.of("Daily Scrum", "Review");
+public class KeyJoker implements classes.joker.Joker {
+    private boolean used = false;
 
     @Override
-    protected void performAction(Room room) {
-        if (!validRooms.contains(room.getName())) {
-            throw new UnsupportedOperationException("This joker cannot be used in this room.");
+    public void useIn(Room room) {
+        if (used) {
+            System.out.println("This joker has already been used.");
+            return;
         }
-        room.giveExtraKey();
-        System.out.println("You received an extra key!");
+        if (room instanceof DailyScrumRoom || room instanceof SprintReviewRoom) {
+            System.out.println("You used the KeyJoker to skip the assignment in this room!");
+            room.skipAssignment();
+            used = true;
+        } else {
+            throw new UnsupportedOperationException("KeyJoker cannot be used in this room.");
+        }
+    }
+
+    @Override
+    public String getName() {
+        return "KeyJoker";
     }
 }

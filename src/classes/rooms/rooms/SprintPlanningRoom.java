@@ -17,6 +17,8 @@ import Challenge.MultipleChoiceChallenge;
 import Challenge.questions.Question;
 import classes.nonrooms.*;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -58,8 +60,8 @@ public class SprintPlanningRoom extends Room {
             System.out.println("In this room, you will need to assess the given tasks and determine which ones fit into a 2-week sprint.");
             System.out.println(enter);
             input.nextLine();
-            System.out.println("Do you want to see the assignment, your status, go back to the previous room, or quit?");
-            System.out.println("You can type 'assignment', 'status', 'go back', or 'quit'.");
+            System.out.println("Do you want to see the assignment, your status, search the room, go back to the previous room, or quit?");
+            System.out.println("You can type 'assignment', 'status', 'search room', 'go back', or 'quit'.");
         }
     }
 
@@ -98,9 +100,9 @@ public class SprintPlanningRoom extends Room {
         }
         System.out.println("Correct! You can now proceed to the next room: DailyScrumRoom.");
         triggerMonster();
-        System.out.println("You can type 'go to DailyScrumRoom' to enter the next room, 'status' to see your status, go back to the previous room or quit to exit the game.");
+        System.out.println("You can type 'go to DailyScrumRoom' to enter the next room, 'search room' to search the room for valuable items, 'status' to see your hp, inventory and progress and 'quit' to save and exit the game.");
         database.updateRoomCompletion(player.getName(), "sprintplanningroom_completed", true);
-        Room dailyScrumRoom = new DailyScrumRoom(player, database);
+        Room dailyScrumRoom = new DailyScrumRoom(player, database, game);
         dailyScrumRoom.setName("DailyScrumRoom");
         player.setRoom(dailyScrumRoom);
     }
@@ -108,8 +110,13 @@ public class SprintPlanningRoom extends Room {
     @Override
     public void searchRoom() {
         System.out.println("Searching the room...");
-        System.out.println("You found a Purple key! Use this to unlock the purple lock.");
+        System.out.println("You found a Purple key! Use this to unlock the door to the Sprint Retrospective Room.");
         player.addItem(purpleKey);
+        try (Connection connection = Database.getConnection()) {
+            player.getInventory().saveToDatabase(player.getId(), connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -120,17 +127,24 @@ public class SprintPlanningRoom extends Room {
         System.out.println("A Coffee Monster appears in front of the door! It looks angry...");
         System.out.println(enter);
         input.nextLine();
+        System.out.println("Answer the questions correctly to damage and defeat the Coffee Monster and escape the room.");
+        System.out.println(enter);
+        input.nextLine();
 
-        if (!player.inventory.hasItem("Pencil")) {
-            System.out.println("You need a weapon to defeat the Coffee Monster!");
-            System.out.println("Go back to the previous room and find a Pencil to defeat it.");
-            System.out.println(enter);
-            input.nextLine();
-            Room startRoom = new StartRoom(player);
-            startRoom.setName("StartRoom");
-            player.setRoom(startRoom);
-            game.handleStartRoom(input);
-            return;
+        try {
+            if (!player.inventory.hasItem("Pencil", player.getId(), database.getConnection())) {
+                System.out.println("You need a weapon to defeat the Coffee Monster!");
+                System.out.println("Go back to the previous room and find a Pencil to defeat it.");
+                System.out.println(enter);
+                input.nextLine();
+                Room startRoom = new StartRoom(player);
+                startRoom.setName("StartRoom");
+                player.setRoom(startRoom);
+                game.handleStartRoom(input);
+                return;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
         CoffeeMonster coffeeMonster = new CoffeeMonster();
@@ -181,7 +195,7 @@ public class SprintPlanningRoom extends Room {
 
                 System.out.println("Enter your answers one by one:");
                 List<String> playerAnswers = new ArrayList<>();
-                for (int i = 0; i < 3; i++) { // Assuming 3 answers are required
+                for (int i = 0; i < 3; i++) {
                     System.out.print((i + 1) + ": ");
                     String answer = input.nextLine().trim();
                     playerAnswers.add(answer);
@@ -206,10 +220,18 @@ public class SprintPlanningRoom extends Room {
             game.startGame(input);
         } else if (coffeeMonster.getHealthPoints() <= 0) {
             System.out.println("You defeated the Coffee Monster!");
+            System.out.println("You recieved a cup of coffee and your pencil broke! Use the cup of coffee to heal yourself for 50hp and find a new weapon to fight the oncoming monsters.");
+            player.addItem(cupOfCoffee);
+            try (Connection connection = Database.getConnection()) {
+                player.getInventory().saveToDatabase(player.getId(), connection);
+                player.inventory.removeItem(pencil.getName(), player.getId(), database.getConnection());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     @Override
-    public void giveExtraKey() {
+    public void skipAssignment() {
     }
 }

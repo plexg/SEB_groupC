@@ -75,7 +75,7 @@ public class StartRoom extends Room {
     @Override
     public void searchRoom() {
         System.out.println("Searching the room...");
-        System.out.println("You found a Pencil and a White Key! Use the pencil for offense and the white key to unlock the white lock.");
+        System.out.println("You found a Pencil and a White Key! Use the pencil for offense and the white key to unlock door to the Sprint Planning Room.");
         player.addItem(pencil);
         player.addItem(whiteKey);
         try (Connection connection = Database.getConnection()) {
@@ -90,6 +90,6 @@ public class StartRoom extends Room {
     }
 
     @Override
-    public void giveExtraKey() {
+    public void skipAssignment() {
     }
 }

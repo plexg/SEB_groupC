@@ -3,11 +3,12 @@ package classes.items.inventory;
 import classes.items.Item;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import classes.items.ItemFactory;
 
 public class Inventory {
     private HashMap<String, Item> items;
@@ -25,8 +26,30 @@ public class Inventory {
         }
     }
 
-    public boolean hasItem(String name) {
-        return items.containsKey(name);
+    public Item getItem(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return null;
+        }
+        return items.get(name);
+    }
+
+    public boolean hasItem(String name, int playerId, Connection connection) {
+        if (name == null || name.trim().isEmpty()) {
+            return false;
+        }
+        String query = "SELECT COUNT(*) FROM playerinventory WHERE player_id = ? AND item_name = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, playerId);
+            stmt.setString(2, name);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public boolean removeBrokenItem(Item item) {
@@ -39,11 +62,28 @@ public class Inventory {
         return true;
     }
 
-    public boolean removeItem(String itemName) {
-        if (items.containsKey(itemName)) {
+    public boolean removeItem(String itemName, int playerId, Connection connection) {
+        if (hasItem(itemName, playerId, connection)) {
             items.remove(itemName);
-            notifyObservers();
-            return true;
+            String deleteQuery = "DELETE FROM playerinventory WHERE player_id = ? AND item_name = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(deleteQuery)) {
+                stmt.setInt(1, playerId);
+                stmt.setString(2, itemName);
+
+                int rowsAffected = stmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    notifyObservers();
+                    return true;
+                } else {
+                    System.out.println("Item not found in the database.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            System.out.println("Item not found in inventory.");
         }
         return false;
     }
@@ -75,32 +115,50 @@ public class Inventory {
         return itemsList.toString();
     }
 
-    public Map<String, Item> getItems() {
-        return new HashMap<>(items);
-    }
-
-    public void saveToDatabase(int playerId, Connection connection) {
-        String query = "INSERT INTO PlayerInventory (player_id, BoxCutter, Staplergun, Pencil, Cup_of_Coffee, Donut, White_Key, Green_Key, Purple_Key, Gold_Key) " +
-                       "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
-                       "ON DUPLICATE KEY UPDATE BoxCutter = VALUES(BoxCutter), Staplergun = VALUES(Staplergun), Pencil = VALUES(Pencil), " +
-                       "Cup_of_Coffee = VALUES(Cup_of_Coffee), Donut = VALUES(Donut), White_Key = VALUES(White_Key), " +
-                       "Green_Key = VALUES(Green_Key), Purple_Key = VALUES(Purple_Key), Gold_Key = VALUES(Gold_Key)";
-
+    public String loadFromDatabase(int playerId, Connection connection) {
+        StringBuilder result = new StringBuilder();
+        String query = "SELECT item_name FROM playerinventory WHERE player_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, playerId);
-            stmt.setBoolean(2, items.containsKey("BoxCutter"));
-            stmt.setBoolean(3, items.containsKey("Staplergun"));
-            stmt.setBoolean(4, items.containsKey("Pencil"));
-            stmt.setBoolean(5, items.containsKey("Cup_of_Coffee"));
-            stmt.setBoolean(6, items.containsKey("Donut"));
-            stmt.setBoolean(7, items.containsKey("White_Key"));
-            stmt.setBoolean(8, items.containsKey("Green_Key"));
-            stmt.setBoolean(9, items.containsKey("Purple_Key"));
-            stmt.setBoolean(10, items.containsKey("Gold_Key"));
-
-            stmt.executeUpdate();
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String itemName = rs.getString("item_name");
+                    Item item = ItemFactory.createItem(itemName);
+                    if (item != null) {
+                        items.put(itemName, item);
+                        result.append(itemName).append(", ");
+                    }
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
+            return "Error loading items from database.";
+        }
+        return result.length() > 0 ? result.substring(0, result.length() - 2) : "No items found.";
+    }
+
+    public void saveToDatabase(int playerId, Connection connection) throws SQLException {
+        String checkQuery = "SELECT COUNT(*) FROM playerinventory WHERE player_id = ? AND item_name = ?";
+        String insertQuery = "INSERT INTO playerinventory (player_id, item_name) VALUES (?, ?)";
+
+        try (PreparedStatement checkStmt = connection.prepareStatement(checkQuery);
+             PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
+
+            for (Item item : items.values()) {
+                checkStmt.setInt(1, playerId);
+                checkStmt.setString(2, item.getName());
+                try (ResultSet rs = checkStmt.executeQuery()) {
+                    if (rs.next() && rs.getInt(1) > 0) {
+                        continue;
+                    }
+                }
+
+                insertStmt.setInt(1, playerId);
+                insertStmt.setString(2, item.getName());
+                insertStmt.addBatch();
+            }
+
+            insertStmt.executeBatch();
         }
     }
 }

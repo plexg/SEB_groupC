@@ -34,13 +34,11 @@ public class CategorizationChallenge implements ChallengeStrategy {
 
         Questions.put("ScrumBoardQ1", new Question(
                 "Categorize the following backlog items:\n" +
-                        "1. Implement user authentication and authorization.\n" +
-                        "2. As a user, I want to reset my password so that I can regain access.\n" +
-                        "3. As an admin, I want to view all registered users.\n" +
-                        "4. Create a login page UI.\n" +
-                        "5. Write unit tests for the authentication module.\n\n" +
+                        "1. Create a login page UI.\n" +
+                        "2. Implement user authentication and authorization.\n" +
+                        "3. As a user, I want to reset my password so that I can regain access.\n" +
                         "Enter epic, user story or task next to each backlog item:",
-                "1: Epic, 2: User Story, 3: User Story, 4: Task, 5: Task"
+                "1: Task, 2: Epic, 3: User Story"
         ));
 
         Questions.put("ScrumBoardQ4", new Question(

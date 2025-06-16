@@ -3,29 +3,31 @@ package classes.nonrooms;
 import classes.items.Item;
 import classes.rooms.Room;
 import classes.items.inventory.Inventory;
+import classes.database.Database;
+import classes.joker.Joker;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
-
 
 public class Player {
     private int id;
     private int progress;
     private int hp;
-    private Room room;
+    private Room currentroom;
     private String name;
     public Inventory inventory;
     private Room previousRoom;
+    Database database = new Database();
 
     // Constructor
     public Player(int id, int hp, Room room, String name, List<Item> items) {
         this.id = id;
         this.progress = 0;
         this.hp = hp;
-        this.room = room;
+        this.currentroom = room;
         this.name = name;
         this.inventory = new Inventory();
-        this.previousRoom = this.room;
+        this.previousRoom = null;
     }
 
     // Getters and Setters
@@ -54,11 +56,14 @@ public class Player {
     }
 
     public Room getRoom() {
-        return room;
+        return currentroom;
     }
 
     public void setRoom(Room room) {
-        this.room = room;
+        if (this.currentroom != null) {
+            this.previousRoom = this.currentroom;
+        }
+        this.currentroom = room;
     }
 
     public String getName() {
@@ -79,12 +84,16 @@ public class Player {
 
     // Methods
     public String getStatus() {
-        return "Player Status:\n" +
-                "Progress: " + progress + "\n" +
-                "HP: " + hp + "\n" +
-                "Room: " + (room != null ? room.getClass().getSimpleName() : "None") + '\n' +
-                getItems();
-
+        try {
+            return "Player Status:\n" +
+                    "Progress: " + progress + "\n" +
+                    "HP: " + hp + "\n" +
+                    "Room: " + (currentroom != null ? currentroom.getClass().getSimpleName() : "None") + '\n' +
+                    "Inventory: " + '\n' + inventory.loadFromDatabase(getId(), database.getConnection()) +
+                    "\nType 'use <item>' to heal yourself with that item or use your Joker.\n";
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addItem(Item item) {
@@ -93,5 +102,14 @@ public class Player {
 
     public String getItems() {
         return inventory.listItems();
+    }
+
+    public void useJoker(String jokerName, Room room) {
+        Joker joker = (Joker) inventory.getItem(jokerName);
+        if (joker != null) {
+            joker.useIn(room);
+        } else {
+            System.out.println("You don't have this joker in your inventory.");
+        }
     }
 }

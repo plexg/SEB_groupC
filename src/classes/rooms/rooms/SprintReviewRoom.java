@@ -3,7 +3,8 @@ package classes.rooms.rooms;
 import Challenge.ChallengeStrategy;
 import classes.database.Database;
 import classes.items.Item;
-import classes.items.StanleyKnife;
+import classes.items.BoxCutter;
+import classes.nonrooms.Game;
 import classes.nonrooms.Player;
 import classes.rooms.Room;
 import classes.hints.Hint;
@@ -11,6 +12,8 @@ import classes.hints.HintFactory;
 import classes.impediments.Monster;
 import classes.impediments.ImpedimentFactory;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +23,17 @@ public class SprintReviewRoom extends Room {
     private Player player;
     private final Database database;
     private final List<Item> items = new ArrayList<>();
-    private final StanleyKnife stanleyKnife = new StanleyKnife();
+    private final BoxCutter boxCutter = new BoxCutter();
+    private final Game game;
 
-    public SprintReviewRoom(Player player, Database database, ChallengeStrategy challenge) {
+    public SprintReviewRoom(Player player, Database database, ChallengeStrategy challenge, Game game) {
         this.player = player;
         this.database = database;
         this.challenge = challenge;
         this.player.setRoom(this);
+        this.game = game;
 
-        items.add(stanleyKnife);
+        items.add(boxCutter);
     }
 
     String enter = "Press Enter to continue...";
@@ -42,8 +47,8 @@ public class SprintReviewRoom extends Room {
         System.out.println("In this room, you will need to assess given feedback from stakeholders and estimate the impact.");
         System.out.println(enter);
         input.nextLine();
-        System.out.println("Do you want to see the assignment, your status, go back to the previous room, or quit?");
-        System.out.println("You can type 'assignment', 'status', 'go back', or 'quit'.");
+        System.out.println("Do you want to see the assignment, your status, search the room, go back to the previous room, or quit?");
+        System.out.println("You can type 'assignment', 'status', 'search room', 'go back', or 'quit'.");
     }
 
     @Override
@@ -81,9 +86,9 @@ public class SprintReviewRoom extends Room {
             presentChallenge();
         }
         System.out.println("Correct! You can now proceed to the next room: SprintRetrospectiveRoom.");
-        System.out.println("You can type 'go to SprintRetrospectiveRoom' to enter the next room, 'status' to see your status, 'go back' to go to the previous room, or 'quit' to exit the game.");
+        System.out.println("You can type 'go to SprintRetrospectiveRoom' to enter the next room, 'search room' to search the room for valuable items, 'status' to see your hp, inventory and progress and 'quit' to save and exit the game.");
         database.updateRoomCompletion(player.getName(), "sprintreviewroom_completed", true);
-        Room sprintRetrospectiveRoom = new SprintRetrospectiveRoom(player, database);
+        Room sprintRetrospectiveRoom = new SprintRetrospectiveRoom(player, database, game);
         sprintRetrospectiveRoom.setName("SprintRetrospectiveRoom");
         player.setRoom(sprintRetrospectiveRoom);
     }
@@ -91,8 +96,13 @@ public class SprintReviewRoom extends Room {
     @Override
     public void searchRoom() {
         System.out.println("Searching the room...");
-        System.out.println("You found a Stanley Knife! Use this for offense.");
-        player.addItem(stanleyKnife);
+        System.out.println("You found a Box Cutter! Use this for offense.");
+        player.addItem(boxCutter);
+        try (Connection connection = Database.getConnection()) {
+            player.getInventory().saveToDatabase(player.getId(), connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -110,6 +120,13 @@ public class SprintReviewRoom extends Room {
     }
 
     @Override
-    public void giveExtraKey() {
+    public void skipAssignment() {
+        System.out.println("You have chosen to skip the assignment.");
+        System.out.println("You can now proceed to the next room: SprintRetrospectiveRoom.");
+        System.out.println("You can type 'go to SprintRetrospectiveRoom' to enter the next room, 'search room' to search the room for valuable items, 'status' to see your hp, inventory and progress and 'quit' to save and exit the game.");
+        database.updateRoomCompletion(player.getName(), "sprintreviewroom_completed", true);
+        Room sprintRetrospectiveRoom = new SprintRetrospectiveRoom(player, database, game);
+        sprintRetrospectiveRoom.setName("SprintRetrospectiveRoom");
+        player.setRoom(sprintRetrospectiveRoom);
     }
 }

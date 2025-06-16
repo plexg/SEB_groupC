@@ -1,6 +1,7 @@
 package classes.database;
 
 import classes.items.Item;
+import classes.nonrooms.Game;
 import classes.nonrooms.Player;
 import classes.rooms.Room;
 import classes.rooms.RoomFactory;
@@ -15,6 +16,7 @@ public class Database {
     private static final String PASSWORD = "Koe!90!KJ!80";
     List<Item> items = new ArrayList<Item>();
     private Connection connection;
+    Game game;
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
@@ -37,7 +39,7 @@ public class Database {
                 int id = rs.getInt("id");
                 int hp = rs.getInt("hp");
                 String currentRoom = rs.getString("current_room");
-                Room room = currentRoom != null ? RoomFactory.createRoom(currentRoom, new Player(id, hp, null, name, items), this) : null;                return new Player(id, hp, room, name, items);
+                Room room = currentRoom != null ? RoomFactory.createRoom(currentRoom, new Player(id, hp, null, name, items), this, game) : null;                return new Player(id, hp, room, name, items);
             }
         } catch (SQLException e) {
             e.printStackTrace();
