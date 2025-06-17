@@ -113,26 +113,16 @@ public class FinalRoom extends Room {
 
         List<String> bossRoomQuestions = new ArrayList<>();
         multipleChoiceChallenge.Questions.keySet().stream()
-                .filter(key -> key.startsWith("BossRoomQ") && key.matches("BossRoomQ[1-10]"))
+                .filter(key -> key.startsWith("BossRoomQ") && key.matches("BossRoomQ([1-9]|10)"))
                 .forEach(bossRoomQuestions::add);
 
         categorizationChallenge.Questions.keySet().stream()
-                .filter(key -> key.startsWith("BossRoomQ") && key.matches("BossRoomQ[1-10]"))
+                .filter(key -> key.startsWith("BossRoomQ") && key.matches("BossRoomQ([1-9]|10)"))
                 .forEach(bossRoomQuestions::add);
 
-        while (player.getHp() > 0 && bossMonster.getHealthPoints() > 0) {
-            if (bossRoomQuestions.isEmpty()) {
-                multipleChoiceChallenge.Questions.keySet().stream()
-                        .filter(key -> key.startsWith("BossRoomQ") && key.matches("BossRoomQ[1-10]"))
-                        .forEach(bossRoomQuestions::add);
+        Collections.shuffle(bossRoomQuestions);
 
-                categorizationChallenge.Questions.keySet().stream()
-                        .filter(key -> key.startsWith("BossRoomQ") && key.matches("BossRoomQ[1-10]"))
-                        .forEach(bossRoomQuestions::add);
-
-                Collections.shuffle(bossRoomQuestions);
-            }
-
+        while (player.getHp() > 0 && bossMonster.getHealthPoints() > 0 && !bossRoomQuestions.isEmpty()) {
             String selectedQuestion = bossRoomQuestions.remove(0);
 
             if (multipleChoiceChallenge.Questions.containsKey(selectedQuestion)) {
@@ -186,7 +176,6 @@ public class FinalRoom extends Room {
             giveFeedback();
         }
     }
-
     @Override
     public void skipAssignment() {
     }
