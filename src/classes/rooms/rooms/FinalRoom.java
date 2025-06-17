@@ -56,7 +56,7 @@ public class FinalRoom extends Room {
 
     @Override
     public boolean checkAnswer() {
-        return false;}
+        return false; }
 
     @Override
     public void giveFeedback() {

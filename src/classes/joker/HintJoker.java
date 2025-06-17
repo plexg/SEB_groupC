@@ -7,7 +7,7 @@ public class HintJoker implements Joker {
     private boolean used = false;
     private String name;
 
-    public HintJoker(String name) {
+    public HintJoker() {
         this.name = "Hint Joker";
     }
     @Override

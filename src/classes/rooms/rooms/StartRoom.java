@@ -24,8 +24,8 @@ public class StartRoom extends Room {
     Pencil pencil = new Pencil();
     WhiteKey whiteKey = new WhiteKey(1);
     Scanner sc = new Scanner(System.in);
-    HintJoker hintjoker = new HintJoker("Hint Joker");
-    KeyJoker keyjoker = new KeyJoker("Key Joker");
+    HintJoker hintjoker = new HintJoker();
+    KeyJoker keyjoker = new KeyJoker();
 
 
 

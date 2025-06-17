@@ -1,5 +1,8 @@
 package classes.items;
 
+import classes.joker.HintJoker;
+import classes.joker.KeyJoker;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,10 +15,12 @@ public class ItemFactory {
         itemRegistry.put("Green Key", GreenKey.class);
         itemRegistry.put("Gold Key", GoldKey.class);
         itemRegistry.put("Staplergun", Staplergun.class);
-        itemRegistry.put("Stanley Knife", BoxCutter.class);
+        itemRegistry.put("Box Cutter", BoxCutter.class);
         itemRegistry.put("Pencil", Pencil.class);
         itemRegistry.put("Donut", Donut.class);
         itemRegistry.put("Cup of Coffee", CupOfCoffee.class);
+        itemRegistry.put("Hint Joker", HintJoker.class);
+        itemRegistry.put("Key Joker", KeyJoker.class);
     }
 
     public static Item createItem(String itemName) {

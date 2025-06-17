@@ -28,8 +28,8 @@ public class Game {
 
     CupOfCoffee cupOfCoffee = new CupOfCoffee();
     Donut donut = new Donut();
-    Joker hintjoker = new HintJoker("Hint Joker");
-    Joker keyjoker = new KeyJoker("Key Joker");
+    Joker hintjoker = new HintJoker();
+    Joker keyjoker = new KeyJoker();
 
     public Game() {
         this.rooms = new ArrayList<>();
@@ -371,7 +371,7 @@ public class Game {
                     Room finalRoom = new FinalRoom(player, database, this);
                     finalRoom.setName("FinalRoom");
                     player.setRoom(finalRoom);
-                    System.out.println("You have entered the Final Room!");
+                    handleFinalRoom(sc);
                     break;
                 } else {
                     System.out.println("You must complete the assignment in this room before proceeding.");
@@ -386,6 +386,11 @@ public class Game {
                 System.out.println("Invalid choice. Please try again.");
             }
         }
+    }
+
+    public void handleFinalRoom(Scanner sc) {
+        FinalRoom finalRoom = (FinalRoom) player.getRoom();
+        finalRoom.showIntroduction();
     }
 
     public void saveAndQuit() {
