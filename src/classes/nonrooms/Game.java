@@ -12,7 +12,6 @@ import classes.joker.KeyJoker;
 import classes.rooms.*;
 import classes.rooms.rooms.*;
 import Challenge.MultipleChoiceChallenge;
-import org.w3c.dom.ls.LSOutput;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -146,8 +145,32 @@ public class Game {
                 System.out.println("Failed to load the saved player. Please try again.");
                 continue;
             }
-
             player = savedPlayer;
+
+            System.out.println("Choose your Joker:");
+            System.out.println("1. Hint Joker (You are able to get 1 hint in a room that will help you with the assignment)");
+            System.out.println("2. Key Joker (You are able to skip the room Daily Scrum Room and Sprint Review Room and go to the next one)");
+            int choicejoker = sc.nextInt();
+            sc.nextLine();
+
+            Joker selectedJoker;
+            if (choicejoker == 1) {
+                selectedJoker = hintjoker;
+            } else if (choicejoker == 2) {
+                selectedJoker = keyjoker;
+            } else {
+                System.out.println("Invalid choice. Defaulting to Hint Joker.");
+                selectedJoker = hintjoker;
+            }
+
+            player.addItem(selectedJoker);
+            try (Connection connection = Database.getConnection()) {
+                player.getInventory().saveToDatabase(player.getId(), connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            System.out.println("You have chosen the " + selectedJoker.getName() + ".");
+
             Room startRoom = new StartRoom(player);
             startRoom.setName("StartRoom");
             player.setRoom(startRoom);
@@ -177,6 +200,10 @@ public class Game {
                 useItem(cupOfCoffee, "Cup of Coffee", sc);
             } else if (choice.equalsIgnoreCase("use donut")) {
                 useItem(donut, "Donut", sc);
+            } else if (choice.equalsIgnoreCase("use hint joker")) {
+                useHintJoker(sc);
+            } else if (choice.equalsIgnoreCase("use key joker")) {
+                useKeyJoker(sc);
             } else if (choice.equalsIgnoreCase("status")) {
                 System.out.println(player.getStatus());
             } else if (choice.equalsIgnoreCase("go back")) {
@@ -208,6 +235,10 @@ public class Game {
                 useItem(cupOfCoffee, "Cup of Coffee", sc);
             } else if (choice.equalsIgnoreCase("use donut")) {
                 useItem(donut, "Donut", sc);
+            } else if (choice.equalsIgnoreCase("use hint joker")) {
+                useHintJoker(sc);
+            } else if (choice.equalsIgnoreCase("use key joker")) {
+                useKeyJoker(sc);
             } else if (choice.equalsIgnoreCase("go to DailyScrumRoom")) {
                 if (database.isRoomCompleted(player.getName(), "sprintplanningroom_completed")) {
                     Room dailyScrumRoom = new DailyScrumRoom(player, database, this);
@@ -247,6 +278,10 @@ public class Game {
                 useItem(cupOfCoffee, "Cup of Coffee", sc);
             } else if (choice.equalsIgnoreCase("use donut")) {
                 useItem(donut, "Donut", sc);
+            } else if (choice.equalsIgnoreCase("use hint joker")) {
+                useHintJoker(sc);
+            } else if (choice.equalsIgnoreCase("use key joker")) {
+                useKeyJoker(sc);
             } else if (choice.equalsIgnoreCase("go to ScrumBoardRoom")) {
                 if (database.isRoomCompleted(player.getName(), "dailyscrumroom_completed")) {
                     Room scrumBoardRoom = new ScrumBoardRoom(player, database, this);
@@ -282,6 +317,10 @@ public class Game {
                 useItem(cupOfCoffee, "Cup of Coffee", sc);
             } else if (choice.equalsIgnoreCase("use donut")) {
                 useItem(donut, "Donut", sc);
+            } else if (choice.equalsIgnoreCase("use hint joker")) {
+                useHintJoker(sc);
+            } else if (choice.equalsIgnoreCase("use key joker")) {
+                useKeyJoker(sc);
             } else if (choice.equalsIgnoreCase("search room")) {
                 player.getRoom().searchRoom();
             } else if (choice.equalsIgnoreCase("status")) {
@@ -322,6 +361,10 @@ public class Game {
                 useItem(cupOfCoffee, "Cup of Coffee", sc);
             } else if (choice.equalsIgnoreCase("use donut")) {
                 useItem(donut, "Donut", sc);
+            } else if (choice.equalsIgnoreCase("use hint joker")) {
+                useHintJoker(sc);
+            } else if (choice.equalsIgnoreCase("use key joker")) {
+                useKeyJoker(sc);
             } else if (choice.equalsIgnoreCase("search room")) {
                 player.getRoom().searchRoom();
             } else if (choice.equalsIgnoreCase("status")) {
@@ -362,6 +405,10 @@ public class Game {
                 useItem(cupOfCoffee, "Cup of Coffee", sc);
             } else if (choice.equalsIgnoreCase("use donut")) {
                 useItem(donut, "Donut", sc);
+            } else if (choice.equalsIgnoreCase("use hint joker")) {
+                useHintJoker(sc);
+            } else if (choice.equalsIgnoreCase("use key joker")) {
+                useKeyJoker(sc);
             } else if (choice.equalsIgnoreCase("search room")) {
                 player.getRoom().searchRoom();
             } else if (choice.equalsIgnoreCase("status")) {
@@ -434,6 +481,38 @@ public class Game {
                 sc.nextLine();
             } else {
                 System.out.println("You don't have a " + itemName + " in your inventory.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void useHintJoker(Scanner sc) {
+        try {
+            if (player.inventory.hasItem("Hint Joker", player.getId(), database.getConnection())) {
+                hintjoker.useIn(player.getRoom());
+                System.out.println("You used the Hint Joker.");
+                player.inventory.removeItem("Hint Joker", player.getId(), database.getConnection());
+                System.out.println("Press Enter to continue...");
+                sc.nextLine();
+            } else {
+                System.out.println("You don't have a Hint Joker in your inventory.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void useKeyJoker(Scanner sc) {
+        try {
+            if (player.inventory.hasItem("Key Joker", player.getId(), database.getConnection())) {
+                keyjoker.useIn(player.getRoom());
+                System.out.println("You used the Key Joker.");
+                player.inventory.removeItem("Key Joker", player.getId(), database.getConnection());
+                System.out.println("Press Enter to continue...");
+                sc.nextLine();
+            } else {
+                System.out.println("You don't have a Key Joker in your inventory.");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

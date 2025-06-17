@@ -41,6 +41,23 @@ public class HintFactory {
         }
     }
 
+    public static Hint getRandomHelpHint(String context) {
+        switch (context) {
+            case "SprintRetrospectiveRoom":
+                return createHint("help", "Match each situation to the lesson: time, conflict, communication, workload, or quality.");
+            case "ScrumBoardRoom":
+                return createHint("help", "Epics are large features, user stories describe user needs, and tasks are small actionable items.");
+            case "SprintPlanningRoom":
+                return createHint("help", "Focus on tasks that are small and essential for a first sprint.");
+            case "DailyScrumRoom":
+                return createHint("help", "Each team member should give a brief update on their work, challenges, and plans.");
+            case "SprintReviewRoom":
+                return createHint("help", "Demonstrate completed work and gather feedback from stakeholders.");
+            default:
+                return createHint("help", "Default hint.");
+        }
+    }
+
     public static Hint createHint(String type, String message) {
         return new SimpleHint(type, message);
     }

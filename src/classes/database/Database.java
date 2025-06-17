@@ -13,7 +13,7 @@ import java.util.List;
 public class Database {
     private static final String URL = "jdbc:mysql://localhost:3306/seb?useSSL=false&allowPublicKeyRetrieval=true";
     private static final String USER = "root";
-    private static final String PASSWORD = "Hamster89!";
+    private static final String PASSWORD = "Koe!90!KJ!80";
     List<Item> items = new ArrayList<Item>();
     private Connection connection;
     Game game;

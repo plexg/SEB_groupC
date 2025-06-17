@@ -16,7 +16,8 @@ public class HintJoker implements Joker {
             System.out.println("This joker has already been used.");
             return;
         }
-        System.out.println("Hint: " + HintFactory.getRandomHint("help").getHint());
+        String roomName = room.getName();
+        System.out.println("Hint: " + HintFactory.getRandomHelpHint(roomName).getHint());
         used = true;
     }
 

@@ -24,8 +24,7 @@ public class StartRoom extends Room {
     Pencil pencil = new Pencil();
     WhiteKey whiteKey = new WhiteKey(1);
     Scanner sc = new Scanner(System.in);
-    HintJoker hintjoker = new HintJoker();
-    KeyJoker keyjoker = new KeyJoker();
+
 
 
 
@@ -39,36 +38,10 @@ public class StartRoom extends Room {
         // initialize items
         items.add(pencil);
         items.add(whiteKey);
-        items.add(hintjoker);
-        items.add(keyjoker);
     }
 
     @Override
     public void showIntroduction() {
-        System.out.println("Choose your Joker:");
-        System.out.println("1. Hint Joker (You are able to get 1 hint in a room that will help you with the assignment)");
-        System.out.println("2. Key Joker (You are able to skip the room Daily Scrum Room and Sprint Review Room and go to the next one)");
-        int choicejoker = sc.nextInt();
-        sc.nextLine();
-
-        Joker selectedJoker;
-        if (choicejoker == 1) {
-            selectedJoker = hintjoker;
-        } else if (choicejoker == 2) {
-            selectedJoker = keyjoker;
-        } else {
-            System.out.println("Invalid choice. Defaulting to Hint Joker.");
-            selectedJoker = hintjoker;
-        }
-
-        player.addItem(selectedJoker);
-        try (Connection connection = Database.getConnection()) {
-            player.getInventory().saveToDatabase(player.getId(), connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        System.out.println("You have chosen the " + selectedJoker.getName() + ".");
-
         Scanner input = new Scanner(System.in);
         System.out.println("============================");
         System.out.println("Welcome to the Scrum Escape Room!");
