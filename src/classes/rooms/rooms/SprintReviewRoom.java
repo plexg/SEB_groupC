@@ -1,5 +1,7 @@
 package classes.rooms.rooms;
 
+
+import Challenge.CategorizationChallenge;
 import Challenge.ChallengeStrategy;
 import classes.database.Database;
 import classes.items.Item;
@@ -12,6 +14,7 @@ import classes.hints.HintFactory;
 import classes.impediments.Monster;
 import classes.impediments.ImpedimentFactory;
 
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -19,14 +22,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SprintReviewRoom extends Room {
-    private final ChallengeStrategy challenge;
+    private final CategorizationChallenge challenge;
     private Player player;
     private final Database database;
     private final List<Item> items = new ArrayList<>();
     private final BoxCutter boxCutter = new BoxCutter();
     private final Game game;
 
-    public SprintReviewRoom(Player player, Database database, ChallengeStrategy challenge, Game game) {
+    public SprintReviewRoom(Player player, Database database, CategorizationChallenge challenge, Game game) {
         this.player = player;
         this.database = database;
         this.challenge = challenge;
@@ -47,7 +50,7 @@ public class SprintReviewRoom extends Room {
         System.out.println("In this room, you will need to assess given feedback from stakeholders and estimate the impact.");
         System.out.println(enter);
         input.nextLine();
-        System.out.println("Do you want to see the assignment, your status, search the room, go back to the previous room, or quit?");
+        System.out.println("Do you want to see the assignment, your status, \n  search the room, go back to the previous room, or quit?");
         System.out.println("You can type 'assignment', 'status', 'search room', 'go back', or 'quit'.");
     }
 
@@ -60,7 +63,7 @@ public class SprintReviewRoom extends Room {
     public boolean checkAnswer() {
         List<String> playerAnswers = new ArrayList<>();
 
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 3; i++) {
             System.out.print(i + ": ");
             String answer = input.nextLine().trim();
             playerAnswers.add(answer);
@@ -101,7 +104,7 @@ public class SprintReviewRoom extends Room {
         try (Connection connection = Database.getConnection()) {
             player.getInventory().saveToDatabase(player.getId(), connection);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

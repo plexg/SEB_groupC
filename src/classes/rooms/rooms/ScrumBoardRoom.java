@@ -58,7 +58,7 @@ public class ScrumBoardRoom extends Room {
             System.out.println("In this room, you will need to categorize backlog items as Epics, User Stories, or Tasks.");
             System.out.println(enter);
             input.nextLine();
-            System.out.println("Do you want to see the assignment, your status, search the room, go back to the previous room, or quit?");
+            System.out.println("Do you want to see the assignment, your status, \n  search the room, go back to the previous room, or quit?");
             System.out.println("You can type 'assignment', 'status', 'search room', 'go back', or 'quit'.");
         }
     }
@@ -100,6 +100,7 @@ public class ScrumBoardRoom extends Room {
             presentChallenge();
         }
         System.out.println("Correct! You can now proceed to the next room: SprintReviewRoom.");
+        triggerMonster();
         System.out.println("You can type 'go to SprintReviewRoom' to enter the next room, 'search room' to search the room for valuable items, 'status' to see your hp, inventory and progress and 'quit' to save and exit the game.");
         database.updateRoomCompletion(player.getName(), "scrumboardroom_completed", true);
         Room sprintReviewRoom = new SprintReviewRoom(player, database, challenge, game);
@@ -132,15 +133,12 @@ public class ScrumBoardRoom extends Room {
         input.nextLine();
 
         try {
-            if (!player.inventory.hasItem("Stapler Gun", player.getId(), database.getConnection())) {
+            if (!player.inventory.hasItem("Staplergun", player.getId(), database.getConnection())) {
                 System.out.println("You need a weapon to defeat the Clock Monster!");
                 System.out.println("Go back to the previous room and find a Stapler Gun to defeat it.");
                 System.out.println(enter);
                 input.nextLine();
-                Room DailyScrumRoom = new DailyScrumRoom(player, database, game);
-                DailyScrumRoom.setName("DailyScrumRoom");
-                player.setRoom(DailyScrumRoom);
-                game.handleDailyScrumRoom(input);
+                game.goBack(input);
                 return;
             }
         } catch (SQLException e) {

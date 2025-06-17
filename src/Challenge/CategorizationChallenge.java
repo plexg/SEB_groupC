@@ -17,7 +17,7 @@ public class CategorizationChallenge implements ChallengeStrategy {
                         "A. Helps divide work into smaller, doable parts\n" +
                         "B. Helps the team decide what fits in the sprint\n" +
                         "C. Helps the team understand the purpose of the sprint",
-                "-+"
+                "1: A, 2: B, 3: C"
         ));
 
         Questions.put("DailyScrumQ1", new Question(
@@ -37,8 +37,10 @@ public class CategorizationChallenge implements ChallengeStrategy {
                         "1. Create a login page UI.\n" +
                         "2. Implement user authentication and authorization.\n" +
                         "3. As a user, I want to reset my password so that I can regain access.\n" +
-                        "Enter epic, user story or task next to each backlog item:",
-                "1: Task, 2: Epic, 3: User Story"
+                        "4. As an admin, I want to view all registered users.\n" +
+                        "5. Write unit tests for the authentication module.\n" +
+                "Enter epic, user story or task next to each backlog item:",
+                "1: Task, 2: Epic, 3: User Story, 4: User Story, 5: Task"
         ));
 
         Questions.put("ScrumBoardQ4", new Question(

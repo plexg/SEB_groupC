@@ -1,5 +1,6 @@
 package classes.nonrooms;
 
+import Challenge.CategorizationChallenge;
 import classes.database.Database;
 import classes.items.CupOfCoffee;
 import classes.items.Donut;
@@ -27,20 +28,25 @@ public class Game {
 
     CupOfCoffee cupOfCoffee = new CupOfCoffee();
     Donut donut = new Donut();
-    Joker joker;
+    Joker hintjoker = new HintJoker("Hint Joker");
+    Joker keyjoker = new KeyJoker("Key Joker");
 
     public Game() {
         this.rooms = new ArrayList<>();
         this.database = new Database();
+
         Player tempPlayer = new Player(0, 100, null, "temp", items);
         this.rooms.add(new DailyScrumRoom(tempPlayer, this.database, this));
         this.rooms.add(new SprintRetrospectiveRoom(tempPlayer, this.database, this));
         this.rooms.add(new FinalRoom(tempPlayer, this.database, this));
         this.rooms.add(new SprintPlanningRoom(tempPlayer, this.database, this));
-        this.rooms.add(new SprintReviewRoom(tempPlayer, this.database, new MultipleChoiceChallenge(), this));
+        this.rooms.add(new SprintReviewRoom(tempPlayer, this.database, new CategorizationChallenge(), this));
         this.rooms.add(new ScrumBoardRoom(tempPlayer, this.database, this));
 
         this.player = tempPlayer;
+
+        items.add(hintjoker);
+        items.add(keyjoker);
     }
 
     public void startGame(Scanner sc) {
@@ -141,37 +147,20 @@ public class Game {
                 continue;
             }
 
-            System.out.println("Choose your Joker:");
-            System.out.println("1. Hint Joker (You are able to get 1 hint in a room that will help you with the assignment)");
-            System.out.println("2. Key Joker (You are able to skip the room Daily Scrum Room and Sprint Review Room and go to the next one)");
-            int choice = sc.nextInt();
-
-
-            if (choice == 1) {
-                joker = new HintJoker();
-            } else if (choice == 2) {
-                joker = new KeyJoker();
-            } else {
-                System.out.println("Invalid choice. Defaulting to Hint Joker.");
-                joker = new HintJoker();
-            }
-
-            player.getInventory().addItem(joker);
-
-            System.out.println("You have chosen the " + joker.getName() + ".");
-
             player = savedPlayer;
             Room startRoom = new StartRoom(player);
             startRoom.setName("StartRoom");
             player.setRoom(startRoom);
 
             System.out.println("Game is starting...");
+
             handleStartRoom(sc);
             break;
         }
     }
 
     public void handleStartRoom(Scanner sc) {
+        player.setPreviousRoom(player.getRoom());
         ((StartRoom) player.getRoom()).showIntroduction();
         while (true) {
             System.out.print("Enter your choice: ");
@@ -203,6 +192,7 @@ public class Game {
     }
 
     public void handleSprintPlanningRoom(Scanner sc) {
+        player.setPreviousRoom(player.getRoom());
         ((SprintPlanningRoom) player.getRoom()).showIntroduction();
         while (true) {
             System.out.print("Enter your choice: ");
@@ -241,6 +231,7 @@ public class Game {
     }
 
     public void handleDailyScrumRoom(Scanner sc) {
+        player.setPreviousRoom(player.getRoom());
         ((DailyScrumRoom) player.getRoom()).showIntroduction();
         while (true) {
             System.out.print("Enter your choice: ");
@@ -279,6 +270,7 @@ public class Game {
     }
 
     public void handleScrumBoardRoom(Scanner sc) {
+        player.setPreviousRoom(player.getRoom());
         ((ScrumBoardRoom) player.getRoom()).showIntroduction();
         while (true) {
             System.out.print("Enter your choice: ");
@@ -296,7 +288,7 @@ public class Game {
                 System.out.println(player.getStatus());
             } else if (choice.equalsIgnoreCase("go to SprintReviewRoom")) {
                 if (database.isRoomCompleted(player.getName(), "scrumboardroom_completed")) {
-                    Room sprintReviewRoom = new SprintReviewRoom(player, database, new MultipleChoiceChallenge(), this);
+                    Room sprintReviewRoom = new SprintReviewRoom(player, database, new CategorizationChallenge(), this);
                     sprintReviewRoom.setName("SprintReviewRoom");
                     player.setRoom(sprintReviewRoom);
                     handleSprintReviewRoom(sc);
@@ -318,6 +310,7 @@ public class Game {
 
     public void handleSprintReviewRoom(Scanner sc) {
         SprintReviewRoom sprintReviewRoom = (SprintReviewRoom) player.getRoom();
+        player.setPreviousRoom(player.getRoom());
         sprintReviewRoom.showIntroduction();
         while (true) {
             System.out.print("Enter your choice: ");
@@ -357,6 +350,7 @@ public class Game {
 
     public void handleSprintRetrospectiveRoom(Scanner sc) {
         SprintRetrospectiveRoom sprintRetrospectiveRoom = (SprintRetrospectiveRoom) player.getRoom();
+        player.setPreviousRoom(player.getRoom());
         sprintRetrospectiveRoom.showIntroduction();
         while (true) {
             System.out.print("Enter your choice: ");
@@ -401,22 +395,22 @@ public class Game {
         System.out.println("Game saved. Goodbye!");
     }
 
-    private void goBack(Scanner sc) {
+    public void goBack(Scanner sc) {
         if (player.getPreviousRoom() != null) {
             player.setRoom(player.getPreviousRoom());
             System.out.println("Going back to: " + player.getRoom().getName());
             if (player.getRoom() instanceof StartRoom) {
                 handleStartRoom(sc);
             } else if (player.getRoom() instanceof SprintPlanningRoom) {
-                handleStartRoom(sc);
-            } else if (player.getRoom() instanceof DailyScrumRoom) {
                 handleSprintPlanningRoom(sc);
-            } else if (player.getRoom() instanceof ScrumBoardRoom) {
+            } else if (player.getRoom() instanceof DailyScrumRoom) {
                 handleDailyScrumRoom(sc);
-            } else if (player.getRoom() instanceof SprintReviewRoom) {
+            } else if (player.getRoom() instanceof ScrumBoardRoom) {
                 handleScrumBoardRoom(sc);
-            } else if (player.getRoom() instanceof SprintRetrospectiveRoom) {
+            } else if (player.getRoom() instanceof SprintReviewRoom) {
                 handleSprintReviewRoom(sc);
+            } else if (player.getRoom() instanceof SprintRetrospectiveRoom) {
+                handleSprintRetrospectiveRoom(sc);
             } else {
                 System.out.println("Unknown room type. Cannot go back.");
             }

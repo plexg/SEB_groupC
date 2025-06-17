@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
+import Challenge.CategorizationChallenge;
+import Challenge.MultipleChoiceChallenge;
 import classes.items.Donut;
 import classes.items.Item;
 import classes.nonrooms.Game;
@@ -12,14 +14,12 @@ import classes.database.Database;
 import classes.rooms.Room;
 import classes.hints.Hint;
 import classes.hints.HintFactory;
-import Challenge.MultipleChoiceChallenge;
-
 public class SprintRetrospectiveRoom extends Room {
     String enter = "Press Enter to continue...";
     Scanner input = new Scanner(System.in);
     private final Database database;
     private final Player player;
-    private final MultipleChoiceChallenge challenge;
+    private final CategorizationChallenge challenge;
     List<Item> items = new ArrayList<>();
     Donut donut = new Donut();
     private final Game game;
@@ -28,7 +28,7 @@ public class SprintRetrospectiveRoom extends Room {
         this.player = player;
         this.database = database;
         this.game = game;
-        this.challenge = new MultipleChoiceChallenge();
+        this.challenge = new CategorizationChallenge();
         this.player.setRoom(this);
 
         items.add(donut);
@@ -42,7 +42,7 @@ public class SprintRetrospectiveRoom extends Room {
         System.out.println("In this room, you will get some situations that occur in a team and must indicate what the team can learn from them.");
         System.out.println(enter);
         input.nextLine();
-        System.out.println("Do you want to see the assignment, your status, search the room, go back to the previous room, or quit?");
+        System.out.println("Do you want to see the assignment, your status, \n  search the room, go back to the previous room, or quit?");
         System.out.println("You can type 'assignment', 'status', 'search room', 'go back', or 'quit'.");
     }
 

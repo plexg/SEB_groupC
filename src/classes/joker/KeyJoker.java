@@ -3,8 +3,13 @@ package classes.joker;
 import classes.rooms.Room;
 import classes.rooms.rooms.*;
 
-public class KeyJoker implements classes.joker.Joker {
+public class KeyJoker implements Joker {
     private boolean used = false;
+    private String name;
+
+    public KeyJoker(String name) {
+        this.name = name;
+    }
 
     @Override
     public void useIn(Room room) {
@@ -23,6 +28,6 @@ public class KeyJoker implements classes.joker.Joker {
 
     @Override
     public String getName() {
-        return "KeyJoker";
+        return name;
     }
 }

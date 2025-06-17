@@ -60,7 +60,7 @@ public class SprintPlanningRoom extends Room {
             System.out.println("In this room, you will need to assess the given tasks and determine which ones fit into a 2-week sprint.");
             System.out.println(enter);
             input.nextLine();
-            System.out.println("Do you want to see the assignment, your status, search the room, go back to the previous room, or quit?");
+            System.out.println("Do you want to see the assignment, your status, \n  search the room, go back to the previous room, or quit?");
             System.out.println("You can type 'assignment', 'status', 'search room', 'go back', or 'quit'.");
         }
     }
@@ -137,10 +137,7 @@ public class SprintPlanningRoom extends Room {
                 System.out.println("Go back to the previous room and find a Pencil to defeat it.");
                 System.out.println(enter);
                 input.nextLine();
-                Room startRoom = new StartRoom(player);
-                startRoom.setName("StartRoom");
-                player.setRoom(startRoom);
-                game.handleStartRoom(input);
+                game.goBack(input);
                 return;
             }
         } catch (SQLException e) {

@@ -78,6 +78,10 @@ public class Player {
         return inventory;
     }
 
+    public void setPreviousRoom(Room previousRoom) {
+        this.previousRoom = previousRoom;
+    }
+
     public Room getPreviousRoom() {
         return previousRoom;
     }

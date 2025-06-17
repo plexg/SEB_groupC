@@ -46,7 +46,7 @@ public class DailyScrumRoom extends Room {
         System.out.println("Answer questions to proceed to the next room");
         System.out.println(enter);
         input.nextLine();
-        System.out.println("Do you want to see the assignment, your status, search the room, go back to the previous room, or quit?");
+        System.out.println("Do you want to see the assignment, your status, \n  search the room, go back to the previous room, or quit?");
         System.out.println("You can type 'assignment', 'status', 'search room', 'go back', or 'quit'.");
     }
 

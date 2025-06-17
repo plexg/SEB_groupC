@@ -24,14 +24,14 @@ public class FinalRoom extends Room {
     Scanner input = new Scanner(System.in);
     private final Player player;
     private final Database database;
-    private final ChallengeStrategy challenge;
+    private final CategorizationChallenge challenge;
     private final Game game;
 
     public FinalRoom(Player player, Database database, Game game) {
         this.player = player;
         this.database = database;
         this.game = game;
-        this.challenge = new MultipleChoiceChallenge();
+        this.challenge = new CategorizationChallenge();
         this.player.setRoom(this);
     }
 

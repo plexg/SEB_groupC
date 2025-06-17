@@ -3,9 +3,13 @@ package classes.joker;
 import classes.rooms.Room;
 import classes.hints.HintFactory;
 
-public class HintJoker implements classes.joker.Joker {
+public class HintJoker implements Joker {
     private boolean used = false;
+    private String name;
 
+    public HintJoker(String name) {
+        this.name = "Hint Joker";
+    }
     @Override
     public void useIn(Room room) {
         if (used) {
@@ -18,6 +22,6 @@ public class HintJoker implements classes.joker.Joker {
 
     @Override
     public String getName() {
-        return "Hint Joker";
+        return name;
     }
 }

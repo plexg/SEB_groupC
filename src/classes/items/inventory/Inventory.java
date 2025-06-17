@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import classes.items.ItemFactory;
+import classes.joker.Joker;
 
 public class Inventory {
     private HashMap<String, Item> items;
