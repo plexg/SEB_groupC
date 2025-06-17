@@ -5,11 +5,15 @@ import classes.items.CupOfCoffee;
 import classes.items.Donut;
 import classes.items.Healer;
 import classes.items.Item;
+import classes.joker.HintJoker;
+import classes.joker.Joker;
+import classes.joker.KeyJoker;
 import classes.rooms.*;
 import classes.rooms.rooms.*;
 import Challenge.MultipleChoiceChallenge;
 import org.w3c.dom.ls.LSOutput;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +27,7 @@ public class Game {
 
     CupOfCoffee cupOfCoffee = new CupOfCoffee();
     Donut donut = new Donut();
+    Joker joker;
 
     public Game() {
         this.rooms = new ArrayList<>();
@@ -141,17 +146,17 @@ public class Game {
             System.out.println("2. Key Joker (You are able to skip the room Daily Scrum Room and Sprint Review Room and go to the next one)");
             int choice = sc.nextInt();
 
-            classes.joker.Joker joker;
+
             if (choice == 1) {
-                joker = new classes.joker.HintJoker();
+                joker = new HintJoker();
             } else if (choice == 2) {
-                joker = new classes.joker.KeyJoker();
+                joker = new KeyJoker();
             } else {
                 System.out.println("Invalid choice. Defaulting to Hint Joker.");
-                joker = new classes.joker.HintJoker();
+                joker = new HintJoker();
             }
 
-            player.getInventory().addItem((Item) joker);
+            player.getInventory().addItem(joker);
 
             System.out.println("You have chosen the " + joker.getName() + ".");
 
