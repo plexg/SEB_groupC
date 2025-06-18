@@ -69,9 +69,10 @@ public class SprintPlanningRoom extends Room {
             System.out.println("2️⃣  Check your status");
             System.out.println("3️⃣  Search the room");
             System.out.println("4️⃣  Go back to the previous room");
-            System.out.println("5️⃣  Quit the game");
+            System.out.println("5️⃣  Go to the next room");
+            System.out.println("6️⃣  Quit the game");
             System.out.println("🌟============================🌟");
-            System.out.print("Enter your choice (1-5): ");
+            System.out.print("Enter your choice (1-6): ");
         }
     }
 
@@ -108,7 +109,7 @@ public class SprintPlanningRoom extends Room {
         }
         System.out.println("✅🎉 Correct! You can now proceed to the next room: DailyScrumRoom! 🎉✅");
         triggerMonster();
-        System.out.println("➡️ Type 'go to DailyScrumRoom' to enter the next room, 'search room' to look for treasures, 'status' to check your HP, inventory and progress, or 'quit' to save and exit the game.");
+        System.out.println("➡️ Type 'go to DailyScrumRoom' to enter the next room, 'status' to check your HP, inventory and progress, or 'quit' to save and exit the game.");
         database.updateRoomCompletion(player.getName(), "sprintplanningroom_completed", true);
         Room dailyScrumRoom = new DailyScrumRoom(player, database, game);
         dailyScrumRoom.setName("DailyScrumRoom");
@@ -132,6 +133,18 @@ public class SprintPlanningRoom extends Room {
         System.out.println("😱 Oh no! What's that noise?...");
         System.out.println(enter);
         input.nextLine();
+        System.out.println("      (    )   (   )  )");
+        System.out.println("     ) (   )  (  (   (");
+        System.out.println("     ( )  (    ) )  )");
+        System.out.println("   .-\"\"\"\"\"\"\"\"\"-.");
+        System.out.println("  /            \\");
+        System.out.println(" |   ☕  COFFEE  |");
+        System.out.println(" |   MONSTER!   |");
+        System.out.println("  \\            /");
+        System.out.println("   '-.______.-'");
+        System.out.println("      (    )");
+        System.out.println("     (    )");
+        System.out.println("      (__)");
         System.out.println("☕ A Coffee Monster appears in front of the door! It looks angry...");
         System.out.println(enter);
         input.nextLine();

@@ -68,9 +68,10 @@ public class ScrumBoardRoom extends Room {
             System.out.println("2️⃣  Check your status");
             System.out.println("3️⃣  Search the room");
             System.out.println("4️⃣  Go back to the previous room");
-            System.out.println("5️⃣  Quit the game");
+            System.out.println("5️⃣  Go to the next room");
+            System.out.println("6️⃣  Quit the game");
             System.out.println("🌟============================🌟");
-            System.out.print("Enter your choice (1-5): ");
+            System.out.print("Enter your choice (1-6): ");
         }
     }
 
@@ -112,7 +113,7 @@ public class ScrumBoardRoom extends Room {
         }
         System.out.println("✅🎉 Correct! You can now proceed to the next room: SprintReviewRoom! 🎉✅");
         triggerMonster();
-        System.out.println("➡️ Type 'go to SprintReviewRoom' to enter the next room, 'search room' to look for treasures, 'status' to check your HP, inventory and progress, or 'quit' to save and exit the game.");
+        System.out.println("➡️ Type 'go to SprintReviewRoom' to enter the next room, 'status' to check your HP, inventory and progress, or 'quit' to save and exit the game.");
         database.updateRoomCompletion(player.getName(), "scrumboardroom_completed", true);
         Room sprintReviewRoom = new SprintReviewRoom(player, database, challenge, game);
         sprintReviewRoom.setName("SprintReviewRoom");
@@ -136,6 +137,17 @@ public class ScrumBoardRoom extends Room {
         System.out.println("⏰ You hear a ticking sound...");
         System.out.println(enter);
         input.nextLine();
+        System.out.println("        _____");
+        System.out.println("     .-\"     \"-.");
+        System.out.println("   .'  .-\"\"\"-.  '.");
+        System.out.println("  /   /  _  _ \\   \\");
+        System.out.println(" |   |  (o)(o) |   |");
+        System.out.println(" |   |   .--.  |   |");
+        System.out.println("  \\  \\  (    ) /  /");
+        System.out.println("   '. '-.\\  /.-' .'");
+        System.out.println("     '-._'--'_.-'");
+        System.out.println("         '--'");
+        System.out.println("   ⏰  CLOCK MONSTER!  ⏰");
         System.out.println("🕰️ A Clock Monster appears! You must defeat it to go through the door.");
         System.out.println(enter);
         input.nextLine();

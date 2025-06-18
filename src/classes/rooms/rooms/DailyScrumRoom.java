@@ -54,9 +54,10 @@ public class DailyScrumRoom extends Room {
         System.out.println("2️⃣  Check your status");
         System.out.println("3️⃣  Search the room");
         System.out.println("4️⃣  Go back to the previous room");
-        System.out.println("5️⃣  Quit the game");
+        System.out.println("5️⃣  Go to the next room");
+        System.out.println("6️⃣  Quit the game");
         System.out.println("🌟============================🌟");
-        System.out.print("Enter your choice (1-5): ");
+        System.out.print("Enter your choice (1-6): ");
     }
 
     @Override
@@ -114,12 +115,8 @@ public class DailyScrumRoom extends Room {
             presentChallenge();
         }
         System.out.println("✅🎉 Correct! You can now proceed to the next room: ScrumBoardRoom! 🎉✅");
-        System.out.println("➡️ Type 'go to ScrumBoardRoom' to enter the next room, 'search room' to look for treasures,");
-        System.out.println("   'status' to check your HP, inventory and progress, or 'quit' to save and exit the game.");
         database.updateRoomCompletion(player.getName(), "dailyscrumroom_completed", true);
-        Room scrumBoardRoom = new ScrumBoardRoom(player, database, game);
-        scrumBoardRoom.setName("ScrumBoardRoom");
-        player.setRoom(scrumBoardRoom);
+
     }
 
     @Override

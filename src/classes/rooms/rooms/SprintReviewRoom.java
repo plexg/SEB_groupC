@@ -54,9 +54,10 @@ public class SprintReviewRoom extends Room {
         System.out.println("2️⃣  Check your status");
         System.out.println("3️⃣  Search the room");
         System.out.println("4️⃣  Go back to the previous room");
-        System.out.println("5️⃣  Quit the game");
+        System.out.println("5️⃣  Go to the next room");
+        System.out.println("6️⃣  Quit the game");
         System.out.println("🌟============================🌟");
-        System.out.print("Enter your choice (1-5): ");
+        System.out.print("Enter your choice (1-6): ");
     }
 
     @Override
@@ -92,12 +93,7 @@ public class SprintReviewRoom extends Room {
             presentChallenge();
         }
         System.out.println("✅🎉 Correct! You can now proceed to the next room: SprintRetrospectiveRoom! 🎉✅");
-        System.out.println("➡️ Type 'go to SprintRetrospectiveRoom' to continue, 'search room' to look for treasures,");
-        System.out.println("   'status' to check your HP, inventory, and progress, or 'quit' to save and exit.");
         database.updateRoomCompletion(player.getName(), "sprintreviewroom_completed", true);
-        Room sprintRetrospectiveRoom = new SprintRetrospectiveRoom(player, database, game);
-        sprintRetrospectiveRoom.setName("SprintRetrospectiveRoom");
-        player.setRoom(sprintRetrospectiveRoom);
     }
 
     @Override

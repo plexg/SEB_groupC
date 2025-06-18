@@ -42,30 +42,6 @@ public class StartRoom extends Room {
 
     @Override
     public void showIntroduction() {
-        System.out.println("🎲 Choose your Joker! 🎲");
-        System.out.println("1️⃣  Hint Joker 🧠 (Get a helpful hint in a tricky room!)");
-        System.out.println("2️⃣  Key Joker 🗝️ (Skip the Daily Scrum & Sprint Review rooms!)");
-        int choicejoker = sc.nextInt();
-        sc.nextLine();
-
-        Joker selectedJoker;
-        if (choicejoker == 1) {
-            selectedJoker = hintjoker;
-        } else if (choicejoker == 2) {
-            selectedJoker = keyjoker;
-        } else {
-            System.out.println("❓ Invalid choice! Defaulting to Hint Joker 🧠.");
-            selectedJoker = hintjoker;
-        }
-
-        player.addItem(selectedJoker);
-        try (Connection connection = Database.getConnection()) {
-            player.getInventory().saveToDatabase(player.getId(), connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        System.out.println("🎉 You have chosen the " + selectedJoker.getName() + "! 🎉");
-
         Scanner input = new Scanner(System.in);
         System.out.println("🌟============================🌟");
         System.out.println("🏁 Welcome to the Scrum Escape Room! 🏁");
