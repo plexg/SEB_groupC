@@ -113,7 +113,16 @@ public class ScrumBoardRoom extends Room {
         }
         System.out.println("✅🎉 Correct! You can now proceed to the next room: SprintReviewRoom! 🎉✅");
         triggerMonster();
-        System.out.println("➡️ Type 'go to SprintReviewRoom' to enter the next room, 'status' to check your HP, inventory and progress, or 'quit' to save and exit the game.");
+        System.out.println("🎲==============================🎲");
+        System.out.println("🤔 What will you do?");
+        System.out.println("1️⃣  See the assignment(already completed)");
+        System.out.println("2️⃣  Check your status");
+        System.out.println("3️⃣  Search the room");
+        System.out.println("4️⃣  Go back to the previous room");
+        System.out.println("5️⃣  Go to the next room");
+        System.out.println("6️⃣  Quit the game");
+        System.out.println("🌟============================🌟");
+        System.out.print("Enter your choice (1-6): ");
         database.updateRoomCompletion(player.getName(), "scrumboardroom_completed", true);
         Room sprintReviewRoom = new SprintReviewRoom(player, database, challenge, game);
         sprintReviewRoom.setName("SprintReviewRoom");

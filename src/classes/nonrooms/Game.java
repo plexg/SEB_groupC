@@ -93,21 +93,33 @@ public class Game {
 
         if (savedRoom != null) {
             switch (savedRoom.toLowerCase()) {
-                case "startroom":
+                case "StartRoom":
                     player.setRoom(new StartRoom(player));
                     handleStartRoom(sc);
                     break;
-                case "sprintplanningroom":
+                case "SprintPlanningRoom":
                     player.setRoom(new SprintPlanningRoom(player, database, this));
                     handleSprintPlanningRoom(sc);
                     break;
-                case "dailyscrumroom":
+                case "DailyScrumRoom":
                     player.setRoom(new DailyScrumRoom(player, database, this));
                     handleDailyScrumRoom(sc);
                     break;
-                case "scrumboardroom":
+                case "ScrumBoardRoom":
                     player.setRoom(new ScrumBoardRoom(player, database, this));
                     handleScrumBoardRoom(sc);
+                    break;
+                case "SprintReviewRoom":
+                    player.setRoom(new SprintReviewRoom(player, database, new CategorizationChallenge(), this));
+                    handleSprintReviewRoom(sc);
+                    break;
+                case "SprintRetrospectiveRoom":
+                    player.setRoom(new SprintRetrospectiveRoom(player, database, this));
+                    handleSprintRetrospectiveRoom(sc);
+                    break;
+                case "FinalRoom":
+                    player.setRoom(new FinalRoom(player, database, this));
+                    handleFinalRoom(sc);
                     break;
                 default:
                     System.out.println("❓ Unknown room: " + savedRoom + ". Starting a new game.");
@@ -477,7 +489,7 @@ public class Game {
                 case "go to next room":
                     if (database.isRoomCompleted(player.getName(), "sprintreviewroom_completed") && player.isKeyUsed()) {
                         Room sprintRetrospectiveRoom = new SprintRetrospectiveRoom(player, database, this);
-                        sprintRetrospectiveRoom.setName("ScrumBoardRoom");
+                        sprintRetrospectiveRoom.setName("SprintRetrospectiveRoom");
                         player.setRoom(sprintRetrospectiveRoom);
                         player.setIsKeyUsed(false);
                         handleSprintRetrospectiveRoom(sc);
@@ -501,7 +513,19 @@ public class Game {
                         useHintJoker(sc);
                     } else if (choice.equalsIgnoreCase("use key joker")) {
                         useKeyJoker(sc);
-                    } else {
+                    } else if (choice.equalsIgnoreCase("use purple key")) {
+                        try {
+                            if (player.getInventory().hasItem("Purple Key", player.getId(), database.getConnection())) {
+                                player.setIsKeyUsed(true);
+                                player.getInventory().removeItem("Purple Key", player.getId(), database.getConnection());
+                                System.out.println("🔓 You used the Purple Key to unlock the door to the next room!");
+                            } else {
+                                System.out.println("❌ You don't have a Gold Key.");
+                            }
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }else {
                         System.out.println("❓ Invalid choice. Please try again.");
                     }
             }
@@ -535,7 +559,7 @@ public class Game {
                 case "go to next room":
                     if (database.isRoomCompleted(player.getName(), "sprintretrospectiveroom_completed") && player.isKeyUsed()) {
                         Room finalRoom = new FinalRoom(player, database, this);
-                        finalRoom.setName("ScrumBoardRoom");
+                        finalRoom.setName("FinalRoom");
                         player.setRoom(finalRoom);
                         handleFinalRoom(sc);
                         return;
@@ -558,7 +582,19 @@ public class Game {
                         useHintJoker(sc);
                     } else if (choice.equalsIgnoreCase("use key joker")) {
                         useKeyJoker(sc);
-                    } else {
+                    } else if (choice.equalsIgnoreCase("use gold key")) {
+                        try {
+                            if (player.getInventory().hasItem("Gold Key", player.getId(), database.getConnection())) {
+                                player.setIsKeyUsed(true);
+                                player.getInventory().removeItem("Gold Key", player.getId(), database.getConnection());
+                                System.out.println("🔓 You used the Gold Key to unlock the door to the next room!");
+                            } else {
+                                System.out.println("❌ You don't have a Gold Key.");
+                            }
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }else {
                         System.out.println("❓ Invalid choice. Please try again.");
                     }
             }

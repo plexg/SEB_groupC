@@ -13,7 +13,7 @@ import java.util.List;
 public class Database {
     private static final String URL = "jdbc:mysql://localhost:3306/seb?useSSL=false&allowPublicKeyRetrieval=true";
     private static final String USER = "root";
-    private static final String PASSWORD = "Hamster89!";
+    private static final String PASSWORD = "Koe!90!KJ!80";
     List<Item> items = new ArrayList<Item>();
     private Connection connection;
     Game game;
@@ -29,7 +29,7 @@ public class Database {
         return connection;
     }
 
-    public Player loadPlayer(String name) {
+    public Player loadPlayer(String name, Game game1) {
         String query = "SELECT id, name, hp, current_room FROM playerprogress WHERE name = ?";
         try (Connection connection = connect();
              PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -39,7 +39,8 @@ public class Database {
                 int id = rs.getInt("id");
                 int hp = rs.getInt("hp");
                 String currentRoom = rs.getString("current_room");
-                Room room = currentRoom != null ? RoomFactory.createRoom(currentRoom, new Player(id, hp, null, name, items), this, game) : null;                return new Player(id, hp, room, name, items);
+                Room room = currentRoom != null ? RoomFactory.createRoom(currentRoom, new Player(id, hp, null, name, items), this, game1) : null;
+                return new Player(id, hp, room, name, items);
             }
         } catch (SQLException e) {
             e.printStackTrace();

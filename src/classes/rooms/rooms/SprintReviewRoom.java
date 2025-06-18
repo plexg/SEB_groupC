@@ -29,7 +29,7 @@ public class SprintReviewRoom extends Room {
     public SprintReviewRoom(Player player, Database database, CategorizationChallenge challenge, Game game) {
         this.player = player;
         this.database = database;
-        this.challenge = challenge;
+        this.challenge = new CategorizationChallenge();
         this.player.setRoom(this);
         this.game = game;
         items.add(boxCutter);
@@ -93,6 +93,16 @@ public class SprintReviewRoom extends Room {
             presentChallenge();
         }
         System.out.println("✅🎉 Correct! You can now proceed to the next room: SprintRetrospectiveRoom! 🎉✅");
+        System.out.println("🎲==============================🎲");
+        System.out.println("🤔 What will you do?");
+        System.out.println("1️⃣  See the assignment(Already completed)");
+        System.out.println("2️⃣  Check your status");
+        System.out.println("3️⃣  Search the room");
+        System.out.println("4️⃣  Go back to the previous room");
+        System.out.println("5️⃣  Go to the next room");
+        System.out.println("6️⃣  Quit the game");
+        System.out.println("🌟============================🌟");
+        System.out.print("Enter your choice (1-6): ");
         database.updateRoomCompletion(player.getName(), "sprintreviewroom_completed", true);
     }
 

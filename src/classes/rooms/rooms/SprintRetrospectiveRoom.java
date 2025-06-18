@@ -91,6 +91,16 @@ public class SprintRetrospectiveRoom extends Room {
             presentChallenge();
         }
         System.out.println("✅🎉 Well done! You can now proceed to the final room: FinalRoom! 🎉✅");
+        System.out.println("🎲==============================🎲");
+        System.out.println("🤔 What will you do?");
+        System.out.println("1️⃣  See the assignment(already completed)");
+        System.out.println("2️⃣  Check your status");
+        System.out.println("3️⃣  Search the room");
+        System.out.println("4️⃣  Go back to the previous room");
+        System.out.println("5️⃣  Go to the next room");
+        System.out.println("6️⃣  Quit the game");
+        System.out.println("🌟============================🌟");
+        System.out.print("Enter your choice (1-6): ");
         database.updateRoomCompletion(player.getName(), "sprintretrospectiveroom_completed", true);
     }
 
