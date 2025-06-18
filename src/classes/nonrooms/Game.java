@@ -9,6 +9,7 @@ import classes.items.Item;
 import classes.joker.HintJoker;
 import classes.joker.Joker;
 import classes.joker.KeyJoker;
+import classes.observer.ConsoleLogger;
 import classes.rooms.*;
 import classes.rooms.rooms.*;
 import Challenge.MultipleChoiceChallenge;
@@ -148,6 +149,9 @@ public class Game {
                 continue;
             }
             player = savedPlayer;
+
+            ConsoleLogger logger = new ConsoleLogger();
+            player.addObserver(logger);
 
             System.out.println("🃏 Choose your Joker:");
             System.out.println("1️⃣ Hint Joker (Get 1 hint in a room to help with the assignment)");

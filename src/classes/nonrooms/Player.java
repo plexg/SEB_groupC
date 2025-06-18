@@ -1,15 +1,18 @@
 package classes.nonrooms;
 
 import classes.items.Item;
+import classes.observer.Observer;
+import classes.observer.Subject;
 import classes.rooms.Room;
 import classes.items.inventory.Inventory;
 import classes.database.Database;
 import classes.joker.Joker;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+public class Player implements Subject {
     private int id;
     private int progress;
     private int hp;
@@ -19,6 +22,7 @@ public class Player {
     private Room previousRoom;
     Database database = new Database();
     private boolean keyUsed = false;
+    private List<Observer> observers = new ArrayList<>();
 
     // Constructor
     public Player(int id, int hp, Room room, String name, List<Item> items) {
@@ -54,6 +58,7 @@ public class Player {
 
     public void setHp(int hp) {
         this.hp = hp;
+        notifyObservers();
     }
 
     public Room getRoom() {
@@ -122,6 +127,23 @@ public class Player {
             joker.useIn(room);
         } else {
             System.out.println("You don't have this joker in your inventory.");
+        }
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(this);
         }
     }
 }
