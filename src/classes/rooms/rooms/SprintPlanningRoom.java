@@ -118,10 +118,8 @@ public class SprintPlanningRoom extends Room {
         System.out.println("5️⃣  Go to the next room");
         System.out.println("6️⃣  Quit the game");
         System.out.println("🌟============================🌟");
-        System.out.print("Enter your choice (1-6): ");        database.updateRoomCompletion(player.getName(), "sprintplanningroom_completed", true);
-        Room dailyScrumRoom = new DailyScrumRoom(player, database, game);
-        dailyScrumRoom.setName("DailyScrumRoom");
-        player.setRoom(dailyScrumRoom);
+        System.out.print("Enter your choice (1-6): ");
+        database.updateRoomCompletion(player.getName(), "sprintplanningroom_completed", true);
     }
 
     @Override
@@ -141,18 +139,39 @@ public class SprintPlanningRoom extends Room {
         System.out.println("😱 Oh no! What's that noise?...");
         System.out.println(enter);
         input.nextLine();
-        System.out.println("      (    )   (   )  )");
-        System.out.println("     ) (   )  (  (   (");
-        System.out.println("     ( )  (    ) )  )");
-        System.out.println("   .-\"\"\"\"\"\"\"\"\"-.");
-        System.out.println("  /            \\");
-        System.out.println(" |   ☕  COFFEE  |");
-        System.out.println(" |   MONSTER!   |");
-        System.out.println("  \\            /");
-        System.out.println("   '-.______.-'");
-        System.out.println("      (    )");
-        System.out.println("     (    )");
-        System.out.println("      (__)");
+        System.out.println("                                                            \n" +
+                "                                                            \n" +
+                "                                                            \n" +
+                "           #@@@@@@@@@@%@@@@@@@@@@@@@@@@@@@@@@@@@#           \n" +
+                "         ==         + :*-  :-*+   :**            -+         \n" +
+                "         *          :+@%%= -@=@+ =#@*@            *         \n" +
+                "         *             ..    :.    .:             *         \n" +
+                "         *@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#         \n" +
+                "            *                                  *            \n" +
+                "            @====-===@@%%%#%%%%%%#%%%@@===--===@            \n" +
+                "            *         :#************%:       % *            \n" +
+                "            *            #@@@@@@@@#         .@ *            \n" +
+                "            *                                = *            \n" +
+                "            *                .                 *            \n" +
+                "            *        -====--*==*=-====:        *            \n" +
+                "            *       -#               .@@*      *            \n" +
+                "            *        @.-:            #+ @      *            \n" +
+                "            *        @=#-@=       +*-@  @      *            \n" +
+                "            *        -@*@-   :-      % **      *            \n" +
+                "            *         @.            #=#@       *            \n" +
+                "            *         .*     --     @          *            \n" +
+                "            *          *-          @           *            \n" +
+                "            *           +%       :@            *            \n" +
+                "            *          @@@@@@@@@@@@@@          *            \n" +
+                "           :%        *@=------------=@*        %-           \n" +
+                "         +==.            ---::::---              .*         \n" +
+                "          @+-.          :=--------=-          #@=@          \n" +
+                "            :==================================:            \n" +
+                "                                                            \n" +
+                "                                                            \n" +
+                "                                                            \n" +
+                "                                                            \n" +
+                "                                                            ");
         System.out.println("☕ A Coffee Monster appears in front of the door! It looks angry...");
         System.out.println(enter);
         input.nextLine();
@@ -255,9 +274,5 @@ public class SprintPlanningRoom extends Room {
                 throw new RuntimeException(e);
             }
         }
-    }
-
-    @Override
-    public void skipAssignment() {
     }
 }

@@ -1,89 +1,151 @@
 @startuml
-abstract class Room {
-    +showIntroduction() : void
-    +presentChallenge() : void
-    +checkAnswer() : boolean
-    +giveFeedback() : void
-    +triggerMonster() : void
+
+package classes.nonrooms {
+    class Game {
+        - player : Player
+        - rooms : List<Room>
+        - database : Database
+        - items : List<Item>
+        + startGame(sc : Scanner)
+        + continueGame(sc : Scanner)
+        + newGame(sc : Scanner)
+        + handleStartRoom(sc : Scanner)
+        + handleSprintPlanningRoom(sc : Scanner)
+        + handleDailyScrumRoom(sc : Scanner)
+        + handleScrumBoardRoom(sc : Scanner)
+        + handleSprintReviewRoom(sc : Scanner)
+        + handleSprintRetrospectiveRoom(sc : Scanner)
+        + handleFinalRoom(sc : Scanner)
+        + saveAndQuit()
+        + goBack(sc : Scanner)
+        + useItem(item : Healer, itemName : String, sc : Scanner)
+        + useHintJoker(sc : Scanner)
+        + useKeyJoker(sc : Scanner)
+        + getPreviousRoomName() : String
+    }
+
+    class Player implements Subject {
+        - observers : List<Observer>
+        - hp : int
+        - name : String
+        - inventory : Inventory
+        - room : Room
+        - previousRoom : Room
+        + addObserver(observer : Observer)
+        + removeObserver(observer : Observer)
+        + notifyObservers()
+        + setHp(hp : int)
+        + getHp() : int
+        + setRoom(room : Room)
+        + getRoom() : Room
+        + setPreviousRoom(room : Room)
+        + getPreviousRoom() : Room
+        + getStatus() : String
+        + addItem(item : Item)
+        + getInventory() : Inventory
+        + setIsKeyUsed(used : boolean)
+        + isKeyUsed() : boolean
+        + getName() : String
+        + getId() : int
+    }
 }
 
-class StartRoom {
-    -player : Player
-    +showIntroduction() : void
-    +presentChallenge() : void
-    +checkAnswer() : boolean
-    +giveFeedback() : void
-    +triggerMonster() : void
+package classes.observer {
+    interface Observer {
+        + update(player : Player)
+    }
+    interface Subject {
+        + addObserver(observer : Observer)
+        + removeObserver(observer : Observer)
+        + notifyObservers()
+    }
+    class ConsoleLogger implements Observer {
+        + update(player : Player)
+    }
 }
 
-class DailyScrumRoom {
-    -player : Player
-    -database : Database
-    -enter : String
-    -input : Scanner
-    +showIntroduction() : void
-    +presentChallenge() : void
-    +checkAnswer() : boolean
-    +giveFeedback() : void
-    +triggerMonster() : void
+package classes.rooms {
+    abstract class Room {
+        - name : String
+        - player : Player
+        + setName(name : String)
+        + getName() : String
+        + searchRoom()
+        + presentChallenge()
+        + giveFeedback()
+        + showIntroduction()
+    }
+    class StartRoom extends Room
+    class SprintPlanningRoom extends Room
+    class DailyScrumRoom extends Room
+    class ScrumBoardRoom extends Room
+    class SprintReviewRoom extends Room
+    class SprintRetrospectiveRoom extends Room
+    class FinalRoom extends Room
 }
 
-class SprintReviewRoom {
-    -feedbackItems : List<String>
-    -userInput : String
-    -player : Player
-    -database : Database
-    -challenge : ChallengeStrategy
-    -enter : String
-    -input : Scanner
-    +showIntroduction() : void
-    +presentChallenge() : void
-    +checkAnswer() : boolean
-    +giveFeedback() : void
-    +triggerMonster() : void
+package classes.items {
+    abstract class Item {
+        + getName() : String
+    }
+    class CupOfCoffee extends Item
+    class Donut extends Item
+    class Healer extends Item {
+        + heal(player : Player)
+    }
+    class Inventory {
+        + hasItem(name : String, playerId : int, conn : Connection) : boolean
+        + removeItem(name : String, playerId : int, conn : Connection)
+        + saveToDatabase(playerId : int, conn : Connection)
+    }
 }
 
-class SprintRetrospectiveRoom {
-    -enter : String
-    -input : Scanner
-    -database : Database
-    -player : Player
-    +showIntroduction() : void
-    +presentChallenge() : void
-    +checkAnswer() : boolean
-    +giveFeedback() : void
-    +triggerMonster() : void
+package classes.joker {
+    abstract class Joker extends Item {
+        + useIn(room : Room)
+    }
+    class HintJoker extends Joker
+    class KeyJoker extends Joker
 }
 
-class Player {
-    -name : String
-    -room : Room
-    +getName() : String
-    +setRoom(room : Room) : void
-    +getRoom() : Room
-    +getStatus() : String
+package classes.database {
+    class Database {
+        + loadPlayer(name : String, game : Game) : Player
+        + savePlayer(player : Player) : boolean
+        + updatePlayer(player : Player)
+        + updatePlayerRoom(name : String, roomName : String)
+        + getPlayerRoom(name : String) : String
+        + isRoomCompleted(name : String, roomFlag : String) : boolean
+        + getConnection() : Connection
+    }
 }
 
-class Database {
-    +updateRoomCompletion(playerName : String, roomKey : String, completed : boolean) : void
-    +isRoomCompleted(playerName : String, roomKey : String) : boolean
+package Challenge {
+    class CategorizationChallenge
+    class MultipleChoiceChallenge
 }
 
-interface ChallengeStrategy {
-    +present() : void
-    +check(input : String) : boolean
-}
-
+Game --> Player
+Game --> Database
+Game --> Room
+Game --> Item
+Player --> Room
+Player --> Inventory
+Player --> Observer
+Player ..|> Subject
+ConsoleLogger ..|> Observer
 Room <|-- StartRoom
+Room <|-- SprintPlanningRoom
 Room <|-- DailyScrumRoom
+Room <|-- ScrumBoardRoom
 Room <|-- SprintReviewRoom
 Room <|-- SprintRetrospectiveRoom
-SprintReviewRoom o-- ChallengeStrategy
-DailyScrumRoom o-- Database
-SprintReviewRoom o-- Database
-SprintRetrospectiveRoom o-- Database
-DailyScrumRoom o-- Player
-SprintReviewRoom o-- Player
-SprintRetrospectiveRoom o-- Player
-StartRoom o-- Player
+Room <|-- FinalRoom
+Item <|-- CupOfCoffee
+Item <|-- Donut
+Item <|-- Healer
+Item <|-- Joker
+Joker <|-- HintJoker
+Joker <|-- KeyJoker
+
 @enduml

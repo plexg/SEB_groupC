@@ -70,7 +70,7 @@ public class Game {
             } else if (choice.equalsIgnoreCase("1") || choice.equalsIgnoreCase("Continue")) {
                 System.out.print("📝 Enter your name: ");
                 String name = sc.nextLine().trim();
-                Player loadedPlayer = database.loadPlayer(name);
+                 Player loadedPlayer = database.loadPlayer(name, this);
                 if (loadedPlayer != null) {
                     this.player = loadedPlayer;
                     continueGame(sc);
@@ -92,7 +92,7 @@ public class Game {
         System.out.println("💾 Loaded room from database: " + savedRoom);
 
         if (savedRoom != null) {
-            switch (savedRoom.toLowerCase()) {
+            switch (savedRoom) {
                 case "StartRoom":
                     player.setRoom(new StartRoom(player));
                     handleStartRoom(sc);
@@ -142,7 +142,7 @@ public class Game {
                 continue;
             }
 
-            if (database.loadPlayer(name) != null) {
+            if (database.loadPlayer(name, this) != null) {
                 System.out.println("⚠️ A player with this name already exists. Please choose a different name.");
                 continue;
             }
@@ -155,7 +155,7 @@ public class Game {
                 continue;
             }
 
-            Player savedPlayer = database.loadPlayer(name);
+            Player savedPlayer = database.loadPlayer(name, this);
             if (savedPlayer == null) {
                 System.out.println("❌ Failed to load the saved player. Please try again.");
                 continue;
@@ -540,8 +540,8 @@ public class Game {
             switch (choice) {
                 case "1":
                 case "assignment":
-                    ((SprintReviewRoom) player.getRoom()).presentChallenge();
-                    ((SprintReviewRoom) player.getRoom()).giveFeedback();
+                    ((SprintRetrospectiveRoom) player.getRoom()).presentChallenge();
+                    ((SprintRetrospectiveRoom) player.getRoom()).giveFeedback();
                     break;
                 case "2":
                 case "status":
@@ -564,7 +564,7 @@ public class Game {
                         handleFinalRoom(sc);
                         return;
                     } else if (!player.isKeyUsed()) {
-                        System.out.println("🚪 The door is locked! Use the Golden Key to proceed.");
+                        System.out.println("🚪 The door is locked! Use the Gold Key to proceed.");
                     } else {
                         System.out.println("🚫 You must complete the assignment in this room before proceeding.");
                     }
@@ -615,30 +615,25 @@ public class Game {
 
     public void goBack(Scanner sc) {
         if (player.getPreviousRoom() != null) {
+            System.out.println("🔙 Going back to the previous room");
 
             if (player.getRoom() instanceof StartRoom) {
                 player.setRoom(new StartRoom(player));
-                System.out.println("🔙 Going back to: " + getPreviousRoomName());
                 handleStartRoom(sc);
             } else if (player.getRoom() instanceof SprintPlanningRoom) {
                 player.setRoom(new StartRoom(player));
-                System.out.println("🔙 Going back to: " + getPreviousRoomName());
                 handleStartRoom(sc);
             } else if (player.getRoom() instanceof DailyScrumRoom) {
                 player.setRoom(new SprintPlanningRoom(player, database, this));
-                System.out.println("🔙 Going back to: " + getPreviousRoomName());
                 handleSprintPlanningRoom(sc);
             } else if (player.getRoom() instanceof ScrumBoardRoom) {
                 player.setRoom(new DailyScrumRoom(player, database, this));
-                System.out.println("🔙 Going back to: " + getPreviousRoomName());
                 handleDailyScrumRoom(sc);
             } else if (player.getRoom() instanceof SprintReviewRoom) {
                 player.setRoom(new ScrumBoardRoom(player, database, this));
-                System.out.println("🔙 Going back to: " + getPreviousRoomName());
                 handleScrumBoardRoom(sc);
             } else if (player.getRoom() instanceof SprintRetrospectiveRoom) {
                 player.setRoom(new SprintReviewRoom(player, database, challenge, this));
-                System.out.println("🔙 Going back to: " + getPreviousRoomName());
                 handleSprintReviewRoom(sc);
             } else {
                 System.out.println("❓ Unknown room type. Cannot go back.");
@@ -682,14 +677,19 @@ public class Game {
 
     public void useKeyJoker(Scanner sc) {
         try {
-            if (player.inventory.hasItem("Key Joker", player.getId(), database.getConnection())) {
-                keyjoker.useIn(player.getRoom());
-                System.out.println("🗝️ You used the Key Joker.");
-                player.inventory.removeItem("Key Joker", player.getId(), database.getConnection());
-                System.out.println("🌟 Press Enter to continue... 🌟");
-                sc.nextLine();
+            if (player.getRoom() instanceof DailyScrumRoom || player.getRoom() instanceof SprintReviewRoom) {
+                if (player.inventory.hasItem("Key Joker", player.getId(), database.getConnection())) {
+                    player.setIsKeyUsed(true);
+                    System.out.println("🗝️ You used the Key Joker.");
+                    System.out.println("🗝️You opened the lock without the key!");
+                    player.inventory.removeItem("Key Joker", player.getId(), database.getConnection());
+                    System.out.println("🌟 Press Enter to continue... 🌟");
+                    sc.nextLine();
+                } else {
+                    System.out.println("❌ You don't have a Key Joker in your inventory.");
+                }
             } else {
-                System.out.println("❌ You don't have a Key Joker in your inventory.");
+                System.out.println("❌ You can only use the Key Joker in the Daily Scrum Room or Sprint Review Room.");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

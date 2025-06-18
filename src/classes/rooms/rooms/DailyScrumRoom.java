@@ -143,19 +143,5 @@ public class DailyScrumRoom extends Room {
     }
 
     @Override
-    public void triggerMonster() {
-        // No monster in this room
-    }
-
-    @Override
-    public void skipAssignment() {
-        System.out.println("⏭️ You have chosen to skip the assignment.");
-        System.out.println("➡️ Proceed to the next room: ScrumBoardRoom!");
-        System.out.println("Type 'go to ScrumBoardRoom' to continue, 'search room' to look for treasures,");
-        System.out.println("   'status' to check your HP, inventory, and progress, or 'quit' to save and exit.");
-        database.updateRoomCompletion(player.getName(), "dailyscrumroom_completed", true);
-        Room scrumBoardRoom = new ScrumBoardRoom(player, database, game);
-        scrumBoardRoom.setName("ScrumBoardRoom");
-        player.setRoom(scrumBoardRoom);
-    }
+    public void triggerMonster() {}
 }

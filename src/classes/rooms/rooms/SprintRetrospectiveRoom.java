@@ -117,8 +117,8 @@ public class SprintRetrospectiveRoom extends Room {
     }
 
     @Override
-    public void triggerMonster() {}
+    public void triggerMonster() {
 
-    @Override
-    public void skipAssignment() {}
+    }
+
 }

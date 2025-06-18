@@ -131,16 +131,4 @@ public class SprintReviewRoom extends Room {
             System.exit(0);
         }
     }
-
-    @Override
-    public void skipAssignment() {
-        System.out.println("⏭️ You have chosen to skip the assignment.");
-        System.out.println("➡️ Proceed to the next room: SprintRetrospectiveRoom!");
-        System.out.println("Type 'go to SprintRetrospectiveRoom' to continue, 'search room' to look for treasures,");
-        System.out.println("   'status' to check your HP, inventory, and progress, or 'quit' to save and exit.");
-        database.updateRoomCompletion(player.getName(), "sprintreviewroom_completed", true);
-        Room sprintRetrospectiveRoom = new SprintRetrospectiveRoom(player, database, game);
-        sprintRetrospectiveRoom.setName("SprintRetrospectiveRoom");
-        player.setRoom(sprintRetrospectiveRoom);
-    }
 }

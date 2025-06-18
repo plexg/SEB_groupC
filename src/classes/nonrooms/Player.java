@@ -99,7 +99,7 @@ public class Player implements Subject {
                     + "❤️ HP: " + hp + "\n"
                     + "🏠 Room: " + (currentroom != null ? currentroom.getClass().getSimpleName() : "None") + "\n"
                     + "🎒 Inventory:\n" + inventory.loadFromDatabase(getId(), database.getConnection())
-                    + "\n✨ Type 'use <item>' to heal yourself or unleash your Joker! ✨\n";
+                    + "\n✨ Type 'use <item>' to heal yourself, unlock doors or unleash your Joker! ✨\n";
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
