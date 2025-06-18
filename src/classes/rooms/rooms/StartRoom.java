@@ -14,7 +14,6 @@ import classes.joker.KeyJoker;
 import classes.nonrooms.Player;
 import classes.rooms.Room;
 
-import javax.swing.plaf.basic.BasicTreeUI;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -24,9 +23,8 @@ public class StartRoom extends Room {
     Pencil pencil = new Pencil();
     WhiteKey whiteKey = new WhiteKey(1);
     Scanner sc = new Scanner(System.in);
-
-
-
+    HintJoker hintjoker = new HintJoker();
+    KeyJoker keyjoker = new KeyJoker();
 
     public StartRoom(Player player) {
         if (player == null) {
@@ -38,34 +36,66 @@ public class StartRoom extends Room {
         // initialize items
         items.add(pencil);
         items.add(whiteKey);
+        items.add(hintjoker);
+        items.add(keyjoker);
     }
 
     @Override
     public void showIntroduction() {
+        System.out.println("🎲 Choose your Joker! 🎲");
+        System.out.println("1️⃣  Hint Joker 🧠 (Get a helpful hint in a tricky room!)");
+        System.out.println("2️⃣  Key Joker 🗝️ (Skip the Daily Scrum & Sprint Review rooms!)");
+        int choicejoker = sc.nextInt();
+        sc.nextLine();
+
+        Joker selectedJoker;
+        if (choicejoker == 1) {
+            selectedJoker = hintjoker;
+        } else if (choicejoker == 2) {
+            selectedJoker = keyjoker;
+        } else {
+            System.out.println("❓ Invalid choice! Defaulting to Hint Joker 🧠.");
+            selectedJoker = hintjoker;
+        }
+
+        player.addItem(selectedJoker);
+        try (Connection connection = Database.getConnection()) {
+            player.getInventory().saveToDatabase(player.getId(), connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("🎉 You have chosen the " + selectedJoker.getName() + "! 🎉");
+
         Scanner input = new Scanner(System.in);
-        System.out.println("============================");
-        System.out.println("Welcome to the Scrum Escape Room!");
+        System.out.println("🌟============================🌟");
+        System.out.println("🏁 Welcome to the Scrum Escape Room! 🏁");
         System.out.println("Press Enter to continue...");
-        System.out.println("============================");
+        System.out.println("🌟============================🌟");
         input.nextLine();
-        System.out.println("You are a Scrum Master trapped in a building with different rooms and challenges.");
+        System.out.println("🧑‍💻 You are a Scrum Master trapped in a mysterious building full of challenges!");
         System.out.println("Press Enter to continue...");
-        System.out.println("============================");
+        System.out.println("🌟============================🌟");
         input.nextLine();
-        System.out.println("Your goal is to escape by solving Scrum-related puzzles.");
+        System.out.println("🧩 Your goal: Escape by solving Scrum-related puzzles and riddles!");
         System.out.println("Press Enter to continue...");
-        System.out.println("============================");
+        System.out.println("🌟============================🌟");
         input.nextLine();
-        System.out.println("Good luck!");
+        System.out.println("🍀 Good luck, brave Scrum Master! 🍀");
         System.out.println("Press Enter to continue...");
-        System.out.println("============================");
+        System.out.println("🌟============================🌟");
         input.nextLine();
-        System.out.println("You are in the Start Room.");
+        System.out.println("🚪 You are in the Start Room. 🚪");
         System.out.println("Press Enter to continue...");
-        System.out.println("============================");
+        System.out.println("🌟============================🌟");
         input.nextLine();
-        System.out.println("Do you want to see the assignment, your status, \n  search the room, go back to the previous room, or quit?");
-        System.out.println("============================");
+        System.out.println("🤔 What will you do?");
+        System.out.println("1️⃣  Go to the Sprint Planning Room");
+        System.out.println("2️⃣  Check your status");
+        System.out.println("3️⃣  Search the room");
+        System.out.println("4️⃣  Go back to the previous room");
+        System.out.println("5️⃣  Quit the game");
+        System.out.println("🌟============================🌟");
+        System.out.print("Enter your choice (1-5): ");
     }
 
     @Override
@@ -83,8 +113,9 @@ public class StartRoom extends Room {
 
     @Override
     public void searchRoom() {
-        System.out.println("Searching the room...");
-        System.out.println("You found a Pencil and a White Key! Use the pencil for offense and the white key to unlock door to the Sprint Planning Room.");
+        System.out.println("🔍 Searching the room...");
+        System.out.println("✨ You found a ✏️ Pencil and a 🗝️ White Key! ✨");
+        System.out.println("Use the pencil for offense and the white key to unlock the door to the Sprint Planning Room.");
         player.addItem(pencil);
         player.addItem(whiteKey);
         try (Connection connection = Database.getConnection()) {

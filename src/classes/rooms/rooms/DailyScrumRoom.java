@@ -25,7 +25,7 @@ public class DailyScrumRoom extends Room {
     private final List<Item> items = new ArrayList<>();
     private final Staplergun staplergun = new Staplergun();
     private final GreenKey greenKey = new GreenKey(3);
-    private final String enter = "Press Enter to continue...";
+    private final String enter = "🌟 Press Enter to continue... 🌟";
     private final Game game;
 
     public DailyScrumRoom(Player player, Database database, Game game) {
@@ -40,14 +40,23 @@ public class DailyScrumRoom extends Room {
 
     @Override
     public void showIntroduction() {
-        System.out.println("Welcome to the Daily Scrum Room!");
+        System.out.println("🎉==============================🎉");
+        System.out.println("⏰ Welcome to the Daily Scrum Room! ⏰");
+        System.out.println("🎉==============================🎉");
         System.out.println(enter);
         input.nextLine();
-        System.out.println("Answer questions to proceed to the next room");
+        System.out.println("🗣️ Answer questions to proceed to the next room!");
         System.out.println(enter);
         input.nextLine();
-        System.out.println("Do you want to see the assignment, your status, \n  search the room, go back to the previous room, or quit?");
-        System.out.println("You can type 'assignment', 'status', 'search room', 'go back', or 'quit'.");
+        System.out.println("🎲==============================🎲");
+        System.out.println("🤔 What will you do?");
+        System.out.println("1️⃣  See the assignment");
+        System.out.println("2️⃣  Check your status");
+        System.out.println("3️⃣  Search the room");
+        System.out.println("4️⃣  Go back to the previous room");
+        System.out.println("5️⃣  Quit the game");
+        System.out.println("🌟============================🌟");
+        System.out.print("Enter your choice (1-5): ");
     }
 
     @Override
@@ -65,10 +74,10 @@ public class DailyScrumRoom extends Room {
         nameToLetterMap.put("Szymon", "C");
         nameToLetterMap.put("Lex", "D");
 
-        System.out.println("Please enter the name or letter corresponding to the status update for each number:");
+        System.out.println("✏️ Please enter the name or letter corresponding to the status update for each number:");
 
         for (int i = 1; i <= 4; i++) {
-            System.out.print(i + ": ");
+            System.out.print("✏️ " + i + ": ");
             String answer = input.nextLine().trim();
             if (nameToLetterMap.containsKey(answer)) {
                 answer = nameToLetterMap.get(answer);
@@ -83,16 +92,16 @@ public class DailyScrumRoom extends Room {
 
     private void offerHint() {
         while (true) {
-            System.out.println("Would you like a hint? (yes/no)");
+            System.out.println("💡 Would you like a hint? (yes/no)");
             String response = input.nextLine().trim().toLowerCase();
             if (response.equals("yes")) {
                 Hint hint = HintFactory.getRandomHint("DailyScrumRoom");
-                System.out.println("Hint: " + hint.getHint());
+                System.out.println("🧠 Hint: " + hint.getHint());
                 break;
             } else if (response.equals("no")) {
                 break;
             } else {
-                System.out.println("Invalid input. Please type 'yes' or 'no'.");
+                System.out.println("❓ Invalid input. Please type 'yes' or 'no'.");
             }
         }
     }
@@ -100,12 +109,13 @@ public class DailyScrumRoom extends Room {
     @Override
     public void giveFeedback() {
         while (!checkAnswer()) {
-            System.out.println("Incorrect! Let's try the assignment again.");
+            System.out.println("❌ Not quite! Let's try the assignment again!");
             offerHint();
             presentChallenge();
         }
-        System.out.println("Correct! You can now proceed to the next room: ScrumBoardRoom.");
-        System.out.println("You can type 'go to ScrumBoardRoom' to enter the next room, 'search room' to search the room for valuable items, 'status' to see your hp, inventory and progress and 'quit' to save and exit the game.");
+        System.out.println("✅🎉 Correct! You can now proceed to the next room: ScrumBoardRoom! 🎉✅");
+        System.out.println("➡️ Type 'go to ScrumBoardRoom' to enter the next room, 'search room' to look for treasures,");
+        System.out.println("   'status' to check your HP, inventory and progress, or 'quit' to save and exit the game.");
         database.updateRoomCompletion(player.getName(), "dailyscrumroom_completed", true);
         Room scrumBoardRoom = new ScrumBoardRoom(player, database, game);
         scrumBoardRoom.setName("ScrumBoardRoom");
@@ -114,8 +124,8 @@ public class DailyScrumRoom extends Room {
 
     @Override
     public void searchRoom() {
-        System.out.println("Searching the room...");
-        System.out.println("You found a Green key and a stapler gun! Use the stapler gun for offense and the green key for the green lock.");
+        System.out.println("🔍 Searching the room...");
+        System.out.println("✨ You found a 🟩 Green Key and a 🔫 Stapler Gun! Use the stapler gun for offense and the green key for the green lock. ✨");
         player.addItem(greenKey);
         player.addItem(staplergun);
         try (Connection connection = Database.getConnection()) {
@@ -132,9 +142,10 @@ public class DailyScrumRoom extends Room {
 
     @Override
     public void skipAssignment() {
-        System.out.println("You have chosen to skip the assignment.");
-        System.out.println("You can now proceed to the next room: ScrumBoardRoom.");
-        System.out.println("You can type 'go to ScrumBoardRoom' to enter the next room, 'search room' to search the room for valuable items, 'status' to see your hp, inventory and progress and 'quit' to save and exit the game.");
+        System.out.println("⏭️ You have chosen to skip the assignment.");
+        System.out.println("➡️ Proceed to the next room: ScrumBoardRoom!");
+        System.out.println("Type 'go to ScrumBoardRoom' to continue, 'search room' to look for treasures,");
+        System.out.println("   'status' to check your HP, inventory, and progress, or 'quit' to save and exit.");
         database.updateRoomCompletion(player.getName(), "dailyscrumroom_completed", true);
         Room scrumBoardRoom = new ScrumBoardRoom(player, database, game);
         scrumBoardRoom.setName("ScrumBoardRoom");
